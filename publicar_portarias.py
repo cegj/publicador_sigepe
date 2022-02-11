@@ -7,9 +7,9 @@ print()
 print('*****Por Carlos E. Gaspar Jr.*****')
 print('******** github.com/cegj/ ********')
 print()
-
+input('Aperte ENTER para iniciar...')
 print()
-print('------------------------------------')
+print('----------------------------------')
 print()
 print('Realizando configurações iniciais...')
 
@@ -18,7 +18,7 @@ from modulos.config import *
 print('Configurações iniciais concluídas')
 
 print()
-print('------------------------------------')
+print('----------------------------------')
 print()
 
 from modulos.lista_arquivos import diretorioPortarias, listaDeArquivos
@@ -37,7 +37,7 @@ print('Quantidade de arquivos válidos no diretório: ', len(listaDeArquivos), '
 print()
 input('**Aperte ENTER para prosseguir**')
 print()
-print('------------------------------------')
+print('----------------------------------')
 print()
 
 ## Fazer login no SIGEPE
@@ -47,7 +47,7 @@ from modulos.login_sigepe import fazer_login_sigepe
 fazer_login_sigepe()
 
 print()
-print('------------------------------------')
+print('----------------------------------')
 print()
 
 ## Preencher formulários com dados dos arquivos e publicar
@@ -65,7 +65,8 @@ listaPortariasSemResultado = []
 for nomeArquivo in listaDeArquivos:
 
   print()
-  print('------------------------------------')
+  print('----------------------------------')
+
   print()
 
   textoPortaria = obter_texto_portaria(nomeArquivo)
@@ -115,7 +116,9 @@ quantidadePortariasPublicadas = len(listaPortariasPublicadas)
 quantidadePortariasNaoPublicadas = len(listaPortariasNaoPublicadas)
 quantidadePortariasSemResultado = len(listaPortariasSemResultado)
 
-print("------------------")
+print('----------------------------------')
+print('----------------------------------')
+
 print()
 print("PUBLICAÇÕES CONCLUÍDAS!")
 
@@ -139,3 +142,4 @@ if (quantidadePortariasSemResultado > 0):
   print('IMPORTANTE: Verifique se as portarias sem resultado foram cadastradas para publicação no SIGEPE')
         
 navegador.quit()
+input('Aperte ENTER para encerrar a aplicação...')
