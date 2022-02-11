@@ -1,7 +1,7 @@
 {
   "config": {
-    "diretorio_portarias": "\\\\arq-progep1\\boufes\\BOUFES 2022\\PROGEP\\02 - FEVEREIRO\\ddp_publicar\\",
-    "habilitacao_sigepe": "GESTOR - ÓRGÃO:UFES"
+    "diretorio_portarias": "",
+    "habilitacao_sigepe": ""
   },
   
   "valores": {
@@ -11,11 +11,11 @@
       "tipo_preenchimento": "Manual",
       "data_assinatura": "hoje",
       "data_publicacao": "amanha",
-      "orgao": "26234",
-      "upag": "1202",
-      "uorg": "743",
-      "responsavel_assinatura": "JOSIANA BINDA",
-      "cargo_responsavel": "Pró-Reitora de Gestão de Pessoas"
+      "orgao": "",
+      "upag": "",
+      "uorg": "",
+      "responsavel_assinatura": "",
+      "cargo_responsavel": ""
   },
 
   "temas_assuntos": {
@@ -78,9 +78,9 @@
   },
 
   "delimitadores" : {
-    "numero_portaria": ["Nº ", ","],
-    "siape": ["matrícula SIAPE nº ", ","],
+    "numero_portaria": ["", ""],
+    "siape": ["", ""],
     "cabecalho": ["", "var_ano_assinatura"],
-    "preliminar_portaria": ["", ":"]
+    "preliminar_portaria": ["", ""]
   }
 }
