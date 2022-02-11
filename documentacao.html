@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicador de Portarias - v1.0</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; max-width: 1000px; display: block; margin: 0 auto; background-color: rgb(228, 228, 228);">
+    <h1>Publicador de Portarias v1.0</h1>
+    <h2>Documentação de ajuda</h2>
+
+    <h3>O que é?</h3>
+    <p>O Publicador de Portarias é um software simples para automatizar, como o nome sugere, a publicação de portarias no Sistema de Gestão de Pessoas do Governo Federal (SIGEPE).</p>
+
+    <h3>Como funciona?</h3>
+    <p>A cada vez que é executado, o Publicador de Portarias carrega os valores pré-definidos pelo usuário no arquivo config.json e lê uma lista de arquivos que estejam localizados em um diretório do sistema informado pelo usuário. Em cada arquivo, o Publicador busca as informações necessárias para a publicação (número da portaria, texto, SIAPE do interessado etc) a partir de delimitadores informados também pelo usuário. Com essas informações, realiza as publicações no módulo Publicação do SIGEPE.</p>
+
+    <h3>Como configurar?</h3>
+    <P>Toda a configuração é feita no arquivo config.json, conforme os seguintes parâmetros:</P>
+
+    <h4>config:</h4>
+    <p>A chave config é utilizada para informar alguns parâmetros iniciais necessários para o funcionamento da aplicação.</p>
+
+        <dt>"diretorio_portarias:"</dt>
+        <dd>Informar o diretório completo (caminho do sistema) onde os arquivos das portarias estão localizados.</dd>
+        <dt>"habilitacao_sigepe:"</dt>
+        <dd>Escrever o nome da habilitação do usuário no SIGEPE em que o módulo Publicação está ativado</dd>
+    
+    <h4>valores:</h4>
+    <p>Nessa área, devem ser informados os valores que serão preenchidos no SIGEPE para todas as portarias a serem publicadas na execução do programa. Os demais valores, que mudam de portaria para portaria (como número, interessado, texto) são obtidos no próprio texto da portaria.</p>
+        <dt>"edicao_bgp:"</dt>
+        <dd>Informar "Normal" ou "Extraordinário", que são as duas opções no SIGEPE</dd>
+        <dt>"tipo_assinatura:"</dt>
+        <dd>Informar "Manual" ou "Automático", que são as duas opções no SIGEPE</dd>
+        <dt>"especie:"</dt>
+        <dd>Informar a espécie de documento, conforme as opções do Sigepe. Importante: embora possa funcionar com outros tipos, o software foi concebido para lidar com a espécie "Portaria"</dd>
+        <dt>"tipo_preenchimento:"</dt>
+        <dd>Informar "Automático", "Manual" ou "Sem número", que são as três opções no SIGEPE</dd>
+        <dt>"data_assinatura:"</dt>
+        <dd>Informar no formato DD/MM/AAAA ou informar <strong>"hoje"</strong> para preencher automaticamente com a data de hoje</dd>
+        <dt>"data_publicacao:"</dt>
+        <dd>Informar no formato DD/MM/AAAA ou informar <strong>"amanha"</strong> para preencher automaticamente com o dia útil seguinte</dd>
+        <dt>"orgao:"</dt>
+        <dd>Informar o código ou nome do seu órgão da forma como aparece no campo respectivo no SIGEPE</dd>
+        <dt>"upag:"</dt>
+        <dd>Informar o código ou nome da UPAG da forma como aparece no campo respectivo no SIGEPE</dd>
+        <dt>"uorg:"</dt>
+        <dd>Informar o código ou nome da UORG da forma como aparece no campo respectivo no SIGEPE</dd>
+        <dt>"responsavel_assinatura:"</dt>
+        <dd>Informar o nome da autoridade que assina a portaria</dd>
+        <dt>"cargo_responsavel:"</dt>
+        <dd>Informar o cargo/função da autoridade que assina a portaria</dd>
+
+    <h4>temas_assuntos:</h4>
+    <p>Nessa chave, você deve informar os temas das portarias que serão publicadas, relacionando-os com um termo do texto da portaria que será utilizado para identificar o tema e, ainda, o nível do assunto na tabela do SIGEPE. O modelo pode ser replicado quantas vezes forem necessárias para suprir todos os assuntos relacionados às portarias a serem publicadas.</p>
+
+        <dt>"termo_portaria:"</dt>
+        <dd>Uma palavra ou expressão que será buscada no texto da portaria e relacionada com um determinado assunto no SIGEPE.</dd>
+        <dt>"tema_bgp:"</dt>
+        <dd>O tema do SIGEPE que é correspondente ao termo encontrado na portaria.</dd>
+        <dt>"nivel_assunto_bgp:"</dt>
+        <dd>O nível do assunto na árvore exibida pelo SIGEPE para cada assunto. Cada zero corresponde a um nível e cada nível posterior deve ser antecedido por um underline _. Por exemplo, caso o assunto na árvore do SIGEPE esteja no quarto nível, o que deve ser informado no nível_assunto_bgp é: "0_0_0_0"</dd>
+        <dt>"arrow_down:"</dt>
+        <dd>Em alguns casos, ao buscar um tema, o SIGEPE possui dois temas com o mesmo nome. Por padrão, o Publicador de Portarias selecionará o primeiro da lista, mas caso seja necessário escolher algum abaixo dele, deve-se informar aqui quantos níveis o Publicador deve descer para encontrar o tema correto. Por exemplo, o tema "Admissão" aparece duas vezes na lista de temas do SIGEPE: para selecionar a primeira, o arrow_down deve ser "0", e para selecionar o segundo, o arrow_down deve ser "1". Por padrão, deve-se manter o valor "0" (zero).</dd>
+
+    <p><strong>Exemplo:</strong></p>
+    <p>Ao preencher os seguintes valores:</p>
+        <ul>
+            <li>"termo_portaria": "Progressão"</li>
+            <li>"tema_bgp": "Ascensão e progressão funcional"</li>
+            <li>"nivel_assunto_bgp": "0_0_0"</li>
+            <li>"arrow_down": "0"</li>
+        </ul>
+    <p>Caso o Publicador encontre o termo "Progressão" na portaria, publicará a portaria com o tema "Ascensão e progressão funcional" e o assunto do terceiro nível da lista de assuntos (que é "Reestruturações e alterações salariais..."). Como o arrow_down é 0 (zero), o Publicador selecionará o primeiro resultado "Ascensão e progressão funcional" na lista de temas.</p>
+
+        <h4>temas_assuntos:</h4>
+        <p>Nessa chave, você dirá ao Publicador entre quais termos estão os valores que precisam ser buscados no texto da Portaria. Por exemplo, se a matrícula SIAPE está entre as expressões "Matrícula SIAPE nº." e ",", esses dois valores deverão ser informados na chave "siape". O mesmo para os demais valores.</p>
+        
+        <dt>"numero_portaria:"</dt>
+        <dd>["valor antes do número da portaria no texto", "valor depois do número"]</dd>
+        <dt>"siape:"</dt>
+        <dd>["valor antes do número do SIAPE no texto", "valor depois do número"]</dd>
+        <dt>"cabecalho:"</dt>
+        <dd>["valor antes do cabeçalho no texto", "valor depois do cabeçalho"] (por cabeçalho, entende-se o trecho "Portaria nº. XXXX de XX de XX de XXXX". IMPORTANTE: caso o limite do cabeçalho seja o ano da data de assinatura (o que geralmente ocorre), você pode informar o valor "var_ano_assinatura" e o sistema verificará o ano automaticamente</dd>
+        <dt>"preliminar_portaria:"</dt>
+        <dd>["valor antes do texto preliminar da portaria", "valor depois do texto"] (por texto preliminar, entende-se a parte inicial "O Reitor da Universidade...... RESOLVE:")</dd>
+
+
+    <h3>Limitações</h3>
+    <ul>
+        <li>Os arquivos das portarias devem estar no formato RTF (Rich Text)</li>
+        <li>No momento, o Publicador só lida bem com portarias de duas partes (parte preliminar e parte principal única, sem quebra de linha nessa segunda parte). Planeja-se corrigir essa limitação em breve.</li>
+    </ul>
+
+    <footer>
+    <p>Em caso de dúvidas, entre em contato: <a href="mailto:cegasparjr@gmail.com">cegasparjr@gmail.com</a> ou <a href="https://github.com/cegj">github.com/cegj</a></p>
+    <p>Desenvolvido por Carlos E. Gaspar Jr. Sinta-se livre para modificar o código. Pull requests no GitHub são bem-vindos.</p>
+    </footer>
+    </body>
+
+    </html>
