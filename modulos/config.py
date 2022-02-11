@@ -1,0 +1,27 @@
+##Importação do arquivo de configurações config.json
+
+import json
+
+with open('config.json', 'r', encoding="utf-8") as config_json:
+    config_json = json.load(config_json)
+
+##Configuração do webdriver
+
+from selenium import webdriver
+
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+options = Options()
+options.add_argument("start-maximized")
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+navegador = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+navegador.minimize_window()
+
+##Configuração dos tempos de espera
+
+from selenium.webdriver.support.ui import WebDriverWait
+halfwait = WebDriverWait(navegador, 10)
+wait = WebDriverWait(navegador, 20)
+longwait = WebDriverWait(navegador, 40)
