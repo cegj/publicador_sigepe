@@ -1,6 +1,7 @@
 {
   "config": {
-    "diretorio_portarias": "\\\\arq-progep1\\boufes\\BOUFES 2022\\PROGEP\\02 - FEVEREIRO\\ddp_publicar\\"
+    "diretorio_portarias": "\\\\arq-progep1\\boufes\\BOUFES 2022\\PROGEP\\02 - FEVEREIRO\\ddp_publicar\\",
+    "habilitacao_sigepe": "GESTOR - ÓRGÃO:UFES"
   },
   
   "valores": {

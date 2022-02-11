@@ -54,6 +54,12 @@ def obter_tema(textoPortaria):
             return temaAssunto
             break
 
+##Limpar quebras de linha
+
+def limpar_quebras_linha(string):
+    string = string.replace("\n", "") # Apagar quebras de linha
+    return string
+
 ##Formatar o texto da portaria para publicação (remover cabeçalho, quebras de linha etc)
 
 def formatar_portaria_para_publicar(textoPortaria):
@@ -67,7 +73,7 @@ def formatar_portaria_para_publicar(textoPortaria):
   else:
     fimCabecalho = config_json['delimitadores']['cabecalho'][1]  
 
-  textoPortaria = textoPortaria.replace("\n", "") # Apagar quebras de linha
+  textoPortaria = limpar_quebras_linha(textoPortaria)
 
   textoPortariaSemCabecalho = textoPortaria.split(str(fimCabecalho), 1) #Remover cabeçalho (usa ano como limite)
   
