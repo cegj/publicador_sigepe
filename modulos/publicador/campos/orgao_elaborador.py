@@ -7,176 +7,168 @@ from modulos.publicador.valores_configurados import cargoResponsavelAssinatura
 import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from modulos.publicador.publicador import numPortaria
 from selenium.webdriver.common.keys import Keys
+from modulos.funcoes import aguardar_loading
 
-print(numPortaria, '- Iniciando preenchimento do órgão/autoridade...')
 
-# Há dois modelos de janela para selecionar uorg/upag/autoridade no SIGEPE
+def preencher_orgao_elaborador(numPortaria):
+    print(numPortaria, '- Iniciando preenchimento do órgão/autoridade...')
 
-try:  # Gatilho para modelo novo é o XPATH do botão para abrir janela, pois são diferentes
-    botaoIncluirOrgaoElabAnt = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt395"]/span')))
+    # Há dois modelos de janela para selecionar uorg/upag/autoridade no SIGEPE
 
-    print(numPortaria, '- [obs:] Cadastro pelo modelo antigo de janela')
+    try:  # Gatilho para modelo novo é o XPATH do botão para abrir janela, pois são diferentes
+        botaoIncluirOrgaoElabAnt = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt395"]/span')))
 
-    botaoIncluirOrgaoElabAnt.click()
+        print(numPortaria, '- [obs:] Cadastro pelo modelo antigo de janela')
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        botaoIncluirOrgaoElabAnt.click()
 
-    campoUpag = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadePagadora_label"]')))
+        aguardar_loading()
 
-    campoUpag.click()
+        campoUpag = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadePagadora_label"]')))
 
-    time.sleep(0.3)
+        campoUpag.click()
 
-    campoBuscarUpag = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadePagadora_filter"]')))
+        time.sleep(0.3)
 
-    campoBuscarUpag.send_keys(upag)
+        campoBuscarUpag = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadePagadora_filter"]')))
 
-    time.sleep(1)
+        campoBuscarUpag.send_keys(upag)
 
-    campoBuscarUpag.send_keys(Keys.ENTER)
+        time.sleep(1.5)
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        campoBuscarUpag.send_keys(Keys.ENTER)
 
-    print(numPortaria, '- UPAG preenchida: ', campoUpag.text)
+        aguardar_loading()
 
-    time.sleep(0.5)
+        print(numPortaria, '- UPAG preenchida: ', campoUpag.text)
 
-    campoUorg = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadeOrganizacional_label"]')))
+        time.sleep(0.5)
 
-    campoUorg.click()
+        campoUorg = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadeOrganizacional_label"]')))
 
-    time.sleep(0.5)
+        campoUorg.click()
 
-    campoBuscarUorg = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadeOrganizacional_filter"]')))
+        time.sleep(0.5)
 
-    campoBuscarUorg.send_keys(uorg)
+        campoBuscarUorg = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadeOrganizacional_filter"]')))
 
-    time.sleep(1.5)
+        campoBuscarUorg.send_keys(uorg)
 
-    campoBuscarUorg.send_keys(Keys.ENTER)
+        time.sleep(1.5)
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        campoBuscarUorg.send_keys(Keys.ENTER)
 
-    print(numPortaria, '- UORG preenchido: ', campoUorg.text)
+        aguardar_loading()
 
-    campoResponsavelAssinatura = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptNomeResponsavel"]')))
+        print(numPortaria, '- UORG preenchido: ', campoUorg.text)
 
-    campoResponsavelAssinatura.send_keys(responsavelAssinatura)
+        campoResponsavelAssinatura = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptNomeResponsavel"]')))
 
-    campoCargoResponsavelAssinatura = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptCargoResponsavel"]')))
+        campoResponsavelAssinatura.send_keys(responsavelAssinatura)
 
-    campoCargoResponsavelAssinatura.send_keys(cargoResponsavelAssinatura)
+        campoCargoResponsavelAssinatura = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptCargoResponsavel"]')))
 
-    botaoGravarOrgao = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt699"]/span')))
+        campoCargoResponsavelAssinatura.send_keys(cargoResponsavelAssinatura)
 
-    botaoGravarOrgao.click()
+        botaoGravarOrgao = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt699"]/span')))
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        botaoGravarOrgao.click()
 
-except:
-    botaoIncluirOrgaoElab = navegador.find_element(
-        By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt396"]')
+        aguardar_loading()
 
-    print(numPortaria, '- [obs:] Cadastro pelo novo modelo de janela')
+    except:
+        botaoIncluirOrgaoElab = navegador.find_element(
+            By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt396"]')
 
-    botaoIncluirOrgaoElab.click()
+        print(numPortaria, '- [obs:] Cadastro pelo novo modelo de janela')
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        botaoIncluirOrgaoElab.click()
 
-    janelaOrgaosElaboradores = wait.until(EC.element_to_be_clickable(
-        (By.ID, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao:dlgIncluirOrgaoElaborador')))
+        aguardar_loading()
 
-    campoUpag = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt446_label"]')))
+        janelaOrgaosElaboradores = wait.until(EC.element_to_be_clickable(
+            (By.ID, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao:dlgIncluirOrgaoElaborador')))
 
-    campoUpag.click()
+        campoUpag = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt446_label"]')))
 
-    time.sleep(5)
+        campoUpag.click()
 
-    campoBuscarUpag = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt446_filter"]')))
+        time.sleep(5)
 
-    campoBuscarUpag.send_keys(upag)
+        campoBuscarUpag = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt446_filter"]')))
 
-    time.sleep(1.5)
+        campoBuscarUpag.send_keys(upag)
 
-    campoBuscarUpag.send_keys(Keys.ENTER)
+        time.sleep(1.5)
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        campoBuscarUpag.send_keys(Keys.ENTER)
 
-    print(numPortaria, '- UPAG preenchida: ', campoUpag.text)
+        aguardar_loading()
 
-    campoUorg = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt453_label"]')))
+        print(numPortaria, '- UPAG preenchida: ', campoUpag.text)
 
-    campoUorg.click()
+        campoUorg = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt453_label"]')))
 
-    time.sleep(5)
+        campoUorg.click()
 
-    campoBuscarUorg = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt453_filter"]')))
+        time.sleep(5)
 
-    campoBuscarUorg.send_keys(uorg)
+        campoBuscarUorg = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt453_filter"]')))
 
-    time.sleep(1.5)
+        campoBuscarUorg.send_keys(uorg)
 
-    campoBuscarUorg.send_keys(Keys.ENTER)
+        time.sleep(1.5)
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        campoBuscarUorg.send_keys(Keys.ENTER)
 
-    print(numPortaria, '- UORG preenchido: ', campoUorg.text)
+        aguardar_loading()
 
-    campoResponsavelAssinatura = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt463"]')))
+        print(numPortaria, '- UORG preenchido: ', campoUorg.text)
 
-    campoResponsavelAssinatura.send_keys(responsavelAssinatura)
+        campoResponsavelAssinatura = wait.until(EC.invisibility_of_element_located(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt463"]')))
 
-    botaoPesquisarAutoridade = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt492"]/span')))
+        campoResponsavelAssinatura.send_keys(responsavelAssinatura)
 
-    botaoPesquisarAutoridade.click()
+        botaoPesquisarAutoridade = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt492"]/span')))
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        botaoPesquisarAutoridade.click()
 
-    radiusSelecionarAutoridade = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt494:dataTableResultado_data"]/tr/td[1]/div/div/div[2]/span')))
+        aguardar_loading()
 
-    radiusSelecionarAutoridade.click()
+        radiusSelecionarAutoridade = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt494:dataTableResultado_data"]/tr/td[1]/div/div/div[2]/span')))
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        radiusSelecionarAutoridade.click()
 
-    botaoSelecionarAutoridade = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt538"]/span')))
+        aguardar_loading()
 
-    botaoSelecionarAutoridade.click()
+        botaoSelecionarAutoridade = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt538"]/span')))
 
-    modalAguarde = wait.until(EC.invisibility_of_element_located(
-        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+        botaoSelecionarAutoridade.click()
 
-responsavelAssinaturaSelecionado = wait.until(EC.presence_of_element_located(
-    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt416:txtContent"]')))
+        aguardar_loading()
 
-CargoResponsavelAssinaturaSelecionado = wait.until(EC.presence_of_element_located(
-    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt418:txtContent"]')))
+    responsavelAssinaturaSelecionado = wait.until(EC.presence_of_element_located(
+        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt416:txtContent"]')))
 
-print(numPortaria, '- Responsável pela assinatura preenchido: ',
-    responsavelAssinaturaSelecionado.text, " - ", CargoResponsavelAssinaturaSelecionado.text)
+    CargoResponsavelAssinaturaSelecionado = wait.until(EC.presence_of_element_located(
+        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt418:txtContent"]')))
+
+    print(numPortaria, '- Responsável pela assinatura preenchido: ',
+        responsavelAssinaturaSelecionado.text, " - ", CargoResponsavelAssinaturaSelecionado.text)

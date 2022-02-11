@@ -1,4 +1,7 @@
 from modulos.config import config_json
+from modulos.config import longwait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from modulos.lista_arquivos import diretorioPortarias
 import datetime 
 from datetime import timedelta
@@ -72,7 +75,7 @@ def formatar_portaria_para_publicar(textoPortaria):
 
   textoPortariaSemCabecalho = textoPortariaSemCabecalho.split(config_json['delimitadores']['preliminar_portaria'][1], 1) #Separa o texto em dois, antes e depois do dois-pontos do cabeçalho
 
-  textoPreliminarPortaria = textoPortariaSemCabecalho[0] + config_json['delimitadores']['cabecalho'][1] #Define parte de cima do texto da portaria
+  textoPreliminarPortaria = textoPortariaSemCabecalho[0] + config_json['delimitadores']['preliminar_portaria'][1] #Define parte de cima do texto da portaria
 
   textoNormativoPortaria = textoPortariaSemCabecalho[1] #Define parte de baixo do texto da portaria
 
@@ -92,9 +95,9 @@ def ajusta_data(data):
 def verifica_data(tipoData): #Parâmetros: 'data_assinatura' ou 'data_publicacao'
   today = datetime.date.today() #Hoje no formato AAAA-MM-DD
   tomorrow = today + timedelta(1) #Amanhã no formato AAAA-MM-DD
-  if (config_json['valores'][tipoData] == ''):
+  if (config_json['valores'][tipoData] == 'hoje'):
     return ajusta_data(today)
-  elif (config_json['valores'][tipoData] == ''):
+  elif (config_json['valores'][tipoData] == 'amanha'):
     if (tomorrow.weekday() == 5): #5 = sábado
       return ajusta_data(tomorrow + timedelta(2))
     elif (tomorrow.weekday() == 6): #6 = domingo
@@ -112,3 +115,7 @@ def verifica_elemento(termo_busca):
         return True
     except:
         return False
+
+def aguardar_loading():
+    modalAguarde = longwait.until(EC.invisibility_of_element_located(
+        (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))

@@ -1,14 +1,15 @@
 from modulos.config import wait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from modulos.publicador.publicador import numPortaria
+from modulos.funcoes import aguardar_loading
 
-campoNumeroAto = wait.until(EC.element_to_be_clickable(
-    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptNumeroAto"]')))
 
-campoNumeroAto.send_keys(str(numPortaria))
+def preencher_numero_ato(numPortaria):
+    campoNumeroAto = wait.until(EC.element_to_be_clickable(
+        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptNumeroAto"]')))
 
-modalAguarde = wait.until(EC.invisibility_of_element_located(
-    (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+    campoNumeroAto.send_keys(str(numPortaria))
 
-print(numPortaria, '- Número do ato preenchido')
+    aguardar_loading()
+
+    print(numPortaria, '- Número do ato preenchido')
