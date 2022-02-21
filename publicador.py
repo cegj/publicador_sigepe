@@ -55,8 +55,8 @@ print()
 import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from modulos.publicador.preenchedor import preencher
-from modulos.funcoes import formatar_portaria_para_publicar, obter_texto_portaria, obter_numero_portaria, formatar_portaria_para_publicar
+from modulos.publicador.funcoes_publicacao import preencher
+from modulos.funcoes import formatar_portaria_para_publicar, obter_texto_portaria, obter_numero_portaria, formatar_portaria_para_publicar, aguardar_loading
  
 listaPortariasPublicadas = []
 listaPortariasNaoPublicadas = []
@@ -86,8 +86,7 @@ for nomeArquivo in listaDeArquivos:
 
   print(numPortaria, '- Enviando para publicação...')
 
-  modalAguarde = wait.until(EC.invisibility_of_element_located(
-    (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+  aguardar_loading()
 
   try:
     mensagemErro = halfwait.until(EC.visibility_of_element_located(

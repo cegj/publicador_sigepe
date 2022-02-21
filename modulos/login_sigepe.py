@@ -38,9 +38,9 @@ def fazer_login_sigepe():
     botaoAcessar.click()
 
     try:
-        erroLogin = halfwait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="msg_alerta"]')))
+        erroLogin = navegador.find_element(By.XPATH, '//*[@id="msg_alerta"]')
         print('ERRO: ', erroLogin.text)
-        print('Reinicie e tente novamente')
+        print('Encerre e tente novamente')
         navegador.quit()
     except:
         paginaAtual = navegador.find_element(By.XPATH, '//*[@id="idBreadCrumb0"]/span')
