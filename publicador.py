@@ -89,14 +89,14 @@ for nomeArquivo in listaDeArquivos:
   aguardar_loading()
 
   try:
-    mensagemErro = halfwait.until(EC.visibility_of_element_located(
-      (By.XPATH, '//*[@id="msgCadastrarAto"]/div[2]/ul/li/span[2]')))
+    mensagemErro = navegador.find_element(
+      By.XPATH, '//*[@id="msgCadastrarAto"]/div[2]/ul/li/span[2]')
     print(numPortaria, '- ERRO:', mensagemErro.text)
     listaPortariasNaoPublicadas.append(numPortaria)
   except:
     try:
       mensagemSucesso = navegador.find_element(
-      By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
+        By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
       print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
       listaPortariasPublicadas.append(numPortaria)
       time.sleep(0.3)
