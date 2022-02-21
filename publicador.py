@@ -55,7 +55,7 @@ print()
 import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from modulos.publicador.publicador import preencher
+from modulos.publicador.preenchedor import preencher
 from modulos.funcoes import formatar_portaria_para_publicar, obter_texto_portaria, obter_numero_portaria, formatar_portaria_para_publicar
  
 listaPortariasPublicadas = []

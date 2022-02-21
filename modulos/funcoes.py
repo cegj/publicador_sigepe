@@ -5,6 +5,8 @@ from selenium.webdriver.common.by import By
 from modulos.lista_arquivos import diretorioPortarias
 import datetime 
 from datetime import timedelta
+from selenium.webdriver.support.ui import WebDriverWait
+from modulos.config import navegador
 
 #Define das funções utilizadas pela aplicação
 
@@ -123,5 +125,5 @@ def verifica_elemento(termo_busca):
         return False
 
 def aguardar_loading():
-    modalAguarde = longwait.until(EC.invisibility_of_element_located(
+    modalAguarde = WebDriverWait(navegador, 300).until(EC.invisibility_of_element_located(
         (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
