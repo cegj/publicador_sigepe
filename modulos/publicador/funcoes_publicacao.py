@@ -50,7 +50,7 @@ def preencher(textoPortaria, numPortaria, textoPortariaFormatado):
     from modulos.publicador.campos.assunto import preencher_assunto
 
     preencher_assunto(temaAssunto, numPortaria)
-
+        
     # Número do ato
 
     from modulos.publicador.campos.numero_ato import preencher_numero_ato

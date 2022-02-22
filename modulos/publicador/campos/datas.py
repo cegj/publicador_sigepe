@@ -1,4 +1,5 @@
 from modulos.config import wait
+from modulos.config import navegador
 from modulos.publicador.valores_configurados import tipoAssinatura
 from modulos.publicador.valores_configurados import dataAssinatura
 from modulos.publicador.valores_configurados import dataPublicacao
@@ -12,19 +13,15 @@ from modulos.funcoes import aguardar_loading
 
 def preencher_data_assinatura(numPortaria):
     if (tipoAssinatura == "Manual"):
-
-        campoDataAssinatura = wait.until(EC.element_to_be_clickable(
-            (By.ID, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataAssinatura_input')))
-
-        cont = 1
-        while cont <= 8:
-            campoDataAssinatura.send_keys(Keys.BACKSPACE)
-            cont = cont + 1
-
-        campoDataAssinatura.send_keys(dataAssinatura)
-
+        
+        wait.until(EC.element_to_be_clickable((By.ID, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataAssinatura_input')))
+        
+        navegador.execute_script("campoDataAssinatura = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataAssinatura_input')")
+        
+        navegador.execute_script("campoDataAssinatura.value = '" + dataAssinatura + "'")
+        
         aguardar_loading()
-
+        
         print(numPortaria, '- Data de assinatura preenchida: ', dataAssinatura)
 
     else:
@@ -34,18 +31,12 @@ def preencher_data_assinatura(numPortaria):
 
 def preencher_data_publicacao(numPortaria):
 
-    campoDataPublicacao = wait.until(EC.element_to_be_clickable(
-        (By.ID, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input')))
-
-    campoDataPublicacao.click()
-
-    cont = 1
-    while cont <= 8:
-        campoDataPublicacao.send_keys(Keys.BACKSPACE)
-        cont = cont + 1
-
-    campoDataPublicacao.send_keys(dataPublicacao)
-
+    wait.until(EC.element_to_be_clickable((By.ID, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input')))
+        
+    navegador.execute_script("campoDataPublicacao = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input')")
+        
+    navegador.execute_script("campoDataPublicacao.value = '" + dataPublicacao + "'")
+        
     aguardar_loading()
-
+        
     print(numPortaria, '- Data da publicação preenchida: ', dataPublicacao)

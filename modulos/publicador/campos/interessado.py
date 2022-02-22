@@ -12,7 +12,7 @@ def preencher_interessado(textoPortaria, numPortaria):
     siapeInteressado = obter_siape(textoPortaria)
 
     print(numPortaria, '- Interessado identificado: ', siapeInteressado)
-    print('Iniciando busca e preenchimento do interessado...')
+    print(numPortaria, '- Iniciando busca e preenchimento do interessado...')
 
     botaoAbrirInteressados = wait.until(EC.element_to_be_clickable(
         (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt1415"]/span')))

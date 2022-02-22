@@ -1,4 +1,5 @@
 from modulos.config import wait
+from modulos.config import navegador
 import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
