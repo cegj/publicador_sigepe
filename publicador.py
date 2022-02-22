@@ -92,7 +92,7 @@ for nomeArquivo in listaDeArquivos:
     mensagemErro = navegador.find_element(
       By.XPATH, '//*[@id="msgCadastrarAto"]/div[2]/ul/li/span[2]')
     print(numPortaria, '- ERRO:', mensagemErro.text)
-    listaPortariasNaoPublicadas.append(numPortaria)
+    listaPortariasNaoPublicadas.append(numPortaria + ' - ' + mensagemErro.text)
   except:
     try:
       mensagemSucesso = navegador.find_element(

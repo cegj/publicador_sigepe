@@ -10,10 +10,11 @@ from modulos.funcoes import aguardar_loading
 def preencher(textoPortaria, numPortaria, textoPortariaFormatado):
 
     print(numPortaria, '- Iniciando preenchimento da portaria...')
-
+    print('~~~~~~')
     print(textoPortariaFormatado[0])
     print(textoPortariaFormatado[1])
-
+    print('~~~~~~')
+    
     aguardar_loading()
 
     # Tipo de assinatura (manual)
