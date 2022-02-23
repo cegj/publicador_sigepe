@@ -7,23 +7,27 @@ from selenium.webdriver.common.keys import Keys
 from modulos.funcoes import aguardar_loading
 
 def preencher_tipo_numero(numPortaria):
-    campoTipoNumero = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTipoPreenchimento_label"]')))
+    try:
+        campoTipoNumero = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTipoPreenchimento_label"]')))
 
-    campoTipoNumero.click()
+        campoTipoNumero.click()
 
-    time.sleep(0.3)
+        time.sleep(0.3)
 
-    campoBuscarTipoNumero = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTipoPreenchimento_filter"]')))
+        campoBuscarTipoNumero = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTipoPreenchimento_filter"]')))
 
-    campoBuscarTipoNumero.send_keys(tipoNumero)
+        campoBuscarTipoNumero.send_keys(tipoNumero)
 
-    time.sleep(1.5)
+        time.sleep(1.5)
 
-    campoBuscarTipoNumero.send_keys(Keys.ENTER)
+        campoBuscarTipoNumero.send_keys(Keys.ENTER)
 
-    aguardar_loading()
+        aguardar_loading()
 
-    print(numPortaria, '- Tipo de preenchimento do número selecionado: ',
-        campoTipoNumero.text)
+        print(numPortaria, '- Tipo de preenchimento do número selecionado: ',
+            campoTipoNumero.text)
+    except:
+        print("ERRO: Falha ao preencher tipo de número")
+

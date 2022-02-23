@@ -8,31 +8,36 @@ from modulos.funcoes import aguardar_loading
 
 def preencher_tema(temaAssunto, numPortaria):
 
-    campoTema = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_label"]')))
+    try:
 
-    campoTema.click()
+        campoTema = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_label"]')))
 
-    time.sleep(0.3)
+        campoTema.click()
 
-    campoBuscarTema = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_filter"]')))
+        time.sleep(0.3)
 
-    campoBuscarTema.send_keys(temaAssunto['tema'])
+        campoBuscarTema = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_filter"]')))
 
-    time.sleep(1.5)
+        campoBuscarTema.send_keys(temaAssunto['tema'])
 
-    if (temaAssunto['arrow_down'] > 0):
-        cont = 1
-        while cont <= temaAssunto['arrow_down']:
-            campoBuscarTema.send_keys(Keys.ARROW_DOWN)
-            cont = cont + 1
+        time.sleep(1.5)
 
-    campoBuscarTema.send_keys(Keys.ENTER)
+        if (temaAssunto['arrow_down'] > 0):
+            cont = 1
+            while cont <= temaAssunto['arrow_down']:
+                campoBuscarTema.send_keys(Keys.ARROW_DOWN)
+                cont = cont + 1
 
-    aguardar_loading()
+        campoBuscarTema.send_keys(Keys.ENTER)
 
-    campoTemaPreenchido = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_label"]')))
+        aguardar_loading()
 
-    print(numPortaria, '- Tema selecionado: ', campoTemaPreenchido.text)
+        campoTemaPreenchido = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_label"]')))
+
+        print(numPortaria, '- Tema selecionado: ', campoTemaPreenchido.text)
+
+    except:
+        print("ERRO: Falha ao preencher tema")

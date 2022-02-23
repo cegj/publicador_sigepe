@@ -7,22 +7,26 @@ from selenium.webdriver.common.keys import Keys
 from modulos.funcoes import aguardar_loading
 
 def preencher_especie(numPortaria):
-    campoEspecie = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_label"]')))
+    try:
+        campoEspecie = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_label"]')))
 
-    campoEspecie.click()
+        campoEspecie.click()
 
-    time.sleep(0.3)
+        time.sleep(0.3)
 
-    campoBuscarEspecie = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_filter"]')))
+        campoBuscarEspecie = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_filter"]')))
 
-    campoBuscarEspecie.send_keys(especie)
+        campoBuscarEspecie.send_keys(especie)
 
-    time.sleep(1.5)
+        time.sleep(1.5)
 
-    campoBuscarEspecie.send_keys(Keys.ENTER)
+        campoBuscarEspecie.send_keys(Keys.ENTER)
 
-    aguardar_loading()
+        aguardar_loading()
 
-    print(numPortaria, '- Espécie selecionada: ', campoEspecie.text)
+        print(numPortaria, '- Espécie selecionada: ', campoEspecie.text)
+
+    except:
+        print("ERRO: Falha ao preencher espécie")

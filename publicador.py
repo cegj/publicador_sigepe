@@ -64,50 +64,56 @@ listaPortariasSemResultado = []
 
 for nomeArquivo in listaDeArquivos:
 
-  print()
-  print('----------------------------------')
-
-  print()
-
-  textoPortaria = obter_texto_portaria(nomeArquivo)
-
-  numPortaria = obter_numero_portaria(textoPortaria)
-
-  textoPortariaFormatado = formatar_portaria_para_publicar(textoPortaria)
-
-  preencher(textoPortaria, numPortaria, textoPortariaFormatado)
-
-  # ENVIAR PARA PUBLICAÇÃO
-
-  botaoGravarOrgao = wait.until(EC.element_to_be_clickable(
-    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnEnviarPublicacao"]/span')))
-
-  botaoGravarOrgao.click()
-
-  print(numPortaria, '- Enviando para publicação...')
-
-  aguardar_loading()
-
   try:
-    mensagemErro = navegador.find_element(
-      By.XPATH, '//*[@id="msgCadastrarAto"]/div[2]/ul/li/span[2]')
-    print(numPortaria, '- ERRO:', mensagemErro.text)
-    listaPortariasNaoPublicadas.append(numPortaria + ' - ' + mensagemErro.text)
+
+    print()
+    print('----------------------------------')
+
+    print()
+
+    textoPortaria = obter_texto_portaria(nomeArquivo)
+
+    numPortaria = obter_numero_portaria(textoPortaria)
+
+    textoPortariaFormatado = formatar_portaria_para_publicar(textoPortaria)
+
+    preencher(textoPortaria, numPortaria, textoPortariaFormatado)
+
+    # ENVIAR PARA PUBLICAÇÃO
+
+    botaoGravarOrgao = wait.until(EC.element_to_be_clickable(
+      (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnEnviarPublicacao"]/span')))
+
+    botaoGravarOrgao.click()
+
+    print(numPortaria, '- Enviando para publicação...')
+
+    aguardar_loading()
+
   except:
+    print("ERRO: Não foi possível publicar a portaria")
+
+  finally:
+
     try:
-      mensagemSucesso = navegador.find_element(
-        By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
-      print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
-      listaPortariasPublicadas.append(numPortaria)
-      time.sleep(0.3)
+      mensagemErro = navegador.find_element(
+        By.XPATH, '//*[@id="msgCadastrarAto"]/div[2]/ul/li/span[2]')
+      print(numPortaria, '- ERRO:', mensagemErro.text)
+      listaPortariasNaoPublicadas.append(numPortaria + ' - ' + mensagemErro.text)
     except:
-       mensagemErro = 'Resultado não identificado! Verifique se a portaria foi publicada.'
-       print(numPortaria, '- ERRO:', mensagemErro.text)
-       listaPortariasSemResultado.append(numPortaria)
-
-  navegador.get(
-   "https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
-
+      try:
+        mensagemSucesso = navegador.find_element(
+          By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
+        print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
+        listaPortariasPublicadas.append(numPortaria)
+        time.sleep(0.3)
+      except:
+        mensagemErro = 'Resultado não identificado! Verifique se a portaria foi publicada.'
+        print(numPortaria, '- ERRO:', mensagemErro)
+        listaPortariasSemResultado.append(numPortaria)
+    
+    navegador.get(
+    "https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
 
 # RESULTADO DAS PUBLICAÇÕES
 
@@ -136,7 +142,7 @@ if (quantidadePortariasNaoPublicadas > 0):
 if (quantidadePortariasSemResultado > 0):
   print()
   print("Quantidade de portarias sem resultado identificado: " + str(quantidadePortariasNaoPublicadas))
-  for portaria in quantidadePortariasSemResultado:
+  for portaria in listaPortariasSemResultado:
     print(portaria)
   print('IMPORTANTE: Verifique se as portarias sem resultado foram cadastradas para publicação no SIGEPE')
         

@@ -1,1 +1,4 @@
 *.ipynb
+__pycache__/
+modulos/__pycache__/
+modulos/publicador/__pycache__/
