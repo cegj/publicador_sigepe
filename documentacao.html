@@ -26,6 +26,10 @@
         <dd>Informar o diretório completo (caminho do sistema) onde os arquivos das portarias estão localizados.</dd>
         <dt>"habilitacao_sigepe:"</dt>
         <dd>Escrever o nome da habilitação do usuário no SIGEPE em que o módulo Publicação está ativado</dd>
+        <dt>"adicionar_termo_nome_arquivo:"</dt>
+        <dd>Caso queira renomear o arquivo da portaria após a publicação para adicionar um termo após um nome atual, inserir esse termo nessa chave. Ex.: "publicada", "ok", etc</dd>
+        <dt>"mover_arquivo_diretorio:"</dt>
+        <dd>Caso queira mover o arquivo da portaria para um novo diretório após a publicação, informar o diretório completo (caminho do sistema) de destino. Essa chave aceita, em qualquer ponto do diretório, a variável [hoje, separador] para preencher a data de hoje nesse ponto do diretório com o separador indicado. Caso hoje seja, 31/01/2022, o termo [hoje, -] será substituído por 31-01-2022. Além do hífen (-), podem ser usados os separadores barra (/) e ponto (.)</dd>
     
     <h4>valores:</h4>
     <p>Nessa área, devem ser informados os valores que serão preenchidos no SIGEPE para todas as portarias a serem publicadas na execução do programa. Os demais valores, que mudam de portaria para portaria (como número, interessado, texto) são obtidos no próprio texto da portaria.</p>
@@ -38,9 +42,9 @@
         <dt>"tipo_preenchimento:"</dt>
         <dd>Informar "Automático", "Manual" ou "Sem número", que são as três opções no SIGEPE</dd>
         <dt>"data_assinatura:"</dt>
-        <dd>Informar no formato DD/MM/AAAA ou informar <strong>"hoje"</strong> para preencher automaticamente com a data de hoje</dd>
+        <dd>Informar no formato DD/MM/AAAA ou informar <strong>[hoje]</strong> para preencher automaticamente com a data de hoje</dd>
         <dt>"data_publicacao:"</dt>
-        <dd>Informar no formato DD/MM/AAAA ou informar <strong>"amanha"</strong> para preencher automaticamente com o dia útil seguinte</dd>
+        <dd>Informar no formato DD/MM/AAAA ou informar <strong>[amanha]</strong> para preencher automaticamente com o dia útil seguinte</dd>
         <dt>"orgao:"</dt>
         <dd>Informar o código ou nome do seu órgão da forma como aparece no campo respectivo no SIGEPE</dd>
         <dt>"upag:"</dt>

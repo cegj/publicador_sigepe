@@ -107,11 +107,11 @@ for nomeArquivo in listaDeArquivos:
         print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
         listaPortariasPublicadas.append(numPortaria)
         
-        if (config_json['config']['adicionar_termo_nome_arquivo'] == True):
+        if (config_json['config']['adicionar_termo_nome_arquivo'] != ""):
           nomeArquivo = renomear_arquivo(nomeArquivo)
           print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
 
-        if (config_json['config']['mover_arquivo'] == True):
+        if (config_json['config']['mover_arquivo_diretorio'] != ""):
           novoDiretorio = mover_arquivo(nomeArquivo)
           print(numPortaria, '- Arquivo movido para:', novoDiretorio)
       

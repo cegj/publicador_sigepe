@@ -9,6 +9,11 @@ from modulos.config import navegador
 import os
 import shutil
 
+#define valor das variaveis de data
+
+today = datetime.date.today() #Hoje no formato ANSI AAAA-MM-DD
+tomorrow = today + timedelta(1) #Amanhã no formato ANSI AAAA-MM-DD
+
 #Define das funções utilizadas pela aplicação
 
 ##Obter o TEXTO DA PORTARIA a partir de arquivo RTF
@@ -93,26 +98,24 @@ def formatar_portaria_para_publicar(textoPortaria):
   return textoPortaria
 
 #Receber a data no formato AAAA-MM-DD e converte para DD/MM/AAAA
-def ajusta_data(data): 
+def ajusta_data(data, separador): 
   dataArray = str(data).split('-')
-  dataAjustada = dataArray[2] + '/' + dataArray[1] + '/' + dataArray[0]
+  dataAjustada = dataArray[2] + separador + dataArray[1] + separador + dataArray[0]
   data = str(dataAjustada)
   return data
 
 ##Verificar se a data será de hoje, amanhã ou data explícita informada no config.json
 
 def verifica_data(tipoData): #Parâmetros: 'data_assinatura' ou 'data_publicacao'
-  today = datetime.date.today() #Hoje no formato AAAA-MM-DD
-  tomorrow = today + timedelta(1) #Amanhã no formato AAAA-MM-DD
-  if (config_json['valores'][tipoData] == 'hoje'):
-    return ajusta_data(today)
-  elif (config_json['valores'][tipoData] == 'amanha'):
+  if (config_json['valores'][tipoData] == '[hoje]'):
+    return ajusta_data(today, '/')
+  elif (config_json['valores'][tipoData] == '[amanha]'):
     if (tomorrow.weekday() == 5): #5 = sábado
-      return ajusta_data(tomorrow + timedelta(2))
+      return ajusta_data(tomorrow + timedelta(2), '/')
     elif (tomorrow.weekday() == 6): #6 = domingo
-      return ajusta_data(tomorrow + timedelta(1))
+      return ajusta_data(tomorrow + timedelta(1), '/')
     else:
-      return ajusta_data(tomorrow)
+      return ajusta_data(tomorrow, '/')
   else:
     return config_json['valores'][tipoData]
 
@@ -134,7 +137,7 @@ def renomear_arquivo(nomeArquivoCompleto):
   nomeArquivo = nomeArquivoArray[0]
   extensaoArquivo = str('.' + nomeArquivoArray[1])
   diretorio = config_json['config']['diretorio_arquivos']
-  termoNomeArquivo = config_json['config']['termo_nome_arquivo']
+  termoNomeArquivo = config_json['config']['adicionar_termo_nome_arquivo']
   novoNomeArquivoCompleto = str(nomeArquivo + " " + termoNomeArquivo + extensaoArquivo)
 
   file_oldname = os.path.join(diretorio, nomeArquivoCompleto)
@@ -145,11 +148,22 @@ def renomear_arquivo(nomeArquivoCompleto):
   return novoNomeArquivoCompleto
 
 def mover_arquivo(nomeArquivo):
-  origem = str(config_json['config']['diretorio_arquivos'] + nomeArquivo)
-  destino = str(config_json['config']['diretorio_destino_arquivo'] + nomeArquivo)
+
+  diretorioAtual = config_json['config']['diretorio_arquivos']
+  diretorioDestino = config_json['config']['mover_arquivo_diretorio']
+
+  if (diretorioDestino.find('[hoje, .]')):
+    diretorioDestino.replace('[hoje, .]', ajusta_data(today, '.'))
+  elif (diretorioDestino.find('[hoje, /]')):
+    diretorioDestino.replace('[hoje, /]', ajusta_data(today, '/'))
+  elif (diretorioDestino.find('[hoje, -]')):
+    diretorioDestino.replace('[hoje, -]', ajusta_data(today, '-'))
+
+  origem = str(diretorioAtual + nomeArquivo)
+  destino = str(diretorioDestino + nomeArquivo)
 
   shutil.move(origem,destino)
 
-  return config_json['config']['diretorio_destino_arquivo']
+  return diretorioDestino
 
   
