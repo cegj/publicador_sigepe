@@ -1,5 +1,4 @@
 from modulos.config import config_json
-from modulos.config import longwait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from modulos.lista_arquivos import diretorioPortarias
@@ -7,6 +6,8 @@ import datetime
 from datetime import timedelta
 from selenium.webdriver.support.ui import WebDriverWait
 from modulos.config import navegador
+import os
+import shutil
 
 #Define das funções utilizadas pela aplicação
 
@@ -127,3 +128,28 @@ def verifica_elemento(termo_busca):
 def aguardar_loading():
     modalAguarde = WebDriverWait(navegador, 300).until(EC.invisibility_of_element_located(
         (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+
+def renomear_arquivo(nomeArquivoCompleto):
+  nomeArquivoArray = nomeArquivoCompleto.split('.', 1)
+  nomeArquivo = nomeArquivoArray[0]
+  extensaoArquivo = str('.' + nomeArquivoArray[1])
+  diretorio = config_json['config']['diretorio_arquivos']
+  termoNomeArquivo = config_json['config']['termo_nome_arquivo']
+  novoNomeArquivoCompleto = str(nomeArquivo + " " + termoNomeArquivo + extensaoArquivo)
+
+  file_oldname = os.path.join(diretorio, nomeArquivoCompleto)
+  file_newname_newfile = os.path.join(diretorio, novoNomeArquivoCompleto)
+
+  os.rename(file_oldname, file_newname_newfile)
+
+  return novoNomeArquivoCompleto
+
+def mover_arquivo(nomeArquivo):
+  origem = str(config_json['config']['diretorio_arquivos'] + nomeArquivo)
+  destino = str(config_json['config']['diretorio_destino_arquivo'] + nomeArquivo)
+
+  shutil.move(origem,destino)
+
+  return config_json['config']['diretorio_destino_arquivo']
+
+  

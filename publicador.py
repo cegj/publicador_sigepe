@@ -56,7 +56,7 @@ import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from modulos.publicador.funcoes_publicacao import preencher
-from modulos.funcoes import formatar_portaria_para_publicar, obter_texto_portaria, obter_numero_portaria, formatar_portaria_para_publicar, aguardar_loading
+from modulos.funcoes import formatar_portaria_para_publicar, mover_arquivo, obter_texto_portaria, obter_numero_portaria, formatar_portaria_para_publicar, aguardar_loading, renomear_arquivo
  
 listaPortariasPublicadas = []
 listaPortariasNaoPublicadas = []
@@ -106,7 +106,15 @@ for nomeArquivo in listaDeArquivos:
           By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
         print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
         listaPortariasPublicadas.append(numPortaria)
-        time.sleep(0.3)
+        
+        if (config_json['config']['adicionar_termo_nome_arquivo'] == True):
+          nomeArquivo = renomear_arquivo(nomeArquivo)
+          print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
+
+        if (config_json['config']['mover_arquivo'] == True):
+          novoDiretorio = mover_arquivo(nomeArquivo)
+          print(numPortaria, '- Arquivo movido para:', novoDiretorio)
+      
       except:
         mensagemErro = 'Resultado não identificado! Verifique se a portaria foi publicada.'
         print(numPortaria, '- ERRO:', mensagemErro)
