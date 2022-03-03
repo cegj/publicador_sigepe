@@ -1,3 +1,5 @@
+import sys
+
 print('----------------------------------')
 print('----------------------------------')
 print('PUBLICADOR DE PORTARIAS NO SIGEPE')
@@ -11,40 +13,109 @@ input('Aperte ENTER para iniciar...')
 print()
 print('----------------------------------')
 print()
-print('Realizando configurações iniciais...')
+print('Realizando configurações iniciais... \n')
 
-from modulos.config import *
+from modulos.config import Config
 
-print('Configurações iniciais concluídas')
+if (Config.obterDados()):
+  arquivoConfig = Config.obterDados()
+  print('SUCESSO: Configurações importadas.')
+else:
+  print('ERRO: Não foi possível importar os dados de config.json. Verifique se o arquivo está configurado corretamente. Em caso de dúvidas, consulte a documentação.')
+  input('Aperte ENTER para encerrar a aplicação...')
+  sys.exit()
+
+navegador = Config.navegador
+
+if (navegador):
+  print()
+  print('SUCESSO: Webdriver/navegador iniciado.')
+else:
+  print()
+  print('ERRO: Não foi possível iniciar o webdriver/navegador. O sistema retornou o seguinte erro: ' +  navegador)
+  input('Aperte ENTER para encerrar a aplicação...')
+  sys.exit()
+
+print('\n Configurações iniciais concluídas')
 
 print()
 print('----------------------------------')
 print()
 
-from modulos.lista_arquivos import diretorioPortarias, listaDeArquivos
+from modulos.DadosPortarias import dadosPortarias
 
-print('O diretório de portarias é: ', diretorioPortarias)
-print('Para alterá-lo, edite config.json')
-print()
-print('Lista de arquivos no diretório:')
-for arquivo in listaDeArquivos:
-  if ".rtf" in arquivo:
-    print(arquivo)
+diretorioPortarias = arquivoConfig['config']['diretorio_arquivos']
+
+print('O diretório de portarias é: ' + diretorioPortarias)
+print('Para alterá-lo, edite config.json \n')
+
+listaDeArquivos = dadosPortarias.obterLista(diretorioPortarias)
+
+if (type(listaDeArquivos) is dict):
+
+  arquivosAceitos = listaDeArquivos['arquivosAceitos']
+  arquivosIgnorados = listaDeArquivos['arquivosIgnorados']
+
+  if (len(arquivosAceitos) > 0):
+
+    print('Lista de arquivos aceitos no diretório: \n')
+
+    for arquivoAceito in arquivosAceitos:
+      print(arquivoAceito)
+
+    print('\n Quantidade de arquivos válidos no diretório: ', len(arquivosAceitos), 'arquivos \n')
+
   else:
-    print('ATENÇÃO: Formato incorreto, converta para RTF antes de continuar: ' + arquivo)
-print()
-print('Quantidade de arquivos válidos no diretório: ', len(listaDeArquivos), 'arquivos')
-print()
-input('**Aperte ENTER para prosseguir**')
-print()
-print('----------------------------------')
-print()
+
+    print('ERRO: Não houve arquivos aceitos no diretório. Verifique o formato dos arquivos.')
+
+    input('Aperte ENTER para encerrar a aplicação...')
+
+    sys.exit()
+
+  if (len(arquivosIgnorados) > 0):
+    print('Lista de arquivos ignorados no diretório: \n')
+
+    for arquivoIgnorado in arquivosIgnorados:
+      print(arquivoIgnorado)
+
+    print('\n Quantidade de arquivos ignorados no diretório: ', len(arquivosIgnorados), 'arquivos \n')
+    print('Os arquivos ignorados não serão publicados. Um arquivo pode ter sido ignorado por estar fora do formato .rtf ou por outros motivos que o deixem fora do padrão esperado. \n')
+  
+  input('**Aperte ENTER para prosseguir**')
+  print()
+  print('----------------------------------')
+  print()
+
+else:
+  print('ERRO: Não foi possível importar a lista de arquivos. Retorno do sistema:' + listaDeArquivos)
+
+
 
 ## Fazer login no SIGEPE
 
-from modulos.login_sigepe import fazer_login_sigepe
+from modulos.loginSigepe import Login
+import getpass
 
-fazer_login_sigepe()
+sucesso = False
+
+while (sucesso == False):
+
+  print('Informe seus dados para faze login no SIGEPE: \n')
+
+  usuario = input('CPF do usuário (somente números): ')
+
+  senha = getpass.getpass('Senha do SIGEPE: ')
+
+  print('Aguarde...')
+
+  resultadoLogin = Login.fazerLogin(usuario, senha)
+  
+  sucesso = resultadoLogin[0]
+
+  mensagemSucesso = resultadoLogin[1]
+
+  print(mensagemSucesso + '\n')
 
 print()
 print('----------------------------------')
@@ -106,18 +177,15 @@ for nomeArquivo in listaDeArquivos:
           By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
         print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
         listaPortariasPublicadas.append(numPortaria)
+        
+        if (config_json['config']['adicionar_termo_nome_arquivo'] != ""):
+          nomeArquivo = renomear_arquivo(nomeArquivo)
+          print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
 
-        try:
-          if (config_json['config']['adicionar_termo_nome_arquivo'] != ""):
-            nomeArquivo = renomear_arquivo(nomeArquivo)
-            print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
+        if (config_json['config']['mover_arquivo_diretorio'] != ""):
+          novoDiretorio = mover_arquivo(nomeArquivo)
+          print(numPortaria, '- Arquivo movido para:', novoDiretorio)
 
-          if (config_json['config']['mover_arquivo_diretorio'] != ""):
-            novoDiretorio = mover_arquivo(nomeArquivo)
-            print(numPortaria, '- Arquivo movido para:', novoDiretorio)
-        except Exception:
-          print(numPortaria, '- Não foi possível renomear e/ou mover o arquivo. Verifique: ' + Exception)
-      
       except:
         mensagemErro = 'Resultado não identificado! Verifique se a portaria foi publicada.'
         print(numPortaria, '- ERRO:', mensagemErro)
