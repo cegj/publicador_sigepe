@@ -106,14 +106,17 @@ for nomeArquivo in listaDeArquivos:
           By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
         print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
         listaPortariasPublicadas.append(numPortaria)
-        
-        if (config_json['config']['adicionar_termo_nome_arquivo'] != ""):
-          nomeArquivo = renomear_arquivo(nomeArquivo)
-          print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
 
-        if (config_json['config']['mover_arquivo_diretorio'] != ""):
-          novoDiretorio = mover_arquivo(nomeArquivo)
-          print(numPortaria, '- Arquivo movido para:', novoDiretorio)
+        try:
+          if (config_json['config']['adicionar_termo_nome_arquivo'] != ""):
+            nomeArquivo = renomear_arquivo(nomeArquivo)
+            print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
+
+          if (config_json['config']['mover_arquivo_diretorio'] != ""):
+            novoDiretorio = mover_arquivo(nomeArquivo)
+            print(numPortaria, '- Arquivo movido para:', novoDiretorio)
+        except Exception:
+          print(numPortaria, '- Não foi possível renomear e/ou mover o arquivo. Verifique: ' + Exception)
       
       except:
         mensagemErro = 'Resultado não identificado! Verifique se a portaria foi publicada.'
