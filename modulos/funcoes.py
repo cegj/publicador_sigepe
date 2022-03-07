@@ -14,8 +14,6 @@ import shutil
 today = datetime.date.today() #Hoje no formato ANSI AAAA-MM-DD
 tomorrow = today + timedelta(1) #Amanhã no formato ANSI AAAA-MM-DD
 
-#Define das funções utilizadas pela aplicação
-
 ##Obter o TEXTO DA PORTARIA a partir de arquivo RTF
 
 def obter_texto_portaria(nomeArquivo):
@@ -74,7 +72,7 @@ def formatar_portaria_para_publicar(textoPortaria):
 
   from modulos.publicador.valores_configurados import dataAssinatura
 
-  if (config_json['delimitadores']['cabecalho'][1] == "var_ano_assinatura"):
+  if (config_json['delimitadores']['cabecalho'][1] == "[ano_assinatura]"):
     anoAssinatura = (dataAssinatura.split('/'))
     anoAssinatura = anoAssinatura[2]
     fimCabecalho = anoAssinatura
@@ -147,22 +145,15 @@ def renomear_arquivo(nomeArquivoCompleto):
 
   return novoNomeArquivoCompleto
 
-def mover_arquivo(nomeArquivo):
+def copiar_e_mover(nomeArquivo):
 
   diretorioAtual = config_json['config']['diretorio_arquivos']
   diretorioDestino = config_json['config']['mover_arquivo_diretorio']
 
-  if (diretorioDestino.find('[hoje, .]')):
-    diretorioDestino.replace('[hoje, .]', ajusta_data(today, '.'))
-  elif (diretorioDestino.find('[hoje, /]')):
-    diretorioDestino.replace('[hoje, /]', ajusta_data(today, '/'))
-  elif (diretorioDestino.find('[hoje, -]')):
-    diretorioDestino.replace('[hoje, -]', ajusta_data(today, '-'))
-
   origem = str(diretorioAtual + nomeArquivo)
   destino = str(diretorioDestino + nomeArquivo)
 
-  shutil.move(origem,destino)
+  shutil.copy(origem, destino)
 
   return diretorioDestino
 

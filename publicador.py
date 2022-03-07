@@ -113,7 +113,7 @@ for nomeArquivo in listaDeArquivos:
             print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
 
           if (config_json['config']['mover_arquivo_diretorio'] != ""):
-            novoDiretorio = mover_arquivo(nomeArquivo)
+            novoDiretorio = copiar_e_mover(nomeArquivo)
             print(numPortaria, '- Arquivo movido para:', novoDiretorio)
         except Exception:
           print(numPortaria, '- Não foi possível renomear e/ou mover o arquivo. Verifique: ' + Exception)
@@ -152,7 +152,7 @@ if (quantidadePortariasNaoPublicadas > 0):
 
 if (quantidadePortariasSemResultado > 0):
   print()
-  print("Quantidade de portarias sem resultado identificado: " + str(quantidadePortariasNaoPublicadas))
+  print("Quantidade de portarias sem resultado identificado: " + str(quantidadePortariasSemResultado))
   for portaria in listaPortariasSemResultado:
     print(portaria)
   print('IMPORTANTE: Verifique se as portarias sem resultado foram cadastradas para publicação no SIGEPE')
