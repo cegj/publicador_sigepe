@@ -147,22 +147,28 @@ def renomear_arquivo(nomeArquivoCompleto):
 
   return novoNomeArquivoCompleto
 
-def mover_arquivo(nomeArquivo):
+def copiar_mover_arquivo(nomeArquivo):
 
+  operacao = config_json['config']['copiar_ou_mover']
   diretorioAtual = config_json['config']['diretorio_arquivos']
-  diretorioDestino = config_json['config']['mover_arquivo_diretorio']
+  diretorioDestino = config_json['config']['diretorio_arquivo_destino']
 
-  if (diretorioDestino.find('[hoje, .]')):
-    diretorioDestino.replace('[hoje, .]', ajusta_data(today, '.'))
-  elif (diretorioDestino.find('[hoje, /]')):
-    diretorioDestino.replace('[hoje, /]', ajusta_data(today, '/'))
-  elif (diretorioDestino.find('[hoje, -]')):
-    diretorioDestino.replace('[hoje, -]', ajusta_data(today, '-'))
+  if (diretorioDestino.find('[hoje.]')):
+    diretorioDestino.replace('[hoje.]', ajusta_data(today, '.'))
+  elif (diretorioDestino.find('[hoje/]')):
+    diretorioDestino.replace('[hoje/]', ajusta_data(today, '/'))
+  elif (diretorioDestino.find('[hoje-]')):
+    diretorioDestino.replace('[hoje-]', ajusta_data(today, '-'))
 
   origem = str(diretorioAtual + nomeArquivo)
   destino = str(diretorioDestino + nomeArquivo)
 
-  shutil.move(origem,destino)
+  if (operacao == "M"):
+    shutil.move(origem,destino)
+  elif (operacao == "C"):
+    shutil.copy(origem,destino)
+  else:
+    return "ARQUIVO NÃO COPIADO/MOVIDO. INFORME 'M' OU 'C' EM CONFIG.JSON"
 
   return diretorioDestino
 

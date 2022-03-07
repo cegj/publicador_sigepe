@@ -112,8 +112,8 @@ for nomeArquivo in listaDeArquivos:
             nomeArquivo = renomear_arquivo(nomeArquivo)
             print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
 
-          if (config_json['config']['mover_arquivo_diretorio'] != ""):
-            novoDiretorio = mover_arquivo(nomeArquivo)
+          if (config_json['config']['diretorio_arquivo_destino'] != "" and config_json['config']['copiar_ou_mover'] != ""):
+            novoDiretorio = copiar_mover_arquivo(nomeArquivo)
             print(numPortaria, '- Arquivo movido para:', novoDiretorio)
         except Exception:
           print(numPortaria, '- Não foi possível renomear e/ou mover o arquivo. Verifique: ' + Exception)

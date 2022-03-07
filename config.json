@@ -3,9 +3,8 @@
     "diretorio_arquivos": "",
     "habilitacao_sigepe": "",
     "adicionar_termo_nome_arquivo": "",
-    "termo_nome_arquivo": "",
-    "mover_arquivo": "",
-    "diretorio_destino_arquivo": ""
+    "diretorio_arquivo_destino": "",
+    "copiar_ou_mover": "C"
   },
   
   "valores": {
