@@ -21,9 +21,10 @@ print()
 print('----------------------------------')
 print()
 
-from modulos.lista_arquivos import diretorioPortarias, listaDeArquivos
+from modulos.lista_arquivos import diretorioPortarias, diretorioDestino, listaDeArquivos
 
 print('O diretório de portarias é: ', diretorioPortarias)
+print('O diretório de destino das portarias é: ', diretorioDestino)
 print('Para alterá-lo, edite config.json')
 print()
 print('Lista de arquivos no diretório:')

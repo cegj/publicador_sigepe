@@ -1,16 +1,7 @@
 from modulos.config import config_json
 from modulos.config import navegador
-from modulos.funcoes import verifica_data
 
 ##Verifica e exibe para o usuário as informações de config.json
-
-##Define data Assinatura
-
-dataAssinatura = verifica_data('data_assinatura')
-
-##Define data Publicação
-
-dataPublicacao = verifica_data('data_publicacao')
 
 ##Define órgão, UORG, UPAG e autoridade
 
@@ -30,6 +21,8 @@ else:
 
 especie = config_json['valores']['especie']
 tipoNumero = config_json['valores']['tipo_preenchimento']
+dataAssinatura = config_json["valores"]["data_assinatura"]
+dataAssinatura = config_json["valores"]["data_publicacao"]
 orgao = config_json['valores']['orgao']
 upag = config_json['valores']['upag']
 uorg = config_json['valores']['uorg']

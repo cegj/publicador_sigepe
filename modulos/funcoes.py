@@ -72,12 +72,12 @@ def formatar_portaria_para_publicar(textoPortaria):
 
   from modulos.publicador.valores_configurados import dataAssinatura
 
-  if (config_json['delimitadores']['cabecalho'][1] == "[ano_assinatura]"):
-    anoAssinatura = (dataAssinatura.split('/'))
-    anoAssinatura = anoAssinatura[2]
-    fimCabecalho = anoAssinatura
-  else:
-    fimCabecalho = config_json['delimitadores']['cabecalho'][1]  
+  # if (config_json['delimitadores']['cabecalho'][1] == "[ano_assinatura]"):
+  #   anoAssinatura = (dataAssinatura.split('/'))
+  #   anoAssinatura = anoAssinatura[2]
+  #   fimCabecalho = anoAssinatura
+  # else:
+  fimCabecalho = config_json['delimitadores']['cabecalho'][1]  
 
   textoPortaria = limpar_quebras_linha(textoPortaria)
 
@@ -104,18 +104,18 @@ def ajusta_data(data, separador):
 
 ##Verificar se a data será de hoje, amanhã ou data explícita informada no config.json
 
-def verifica_data(tipoData): #Parâmetros: 'data_assinatura' ou 'data_publicacao'
-  if (config_json['valores'][tipoData] == '[hoje]'):
-    return ajusta_data(today, '/')
-  elif (config_json['valores'][tipoData] == '[amanha]'):
-    if (tomorrow.weekday() == 5): #5 = sábado
-      return ajusta_data(tomorrow + timedelta(2), '/')
-    elif (tomorrow.weekday() == 6): #6 = domingo
-      return ajusta_data(tomorrow + timedelta(1), '/')
-    else:
-      return ajusta_data(tomorrow, '/')
-  else:
-    return config_json['valores'][tipoData]
+#def verifica_data(tipoData): #Parâmetros: 'data_assinatura' ou 'data_publicacao'
+  # if (config_json['valores'][tipoData] == '[hoje]'):
+  #   return ajusta_data(today, '/')
+  # elif (config_json['valores'][tipoData] == '[amanha]'):
+  #   if (tomorrow.weekday() == 5): #5 = sábado
+  #     return ajusta_data(tomorrow + timedelta(2), '/')
+  #   elif (tomorrow.weekday() == 6): #6 = domingo
+  #     return ajusta_data(tomorrow + timedelta(1), '/')
+  #   else:
+  #     return ajusta_data(tomorrow, '/')
+  # else:
+  #   return config_json['valores'][tipoData]
 
 ##Verifica se elemento está presente na página
 
