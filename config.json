@@ -3,9 +3,7 @@
     "diretorio_arquivos": "",
     "habilitacao_sigepe": "",
     "adicionar_termo_nome_arquivo": "",
-    "termo_nome_arquivo": "",
-    "mover_arquivo": "",
-    "diretorio_destino_arquivo": ""
+    "mover_arquivo_diretorio": ""
   },
   
   "valores": {
@@ -14,7 +12,7 @@
       "especie": "Portaria",
       "tipo_preenchimento": "Manual",
       "data_assinatura": "[hoje/]",
-      "data_publicacao": "[amanha/]",
+      "data_publicacao": "[amanha_util/]",
       "orgao": "",
       "upag": "",
       "uorg": "",
@@ -54,7 +52,7 @@
       "nivel_assunto_bgp": "0_0_0",
       "arrow_down": 0
     },
-    "Retribuição por titulação": {
+    "Retribuição por Titulação": {
       "tema_bgp": "Incentivos funcionais",
       "nivel_assunto_bgp": "0_0_0",
       "arrow_down": 0
@@ -84,7 +82,7 @@
   "delimitadores" : {
     "numero_portaria": ["", ""],
     "siape": ["", ""],
-    "cabecalho": ["", "var_ano_assinatura"],
+    "cabecalho": ["", "{ano_assinatura}"],
     "preliminar_portaria": ["", ""]
   }
 }

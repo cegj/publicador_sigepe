@@ -5,7 +5,7 @@
   def atribuir_variaveis_config(configjson):
     if (configjson.find('[hoje.]')):
       subst = str(ajusta_data(today, '.'))
-      configjson = configjson.replace('[hoje, .]', subst)
+      configjson = configjson.replace('[hoje.]', subst)
     
     if (configjson.find('[hoje/]')):
       subst = str(ajusta_data(today, '/'))
@@ -17,27 +17,30 @@
 
     if (configjson.find('[amanha_util.]')):
         if (tomorrow.weekday() == 5): #5 = sábado
-            return ajusta_data(tomorrow + timedelta(2), '.')
+            subst = str(ajusta_data(tomorrow + timedelta(2), '.')) 
         elif (tomorrow.weekday() == 6): #6 = domingo
-            return ajusta_data(tomorrow + timedelta(1), '.')
+            subst = str(ajusta_data(tomorrow + timedelta(1), '.')) 
         else:
-            return ajusta_data(tomorrow, '.')
+            subst = str(ajusta_data(tomorrow, '.')) 
+        configjson = configjson.replace('[amanha_util.]', subst)
 
     if (configjson.find('[amanha_util/]')):
         if (tomorrow.weekday() == 5): #5 = sábado
-            return ajusta_data(tomorrow + timedelta(2), '/')
+            subst = str(ajusta_data(tomorrow + timedelta(2), '/')) 
         elif (tomorrow.weekday() == 6): #6 = domingo
-            return ajusta_data(tomorrow + timedelta(1), '/')
+            subst = str(ajusta_data(tomorrow + timedelta(1), '/')) 
         else:
-            return ajusta_data(tomorrow, '/')
+            subst = str(ajusta_data(tomorrow, '/')) 
+        configjson = configjson.replace('[amanha_util/]', subst)
 
     if (configjson.find('[amanha_util-]')):
         if (tomorrow.weekday() == 5): #5 = sábado
-            return ajusta_data(tomorrow + timedelta(2), '-')
+            subst = str(ajusta_data(tomorrow + timedelta(2), '-')) 
         elif (tomorrow.weekday() == 6): #6 = domingo
-            return ajusta_data(tomorrow + timedelta(1), '-')
+            subst = str(ajusta_data(tomorrow + timedelta(1), '-')) 
         else:
-            return ajusta_data(tomorrow, '-')
+            subst = str(ajusta_data(tomorrow, '-')) 
+        configjson = configjson.replace('[amanha_util-]', subst)
     
     if (configjson.find('[ano_assinatura]')):
         from modulos.publicador.valores_configurados import dataAssinatura
