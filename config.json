@@ -1,9 +1,10 @@
 {
   "config": {
-    "diretorio_arquivos": "",
-    "habilitacao_sigepe": "",
-    "adicionar_termo_nome_arquivo": "",
-    "mover_arquivo_diretorio": ""
+    "diretorio_arquivos": "\\\\arq-progep1\\ddp_secretaria\\17 - PORTARIAS\\2022\\Publicar\\",
+    "habilitacao_sigepe": "GESTOR - ÓRGÃO UFES",
+    "adicionar_termo_nome_arquivo": "ok",
+    "diretorio_arquivo_destino": "C:\\Nova pasta\\[hoje.]\\",
+    "copiar_ou_mover": "C"
   },
   
   "valores": {
@@ -13,11 +14,11 @@
       "tipo_preenchimento": "Manual",
       "data_assinatura": "[hoje]",
       "data_publicacao": "[amanha]",
-      "orgao": "",
-      "upag": "",
-      "uorg": "",
-      "responsavel_assinatura": "",
-      "cargo_responsavel": ""
+      "orgao": "26234",
+      "upag": "1202",
+      "uorg": "743",
+      "responsavel_assinatura": "JOSIANA BINDA",
+      "cargo_responsavel": "Pró-Reitora de Gestão de Pessoas"
   },
 
   "temas_assuntos": {
@@ -82,7 +83,7 @@
   "delimitadores" : {
     "numero_portaria": ["", ""],
     "siape": ["", ""],
-    "cabecalho": ["", "var_ano_assinatura"],
+    "cabecalho": ["", "[ano_assinatura]"],
     "preliminar_portaria": ["", ""]
   }
 }

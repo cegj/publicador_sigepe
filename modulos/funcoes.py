@@ -1,11 +1,10 @@
-from modulos.config import config_json
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from modulos.lista_arquivos import diretorioPortarias
+from modulos.dadosPortaria import diretorioPortarias
 import datetime 
 from datetime import timedelta
 from selenium.webdriver.support.ui import WebDriverWait
-from modulos.config import navegador
+from modulos.Config import navegador
 import os
 import shutil
 
@@ -62,11 +61,11 @@ def obter_tema(textoPortaria):
             return temaAssunto
             break
 
-##Limpar quebras de linha
+# ##Limpar quebras de linha
 
-def limpar_quebras_linha(string):
-    string = string.replace("\n", "") # Apagar quebras de linha
-    return string
+# def limpar_quebras_linha(string):
+#     string = string.replace("\n", "") # Apagar quebras de linha
+#     return string
 
 ##Formatar o texto da portaria para publicação (remover cabeçalho, quebras de linha etc)
 
@@ -97,36 +96,29 @@ def formatar_portaria_para_publicar(textoPortaria):
 
   return textoPortaria
 
-#Receber a data no formato AAAA-MM-DD e converte para DD/MM/AAAA
-def ajusta_data(data, separador): 
-  dataArray = str(data).split('-')
-  dataAjustada = dataArray[2] + separador + dataArray[1] + separador + dataArray[0]
-  data = str(dataAjustada)
-  return data
+# #Receber a data no formato AAAA-MM-DD e converte para DD/MM/AAAA
+# def ajustarData(data, separador): 
+#   dataArray = str(data).split('-')
+#   dataAjustada = dataArray[2] + separador + dataArray[1] + separador + dataArray[0]
+#   data = str(dataAjustada)
+#   return data
 
-##Verificar se a data será de hoje, amanhã ou data explícita informada no config.json
+# ##Verificar se a data será de hoje, amanhã ou data explícita informada no config.json
 
-def verifica_data(tipoData): #Parâmetros: 'data_assinatura' ou 'data_publicacao'
-  if (config_json['valores'][tipoData] == '[hoje]'):
-    return ajusta_data(today, '/')
-  elif (config_json['valores'][tipoData] == '[amanha]'):
-    if (tomorrow.weekday() == 5): #5 = sábado
-      return ajusta_data(tomorrow + timedelta(2), '/')
-    elif (tomorrow.weekday() == 6): #6 = domingo
-      return ajusta_data(tomorrow + timedelta(1), '/')
-    else:
-      return ajusta_data(tomorrow, '/')
-  else:
-    return config_json['valores'][tipoData]
+# def verifica_data(tipoData): #Parâmetros: 'data_assinatura' ou 'data_publicacao'
+#   if (config_json['valores'][tipoData] == '[hoje]'):
+#     return ajustarData(today, '/')
+#   elif (config_json['valores'][tipoData] == '[amanha]'):
+#     if (tomorrow.weekday() == 5): #5 = sábado
+#       return ajustarData(tomorrow + timedelta(2), '/')
+#     elif (tomorrow.weekday() == 6): #6 = domingo
+#       return ajustarData(tomorrow + timedelta(1), '/')
+#     else:
+#       return ajustarData(tomorrow, '/')
+#   else:
+#     return config_json['valores'][tipoData]
 
 ##Verifica se elemento está presente na página
-
-def verifica_elemento(termo_busca):
-    try:
-        termo_busca
-        return True
-    except:
-        return False
 
 def aguardar_loading():
     modalAguarde = WebDriverWait(navegador, 300).until(EC.invisibility_of_element_located(
@@ -153,11 +145,11 @@ def mover_arquivo(nomeArquivo):
   diretorioDestino = config_json['config']['mover_arquivo_diretorio']
 
   if (diretorioDestino.find('[hoje, .]')):
-    diretorioDestino.replace('[hoje, .]', ajusta_data(today, '.'))
+    diretorioDestino.replace('[hoje, .]', ajustarData(today, '.'))
   elif (diretorioDestino.find('[hoje, /]')):
-    diretorioDestino.replace('[hoje, /]', ajusta_data(today, '/'))
+    diretorioDestino.replace('[hoje, /]', ajustarData(today, '/'))
   elif (diretorioDestino.find('[hoje, -]')):
-    diretorioDestino.replace('[hoje, -]', ajusta_data(today, '-'))
+    diretorioDestino.replace('[hoje, -]', ajustarData(today, '-'))
 
   origem = str(diretorioAtual + nomeArquivo)
   destino = str(diretorioDestino + nomeArquivo)

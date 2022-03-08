@@ -1,4 +1,4 @@
-from modulos.config import wait
+from modulos.Config import wait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from modulos.funcoes import obter_tema

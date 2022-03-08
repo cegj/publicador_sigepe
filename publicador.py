@@ -1,4 +1,5 @@
 import sys
+from modulos.Config import Config
 
 print('----------------------------------')
 print('----------------------------------')
@@ -10,41 +11,21 @@ print('*****Por Carlos E. Gaspar Jr.*****')
 print('******** github.com/cegj/ ********')
 print()
 input('Aperte ENTER para iniciar...')
-print()
-print('----------------------------------')
-print()
-print('Realizando configurações iniciais... \n')
 
-from modulos.config import Config
+print('\n----------------------------------\n')
 
-if (Config.obterDados()):
-  arquivoConfig = Config.obterDados()
-  print('SUCESSO: Configurações importadas.')
-else:
-  print('ERRO: Não foi possível importar os dados de config.json. Verifique se o arquivo está configurado corretamente. Em caso de dúvidas, consulte a documentação.')
-  input('Aperte ENTER para encerrar a aplicação...')
-  sys.exit()
+print('Realizando configurações iniciais...')
 
-navegador = Config.navegador
+Config.navegador
+Config.configJson
 
-if (navegador):
-  print()
-  print('SUCESSO: Webdriver/navegador iniciado.')
-else:
-  print()
-  print('ERRO: Não foi possível iniciar o webdriver/navegador. O sistema retornou o seguinte erro: ' +  navegador)
-  input('Aperte ENTER para encerrar a aplicação...')
-  sys.exit()
+print('\nConfigurações iniciais concluídas')
 
-print('\n Configurações iniciais concluídas')
-
-print()
-print('----------------------------------')
-print()
+print('\n----------------------------------\n')
 
 from modulos.DadosPortarias import dadosPortarias
 
-diretorioPortarias = arquivoConfig['config']['diretorio_arquivos']
+diretorioPortarias = configJson['config']['diretorio_arquivos']
 
 print('O diretório de portarias é: ' + diretorioPortarias)
 print('Para alterá-lo, edite config.json \n')
