@@ -7,10 +7,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Login:
 
-    def __init__(self, usuario, senha):
-        self.usuario = usuario
-        self.senha = senha
-
     def acessarPaginaLogin():
         navegador.get("https://admsistema.sigepe.planejamento.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
 
@@ -39,40 +35,59 @@ class Login:
 
     def fazerLogin(self):
 
+        import getpass
+
         self.acessarPaginaLogin()
 
-        campoUsuario = navegador.find_element(By.XPATH, '//*[@id="cpfUsuario"]')
+        sucesso = False
 
-        campoUsuario.click()
+        while (sucesso == False):
 
-        campoUsuario.send_keys(self.usuario)
+            print('Informe seus dados para faze login no SIGEPE: \n')
 
-        campoSenha = navegador.find_element(By.XPATH, '//*[@id="password"]')
+            usuario = input('CPF do usuário (somente números): ')
 
-        campoSenha.click()
+            senha = getpass.getpass('Senha do SIGEPE: ')
 
-        campoSenha.send_keys(self.senha)
+            print('Aguarde...')
 
-        botaoAcessar = navegador.find_element(By.XPATH, '//*[@id="botaoCredenciais"]')
+            campoUsuario = navegador.find_element(By.XPATH, '//*[@id="cpfUsuario"]')
 
-        botaoAcessar.click()
+            campoUsuario.click()
 
-        if (navegador.find_element(By.XPATH, '//*[@id="idBreadCrumb0"]/span')):
-            
-            paginaLogada = navegador.find_element(By.XPATH, '//*[@id="idBreadCrumb0"]/span')
+            campoUsuario.send_keys(usuario)
 
-            return [True, paginaLogada.text]
+            campoSenha = navegador.find_element(By.XPATH, '//*[@id="password"]')
 
-        elif(navegador.find_element(By.XPATH, '//*[@id="msg_alerta"]')):
+            campoSenha.click()
 
-           erroLogin = navegador.find_element(By.XPATH, '//*[@id="msg_alerta"]')
+            campoSenha.send_keys(senha)
 
-           return [False, erroLogin.text]
+            botaoAcessar = navegador.find_element(By.XPATH, '//*[@id="botaoCredenciais"]')
 
-        else:
+            botaoAcessar.click()
 
-            return [False, 'Erro não identificado']
+            if (navegador.find_element(By.XPATH, '//*[@id="idBreadCrumb0"]/span')):
+                
+                paginaLogada = navegador.find_element(By.XPATH, '//*[@id="idBreadCrumb0"]/span')
+                
+                print('SUCESSO: ' + paginaLogada.text + '\n')
 
+                sucesso = True
+
+            elif(navegador.find_element(By.XPATH, '//*[@id="msg_alerta"]')):
+
+                erroLogin = navegador.find_element(By.XPATH, '//*[@id="msg_alerta"] \n')
+
+                print('ERRO: ' + erroLogin.text)
+
+                sucesso = False
+
+            else:
+
+                print('ERRO: Não foi possível fazer login (erro não identificado). Tente novamente. \n')
+
+                sucesso = False
 
 
 def fazer_login_sigepe():

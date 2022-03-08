@@ -90,36 +90,11 @@ if (type(listaDeArquivos) is dict):
 else:
   print('ERRO: Não foi possível importar a lista de arquivos. Retorno do sistema:' + listaDeArquivos)
 
-
-
 ## Fazer login no SIGEPE
 
 from modulos.loginSigepe import Login
-import getpass
 
-sucesso = False
-
-while (sucesso == False):
-
-  print('Informe seus dados para faze login no SIGEPE: \n')
-
-  usuario = input('CPF do usuário (somente números): ')
-
-  senha = getpass.getpass('Senha do SIGEPE: ')
-
-  print('Aguarde...')
-
-  resultadoLogin = Login.fazerLogin(usuario, senha)
-  
-  sucesso = resultadoLogin[0]
-
-  mensagemSucesso = resultadoLogin[1]
-
-  print(mensagemSucesso + '\n')
-
-print()
-print('----------------------------------')
-print()
+Login.fazerLogin()
 
 ## Preencher formulários com dados dos arquivos e publicar
 
