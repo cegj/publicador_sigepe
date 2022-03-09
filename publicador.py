@@ -12,13 +12,16 @@ import os
 import getpass
 import time
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 import sys
+import shutil
 
 # Definição das funções de utilidades
 
 today = datetime.date.today() #Hoje no formato ANSI AAAA-MM-DD
 tomorrow = today + timedelta(1) #Amanhã no formato ANSI AAAA-MM-DD
+month = datetime.date.today().month
 
 def ajustar_data(data, separador):
     dataArray = str(data).split('-')
@@ -32,6 +35,18 @@ def limpar_quebras_de_linha(string):
 def aguardar_loading():
     modalAguarde = WebDriverWait(navegador, 300).until(EC.invisibility_of_element_located(
         (By.XPATH, '//*[@id="j_idt154:j_idt155:ajaxStatusModal"]')))
+
+def limpar_terminal_exibir_cabecalho():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('----------------------------------')
+    print('----------------------------------')
+    print('PUBLICADOR DE PORTARIAS NO SIGEPE')
+    print('----------------------------------')
+    print('----------------------------------')
+    print('******** github.com/cegj/ ********')
+    print('----------------------------------')
+    print()
+
 
 # Definição das funções de webdriver
 
@@ -77,8 +92,31 @@ def obter_config():
 
         # Define o valor variável de [ano_assinatura]
             
-            dataAssinaturaArray = (dataAssinatura.split('/'))
-            vAnoAssinatura = str(dataAssinaturaArray[2])
+        dataAssinatura = configJson['valores']['data_assinatura']    
+        dataAssinaturaArray = (dataAssinatura.split('/'))
+        vAnoAssinatura = str(dataAssinaturaArray[2])
+
+        # Define o valor da variável [mesatual_num-extenso]
+
+        meses = {
+            "1": '01 - JANEIRO',
+            "2": "2 - FEVEREIRO",
+            "3": "3 - MARÇO",
+            "4": "4 - ABRIL",
+            "5": "5 - MAIO",
+            "6": "6 - JUNHO",
+            "7": "7 - JULHO",
+            "8": "8 - AGOSTO",
+            "9": "9 - SETEMBRO",
+            "10": "10 - OUTUBRO",
+            "11": "11 - NOVEMBRO",
+            "12": "12 - DEZEMBRO"
+        }
+
+        for key, value in meses.items():
+            if (key == str(month)):
+                vMesAtualNumExtenso = value
+                break
 
         import ast
 
@@ -91,6 +129,7 @@ def obter_config():
         configJsonStr = configJsonStr.replace("[proximo_dia_util/]", vProximoUtilBarra)
         configJsonStr = configJsonStr.replace("[proximo_dia_util-]", vProximoUtilTraco)
         configJsonStr = configJsonStr.replace("[ano_assinatura]", vAnoAssinatura)
+        configJsonStr = configJsonStr.replace("[mesatual_num-extenso]", vMesAtualNumExtenso)
 
         configJson = ast.literal_eval(configJsonStr)
 
@@ -126,7 +165,7 @@ def exibir_valores_config():
 
 # Define função para obter dados de portaria
 
-def obter_lista_arquivos(diretorioPortarias):
+def obter_lista_arquivos(diretorioArquivos):
 
   try:
 
@@ -135,7 +174,7 @@ def obter_lista_arquivos(diretorioPortarias):
       'arquivosIgnorados': []
     }
 
-    for nomeArquivo in os.listdir(diretorioPortarias):
+    for nomeArquivo in os.listdir(diretorioArquivos):
       if (nomeArquivo.count("~") == 0 and nomeArquivo.count(".rtf") > 0):  
         listaDeArquivos['arquivosAceitos'].append(nomeArquivo)
       else:
@@ -242,7 +281,7 @@ def fazer_login():
 def obter_texto_portaria(nomeArquivo):
   from striprtf.striprtf import rtf_to_text
 
-  with open(str(diretorioPortarias) + str(nomeArquivo), encoding='cp1252') as arquivo:
+  with open(str(diretorioArquivos) + str(nomeArquivo), encoding='cp1252') as arquivo:
     conteudo = arquivo.read()
     portaria = rtf_to_text(conteudo)
     arquivo.close()
@@ -279,8 +318,6 @@ def obter_tema(textoPortaria):
 
 def formatar_portaria_para_publicar(textoPortaria):
 
-  from modulos.publicador.valores_configurados import dataAssinatura
-
   if (configJson['delimitadores']['cabecalho'][1] == "var_ano_assinatura"):
     anoAssinatura = (dataAssinatura.split('/'))
     anoAssinatura = anoAssinatura[2]
@@ -288,7 +325,7 @@ def formatar_portaria_para_publicar(textoPortaria):
   else:
     fimCabecalho = configJson['delimitadores']['cabecalho'][1]  
 
-  textoPortaria = limpar_quebras_linha(textoPortaria)
+  textoPortaria = limpar_quebras_de_linha(textoPortaria)
 
   textoPortariaSemCabecalho = textoPortaria.split(str(fimCabecalho), 1) #Remover cabeçalho (usa ano como limite)
   
@@ -321,41 +358,32 @@ def renomear_arquivo(nomeArquivoCompleto):
 
 def copiar_mover_arquivo(nomeArquivo):
 
-  operacao = configJson['config']['copiar_ou_mover']
-  diretorioAtual = configJson['config']['diretorio_arquivos']
-  diretorioDestino = configJson['config']['diretorio_arquivo_destino']
+  try:
+    operacao = configJson['config']['copiar_ou_mover']
+    origem = str(diretorioArquivos + nomeArquivo)
+    destino = str(diretorioDestinoArquivos + nomeArquivo)
 
-  origem = str(diretorioAtual + nomeArquivo)
-  destino = str(diretorioDestino + nomeArquivo)
+    if (operacao == "M"):
+        shutil.move(origem,destino)
+        return diretorioDestinoArquivos
+    elif (operacao == "C"):
+        shutil.copy(origem,destino)
+        return diretorioDestinoArquivos
+    else:
+        return "ARQUIVO NÃO COPIADO/MOVIDO. INFORME 'M' OU 'C' EM CONFIG.JSON"
 
-  if (operacao == "M"):
-    shutil.move(origem,destino)
-  elif (operacao == "C"):
-    shutil.copy(origem,destino)
-  else:
-    return "ARQUIVO NÃO COPIADO/MOVIDO. INFORME 'M' OU 'C' EM CONFIG.JSON"
-
-  return diretorioDestino
+  except Exception as e:
+    print ('ERRO: Não foi possível copiar ou mover arquivo. Retorno do sistema:')
+    print (repr(e))
 
 
-os.system('cls' if os.name == 'nt' else 'clear')
-
-######################################################
+limpar_terminal_exibir_cabecalho()
 
 # Início da aplicação
 
-print('----------------------------------')
-print('----------------------------------')
-print('PUBLICADOR DE PORTARIAS NO SIGEPE')
-print('----------------------------------')
-print('----------------------------------')
-print()
-print('*****Por Carlos E. Gaspar Jr.*****')
-print('******** github.com/cegj/ ********')
-print()
 input('Aperte ENTER para iniciar...')
 
-print('\n----------------------------------\n')
+limpar_terminal_exibir_cabecalho()
 
 print('Realizando configurações iniciais...')
 
@@ -376,8 +404,8 @@ configJson = obter_config()
 
 diretorioArquivos = configJson['config']['diretorio_arquivos']
 diretorioDestinoArquivos = configJson['config']['diretorio_arquivo_destino']
-dataAssinatura = configJson['config']['data_assinatura']
-dataPublicacao = configJson['config']['data_publicacao']
+dataAssinatura = configJson['valores']['data_assinatura']
+dataPublicacao = configJson['valores']['data_publicacao']
 edicaoBGP = configJson['valores']['edicao_bgp']
 tipoAssinatura = configJson['valores']['tipo_assinatura']
 especie = configJson['valores']['especie']
@@ -388,25 +416,48 @@ uorg = configJson['valores']['uorg']
 responsavelAssinatura = configJson['valores']['responsavel_assinatura']
 cargoResponsavelAssinatura = configJson['valores']['cargo_responsavel']
 
+#valoresErrados = []
+
+#if (edicaoBGP != "Normal" or edicaoBGP != "Extraordinária"):
+#    valoresErrados.append(edicaoBGP)
+#    valoresErrados.append("- Normal\n- Extraordinária")
+
+#if (tipoAssinatura != "Digital" or tipoAssinatura != "Manual"):
+#    valoresErrados.append(tipoAssinatura)
+#    valoresErrados.append("- Digital\n- Manual")
+#
+#    print('ERRO: Não houve arquivos aceitos no diretório. Verifique o formato dos arquivos.')
+#    input('Aperte ENTER para encerrar a aplicação...')
+#    sys.exit()
+
+
+
+
+
+
 print('\nConfigurações iniciais concluídas')
 
 print('\n----------------------------------\n')
 
-input('\nAperte ENTER... para continuar...\n')
+input('\nAperte ENTER para continuar...\n')
+
+limpar_terminal_exibir_cabecalho()
 
 exibir_valores_config()
 
 print('\n----------------------------------\n')
 
-input('\nAperte ENTER... para continuar...\n')
+input('\nAperte ENTER para continuar...\n')
+
+limpar_terminal_exibir_cabecalho()
 
 # Obtém lista de arquivos a serem publicados
 
 listaDeArquivos = obter_lista_arquivos(diretorioArquivos)
 
 print('O diretório de origem dos arquivos é: ' + diretorioArquivos)
-print('O diretório de destino dos arquivos é: ' + diretorioArquivos)
-print('Para alterá-lo, edite config.json \n')
+print('O diretório de destino dos arquivos é: ' + diretorioDestinoArquivos)
+print('Para alterá-los, edite config.json e reinicie a aplicação \n')
 
 if (type(listaDeArquivos) is dict):
 
@@ -420,7 +471,7 @@ if (type(listaDeArquivos) is dict):
     for arquivoAceito in arquivosAceitos:
       print(arquivoAceito)
 
-    print('\n Quantidade de arquivos válidos no diretório: ', len(arquivosAceitos), 'arquivos \n')
+    print('\nQuantidade de arquivos válidos no diretório: ', len(arquivosAceitos), 'arquivos \n')
 
   else:
     print('ERRO: Não houve arquivos aceitos no diretório. Verifique o formato dos arquivos.')
@@ -433,15 +484,19 @@ if (type(listaDeArquivos) is dict):
     for arquivoIgnorado in arquivosIgnorados:
       print(arquivoIgnorado)
 
-    print('\n Quantidade de arquivos ignorados no diretório: ', len(arquivosIgnorados), 'arquivos \n')
+    print('\nQuantidade de arquivos ignorados no diretório: ', len(arquivosIgnorados), 'arquivos \n')
     print('Os arquivos ignorados não serão publicados. Um arquivo pode ter sido ignorado por estar fora do formato .rtf ou por outros motivos que o deixem fora do padrão esperado. \n')
   
   print('\n----------------------------------\n')
 
-  input('\nAperte ENTER... para continuar...\n')
+  input('\nAperte ENTER para continuar...\n')
+  limpar_terminal_exibir_cabecalho()
 
 else:
-  print('ERRO: Não foi possível importar a lista de arquivos. Retorno do sistema:' + listaDeArquivos)
+    print('ERRO: Não foi possível importar a lista de arquivos. Retorno do sistema:' + listaDeArquivos)
+    input('Aperte ENTER para encerrar a aplicação...')
+    sys.exit()
+
 
 ## Fazer login no SIGEPE
 
@@ -451,15 +506,17 @@ print('Iniciando login no Sigepe... \n')
 fazer_login()
 
 print('\n----------------------------------\n')
-input('\nAperte ENTER... para *iniciar* a publicação das portarias...\n')
+input('\nAperte ENTER para *iniciar* a publicação das portarias...\n')
 
-## Preencher formulários com dados dos arquivos e publicar
+limpar_terminal_exibir_cabecalho()
+
+####### Preencher formulários com dados dos arquivos e publicar
  
 listaPortariasPublicadas = []
 listaPortariasNaoPublicadas = []
 listaPortariasSemResultado = []
 
-for nomeArquivo in listaDeArquivos:
+for nomeArquivo in listaDeArquivos["arquivosAceitos"]:
 
   try:
 
@@ -479,7 +536,30 @@ for nomeArquivo in listaDeArquivos:
     
     aguardar_loading()
 
-    # Tipo de assinatura (manual)
+    # Edição do boletim
+
+    try:
+        edicaoNormal = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:radEdicao"]/tbody/tr/td[2]/label')))
+        edicaoExtraordinaria = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:radEdicao"]/tbody/tr/td[4]/label')))
+
+        if (edicaoBGP == "Normal"):
+            edicaoNormal.click()
+        elif (edicaoBGP == "Extraordinária"):
+            edicaoExtraordinaria.click()
+
+        aguardar_loading()
+
+        print(numPortaria, '- Tipo assinatura selecionado:', edicaoBGP)
+
+        aguardar_loading()
+
+    except:
+        print(numPortaria, "- ERRO: Falha ao preencher tipo de assinatura")
+
+
+    # Tipo de assinatura
 
     try:
         tipoAssinaturaDigital = wait.until(EC.element_to_be_clickable(
@@ -500,32 +580,6 @@ for nomeArquivo in listaDeArquivos:
 
     except:
         print(numPortaria, "- ERRO: Falha ao preencher tipo de assinatura")
-
-    ##Espécie (portaria)
-
-    try:
-        campoEspecie = wait.until(EC.element_to_be_clickable(
-            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_label"]')))
-
-        campoEspecie.click()
-
-        time.sleep(0.3)
-
-        campoBuscarEspecie = wait.until(EC.element_to_be_clickable(
-            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_filter"]')))
-
-        campoBuscarEspecie.send_keys(especie)
-
-        time.sleep(1.5)
-
-        campoBuscarEspecie.send_keys(Keys.ENTER)
-
-        aguardar_loading()
-
-        print(numPortaria, '- Espécie selecionada: ', campoEspecie.text)
-
-    except:
-        print(numPortaria, "- ERRO: Falha ao preencher espécie")
 
     # Tipo de preenchimento do número
 
@@ -679,19 +733,53 @@ for nomeArquivo in listaDeArquivos:
 
     # Data de publicação
 
+    if (edicaoBGP == "Normal"):
+
+        try:
+            
+            wait.until(EC.element_to_be_clickable((By.ID, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input')))
+                
+            navegador.execute_script("campoDataPublicacao = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input')")
+                
+            navegador.execute_script("campoDataPublicacao.value = '" + dataPublicacao + "'")
+                
+            aguardar_loading()
+                
+            print(numPortaria, '- Data da publicação preenchida: ', dataPublicacao)
+
+        except:
+            print(numPortaria, "- ERRO: Falha ao preencher data de publicação")
+
+    else:
+        print(numPortaria, "- Data de publicação preechida: hoje (edição extraordinária)")
+
+    ##Espécie
+
     try:
-        wait.until(EC.element_to_be_clickable((By.ID, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input')))
-            
-        navegador.execute_script("campoDataPublicacao = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input')")
-            
-        navegador.execute_script("campoDataPublicacao.value = '" + dataPublicacao + "'")
-            
+        campoEspecie = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_label"]')))
+
         aguardar_loading()
-            
-        print(numPortaria, '- Data da publicação preenchida: ', dataPublicacao)
+
+        campoEspecie.click()
+
+        time.sleep(0.3)
+
+        campoBuscarEspecie = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_filter"]')))
+
+        campoBuscarEspecie.send_keys(especie)
+
+        time.sleep(1.5)
+
+        campoBuscarEspecie.send_keys(Keys.ENTER)
+
+        aguardar_loading()
+
+        print(numPortaria, '- Espécie selecionada: ', campoEspecie.text)
 
     except:
-        print(numPortaria, "- ERRO: Falha ao preencher data de publicação")
+        print(numPortaria, "- ERRO: Falha ao preencher espécie")
     
     # Texto do ato/portaria (iframe)
 
@@ -970,8 +1058,9 @@ for nomeArquivo in listaDeArquivos:
 
     aguardar_loading()
 
-  except:
+  except Exception as e:
     print(numPortaria, "- ERRO: Não foi possível publicar a portaria")
+    print (repr(e))
 
   finally:
 
@@ -987,12 +1076,12 @@ for nomeArquivo in listaDeArquivos:
         print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
         listaPortariasPublicadas.append(numPortaria)
         
-        if (configJson['config']['adicionar_termo_nome_arquivo'] != ""):
+        if (configJson['config']['copiar_ou_mover'] != ""):
           nomeArquivo = renomear_arquivo(nomeArquivo)
           print(numPortaria, '- Arquivo renomeado para:', nomeArquivo)
 
-        if (configJson['config']['mover_arquivo_diretorio'] != ""):
-          novoDiretorio = mover_arquivo(nomeArquivo)
+        if (configJson['config']['copiar_ou_mover'] != ""):
+          novoDiretorio = copiar_mover_arquivo(nomeArquivo)
           print(numPortaria, '- Arquivo movido para:', novoDiretorio)
 
       except:
