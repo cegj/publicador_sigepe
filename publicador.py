@@ -90,11 +90,18 @@ def obter_config():
         else:
             vProximoUtilTraco = str(ajustar_data(tomorrow, '-')) 
 
-        # Define o valor variável de [ano_assinatura]
+        # Define o valor variável de [ano_assinatura] #########MELHORAR
             
-        dataAssinatura = configJson['valores']['data_assinatura']    
+        if (configJson['valores']['data_assinatura'].count("hoje") > 0):
+            dataAssinatura = ajustar_data(today, '/')
+        else:
+            dataAssinatura = configJson['valores']['data_assinatura']
+
         dataAssinaturaArray = (dataAssinatura.split('/'))
         vAnoAssinatura = str(dataAssinaturaArray[2])
+
+        #define o valor da variavel [hoje_dia]
+        vHojeDia = str(datetime.date.today().day)
 
         # Define o valor da variável [mesatual_num-extenso]
 
@@ -130,6 +137,7 @@ def obter_config():
         configJsonStr = configJsonStr.replace("[proximo_dia_util-]", vProximoUtilTraco)
         configJsonStr = configJsonStr.replace("[ano_assinatura]", vAnoAssinatura)
         configJsonStr = configJsonStr.replace("[mesatual_num-extenso]", vMesAtualNumExtenso)
+        configJsonStr = configJsonStr.replace("[hoje_dia]", vHojeDia)
 
         configJson = ast.literal_eval(configJsonStr)
 
