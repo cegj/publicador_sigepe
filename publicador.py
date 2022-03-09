@@ -1126,7 +1126,7 @@ if (quantidadePortariasNaoPublicadas > 0):
 
 if (quantidadePortariasSemResultado > 0):
   print()
-  print("Quantidade de portarias sem resultado identificado: " + str(quantidadePortariasNaoPublicadas))
+  print("Quantidade de portarias sem resultado identificado: " + str(quantidadePortariasSemResultado))
   for portaria in listaPortariasSemResultado:
     print(portaria)
   print('IMPORTANTE: Verifique se as portarias sem resultado foram cadastradas para publicação no SIGEPE')
