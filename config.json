@@ -1,9 +1,9 @@
 {
   "config": {
-    "diretorio_arquivos": "",
-    "habilitacao_sigepe": "",
-    "adicionar_termo_nome_arquivo": "",
-    "diretorio_arquivo_destino": "",
+    "diretorio_arquivos": "\\\\arq-progep1\\ddp_secretaria\\17 - PORTARIAS\\2022\\Progressão por mérito, promoção, aceleração, RT (docente)\\[mesatual_num-extenso]\\[hoje_dia]\\",
+    "habilitacao_sigepe": "GESTOR - ÓRGÃO:UFES",
+    "adicionar_termo_nome_arquivo": "ok",
+    "diretorio_arquivo_destino": "\\\\arq-progep1\\boufes\\BOUFES 2022\\PROGEP\\0[mesatual_num-extenso]\\[hoje.]\\",
     "copiar_ou_mover": "C"
   },
   
@@ -12,13 +12,13 @@
       "tipo_assinatura": "Manual",
       "especie": "Portaria",
       "tipo_preenchimento": "Manual",
-      "data_assinatura": "[hoje]",
-      "data_publicacao": "[amanha]",
-      "orgao": "",
-      "upag": "",
-      "uorg": "",
-      "responsavel_assinatura": "",
-      "cargo_responsavel": ""
+      "data_assinatura": "[hoje/]",
+      "data_publicacao": "[proximo_dia_util/]",
+      "orgao": "26234",
+      "upag": "1202",
+      "uorg": "743",
+      "responsavel_assinatura": "JOSIANA BINDA",
+      "cargo_responsavel": "Pró-Reitora de Gestão de Pessoas"
   },
 
   "temas_assuntos": {
@@ -53,7 +53,7 @@
       "nivel_assunto_bgp": "0_0_0",
       "arrow_down": 0
     },
-    "Retribuição por titulação": {
+    "Retribuição por Titulação": {
       "tema_bgp": "Incentivos funcionais",
       "nivel_assunto_bgp": "0_0_0",
       "arrow_down": 0
@@ -81,9 +81,9 @@
   },
 
   "delimitadores" : {
-    "numero_portaria": ["", ""],
-    "siape": ["", ""],
+    "numero_portaria": ["Nº ", ","],
+    "siape": ["matrícula SIAPE nº ", ","],
     "cabecalho": ["", "var_ano_assinatura"],
-    "preliminar_portaria": ["", ""]
+    "preliminar_portaria": ["", ":"]
   }
 }
