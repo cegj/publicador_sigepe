@@ -16,7 +16,6 @@ from datetime import timedelta
 import datetime
 print('Iniciando...')
 
-
 # Definição das funções de utilidades
 
 today = datetime.date.today()  # Hoje no formato ANSI AAAA-MM-DD
@@ -51,6 +50,22 @@ def limpar_terminal_exibir_cabecalho():
     print('******** github.com/cegj/ ********')
     print('----------------------------------')
     print()
+
+
+def print_titulo(string):
+    print('\033[1;36m' + string + '\033[0m\n')
+
+
+def print_erro(string):
+    print('\033[1;31m' + 'ERRO:' + string + '\033[0m')
+
+
+def print_sucesso(string):
+    print('\033[1;31m' + 'SUCESSO:' + string + '\033[0m')
+
+
+def input_seguir(string):
+    input('\033[1;33m' + string + '\033[0m')
 
 
 # Definição das funções de webdriver
@@ -161,15 +176,15 @@ def obter_config():
     if (configJson):
         return configJson
     else:
-        print('ERRO: Não foi possível importar os dados de config.json. Verifique se o arquivo está configurado corretamente. Em caso de dúvidas, consulte a documentação.')
-        input('Aperte ENTER para encerrar a aplicação...')
+        print_erro('Não foi possível importar os dados de config.json. Verifique se o arquivo está configurado corretamente. Em caso de dúvidas, consulte a documentação.')
+        input_seguir('Aperte ENTER para encerrar a aplicação...')
+        navegador.quit()
         sys.exit()
 
 # Define função que exibe os dados de config.json para o usuário
 
 
 def exibir_valores_config():
-    print('VALORES CONFIGURADOS: \n')
     print('Edição do BGP: ', edicaoBGP)
     print('TIpo de assinatura:', tipoAssinatura)
     print('Espécie:', especie)
@@ -192,14 +207,14 @@ def obter_lista_arquivos(diretorioArquivos):
 
         listaDeArquivos = {
             'arquivosAceitos': [],
-            'arquivosIgnorados': []
+            'arquivosRejeitados': []
         }
 
         for nomeArquivo in os.listdir(diretorioArquivos):
             if (nomeArquivo.count("~") == 0 and nomeArquivo.count(".rtf") > 0):
                 listaDeArquivos['arquivosAceitos'].append(nomeArquivo)
             else:
-                listaDeArquivos['arquivosIgnorados'].append(nomeArquivo)
+                listaDeArquivos['arquivosRejeitados'].append(nomeArquivo)
 
         return listaDeArquivos
 
@@ -289,7 +304,7 @@ def fazer_login():
 
             print('Você está em:', paginaAtual.text, '\n')
 
-            print('SUCESSO: Acesso ao Sigepe realizado')
+            print_sucesso('Acesso ao Sigepe realizado')
 
             sucesso = True
 
@@ -298,14 +313,14 @@ def fazer_login():
             erroLogin = navegador.find_element(
                 By.XPATH, '//*[@id="msg_alerta"] \n')
 
-            print('ERRO: ' + erroLogin.text, '. Tente novamente.')
+            print_erro(erroLogin.text, '. Tente novamente.')
 
             sucesso = False
 
         else:
 
             print(
-                'ERRO: Não foi possível fazer login (erro não identificado). Tente novamente. \n')
+                'Não foi possível fazer login (erro não identificado). Tente novamente. \n')
 
             sucesso = False
 
@@ -396,13 +411,12 @@ def renomear_arquivo(nomeArquivoCompleto):
     nomeArquivoArray = nomeArquivoCompleto.split('.', 1)
     nomeArquivo = nomeArquivoArray[0]
     extensaoArquivo = str('.' + nomeArquivoArray[1])
-    diretorio = configJson['config']['diretorio_arquivos']
-    termoNomeArquivo = configJson['config']['adicionar_termo_nome_arquivo']
     novoNomeArquivoCompleto = str(
         nomeArquivo + " " + termoNomeArquivo + extensaoArquivo)
 
-    file_oldname = os.path.join(diretorio, nomeArquivoCompleto)
-    file_newname_newfile = os.path.join(diretorio, novoNomeArquivoCompleto)
+    file_oldname = os.path.join(diretorioArquivos, nomeArquivoCompleto)
+    file_newname_newfile = os.path.join(
+        diretorioArquivos, novoNomeArquivoCompleto)
 
     os.rename(file_oldname, file_newname_newfile)
 
@@ -412,7 +426,6 @@ def renomear_arquivo(nomeArquivoCompleto):
 def copiar_mover_arquivo(nomeArquivo):
 
     try:
-        operacao = configJson['config']['copiar_ou_mover']
         origem = str(diretorioArquivos + nomeArquivo)
         destino = str(diretorioDestinoArquivos + nomeArquivo)
 
@@ -426,19 +439,20 @@ def copiar_mover_arquivo(nomeArquivo):
             return "ARQUIVO NÃO COPIADO/MOVIDO. INFORME 'M' OU 'C' EM CONFIG.JSON"
 
     except Exception as e:
-        print('ERRO: Não foi possível copiar ou mover arquivo. Retorno do sistema:')
-        print(repr(e))
+        print_erro(
+            'Não foi possível copiar ou mover arquivo. Retorno do sistema: ')
+        print_erro(repr(e))
 
-
-limpar_terminal_exibir_cabecalho()
 
 # Início da aplicação
 
-input('Aperte ENTER para iniciar...')
+limpar_terminal_exibir_cabecalho()
+
+input_seguir('Aperte ENTER para iniciar...')
 
 limpar_terminal_exibir_cabecalho()
 
-print('Realizando configurações iniciais...')
+print_titulo('CONFIGURAÇÃO DO NAVEGADOR (WEBDRIVER)')
 
 # Importa webdriver
 
@@ -451,12 +465,16 @@ halfwait = WebDriverWait(navegador, 10)
 wait = WebDriverWait(navegador, 20)
 longwait = WebDriverWait(navegador, 40)
 
-# Importa config.json e define as variáveis correspondentes
+print('\nConfiguração do navegador concluída')
+print('\n----------------------------------')
+input_seguir('\nAperte ENTER para continuar...')
+
+limpar_terminal_exibir_cabecalho()
+
+print_titulo('VALORES CONFIGURADOS PARA O LOTE DE PORTARIAS')
 
 configJson = obter_config()
 
-diretorioArquivos = configJson['config']['diretorio_arquivos']
-diretorioDestinoArquivos = configJson['config']['diretorio_arquivo_destino']
 dataAssinatura = configJson['valores']['data_assinatura']
 dataPublicacao = configJson['valores']['data_publicacao']
 edicaoBGP = configJson['valores']['edicao_bgp']
@@ -483,83 +501,88 @@ cargoResponsavelAssinatura = configJson['valores']['cargo_responsavel']
 #    input('Aperte ENTER para encerrar a aplicação...')
 #    sys.exit()
 
-
-print('\nConfigurações iniciais concluídas')
-
-print('\n----------------------------------\n')
-
-input('\nAperte ENTER para continuar...\n')
-
-limpar_terminal_exibir_cabecalho()
-
 exibir_valores_config()
 
-print('\n----------------------------------\n')
-
-input('\nAperte ENTER para continuar...\n')
-
-limpar_terminal_exibir_cabecalho()
+print('\n----------------------------------')
+input_seguir('\nAperte ENTER para continuar...')
 
 # Obtém lista de arquivos a serem publicados
 
+limpar_terminal_exibir_cabecalho()
+
+print_titulo('LISTA DE ARQUIVOS PARA PUBLICAÇÃO')
+
+diretorioArquivos = configJson['config']['diretorio_arquivos']
+diretorioDestinoArquivos = configJson['config']['diretorio_arquivo_destino']
+termoNomeArquivo = configJson['config']['adicionar_termo_nome_arquivo']
+operacao = configJson['config']['copiar_ou_mover']
+
 listaDeArquivos = obter_lista_arquivos(diretorioArquivos)
 
-print('O diretório de origem dos arquivos é: ' + diretorioArquivos)
-print('O diretório de destino dos arquivos é: ' + diretorioDestinoArquivos)
-print('Para alterá-los, edite config.json e reinicie a aplicação \n')
+print('- Diretório de origem: ' + diretorioArquivos + '\n')
+
+if (operacao == "C"):
+    print('- Diretório de destino: ' + diretorioDestinoArquivos)
+    print('- Após publicação: COPIAR para o diretório de destino\n')
+elif(operacao == "M"):
+    print('- Diretório de destino: ' + diretorioDestinoArquivos)
+    print('- Após publicação: MOVER para o diretório de destino\n')
+
+if (termoNomeArquivo != ""):
+    print('- Termo a ser adicionado ao título do arquivo: ' + termoNomeArquivo)
 
 if (type(listaDeArquivos) is dict):
 
     arquivosAceitos = listaDeArquivos['arquivosAceitos']
-    arquivosIgnorados = listaDeArquivos['arquivosIgnorados']
+    arquivosRejeitados = listaDeArquivos['arquivosRejeitados']
 
     if (len(arquivosAceitos) > 0):
 
-        print('Lista de arquivos aceitos no diretório: \n')
+        print(len(arquivosAceitos) + 'arquivo(s) aceito(s) no diretório: \n')
 
         for arquivoAceito in arquivosAceitos:
             print(arquivoAceito)
 
-        print('\nQuantidade de arquivos válidos no diretório: ',
-              len(arquivosAceitos), 'arquivos \n')
-
     else:
-        print('ERRO: Não houve arquivos aceitos no diretório. Verifique o formato dos arquivos.')
-        input('Aperte ENTER para encerrar a aplicação...')
+        print_erro(
+            'Não houve arquivos aceitos no diretório. Verifique o formato dos arquivos.')
+        input_seguir('Aperte ENTER para encerrar a aplicação...')
+        navegador.quit()
         sys.exit()
 
-    if (len(arquivosIgnorados) > 0):
-        print('Lista de arquivos ignorados no diretório: \n')
+    if (len(arquivosRejeitados) > 0):
+        print(len(arquivosRejeitados) +
+              'arquivo(s) rejeitado(s) no diretório: \n')
 
-        for arquivoIgnorado in arquivosIgnorados:
-            print(arquivoIgnorado)
+        for arquivoRejeitado in arquivosRejeitados:
+            print(arquivoRejeitado)
 
-        print('\nQuantidade de arquivos ignorados no diretório: ',
-              len(arquivosIgnorados), 'arquivos \n')
-        print('Os arquivos ignorados não serão publicados. Um arquivo pode ter sido ignorado por estar fora do formato .rtf ou por outros motivos que o deixem fora do padrão esperado. \n')
+        print('Os arquivos rejeitados não serão publicados.')
 
-    print('\n----------------------------------\n')
-
-    input('\nAperte ENTER para continuar...\n')
+    print('\n----------------------------------')
+    input_seguir('\nAperte ENTER para continuar...')
     limpar_terminal_exibir_cabecalho()
 
 else:
-    print('ERRO: Não foi possível importar a lista de arquivos. Retorno do sistema:' + listaDeArquivos)
-    input('Aperte ENTER para encerrar a aplicação...')
+    print_erro(
+        'Não foi possível importar a lista de arquivos. Retorno do sistema: ' + listaDeArquivos)
+    input_seguir('Aperte ENTER para encerrar a aplicação...')
+    navegador.quit()
     sys.exit()
 
 
 # Fazer login no SIGEPE
 
-print('\n----------------------------------\n')
-print('Iniciando login no Sigepe... \n')
+print_titulo('LOGIN NO SIGEPE')
 
 fazer_login()
 
-print('\n----------------------------------\n')
-input('\nAperte ENTER para *iniciar* a publicação das portarias...\n')
+print('\n----------------------------------')
+input_seguir('\nAperte ENTER para *iniciar* a publicação das portarias...')
 
 limpar_terminal_exibir_cabecalho()
+
+print_titulo('PUBLICAÇÃO DAS PORTARIAS')
 
 # Preencher formulários com dados dos arquivos e publicar
 
@@ -567,7 +590,7 @@ listaPortariasPublicadas = []
 listaPortariasNaoPublicadas = []
 listaPortariasSemResultado = []
 
-for nomeArquivo in listaDeArquivos["arquivosAceitos"]:
+for nomeArquivo in arquivosAceitos:
 
     try:
 
@@ -1133,14 +1156,14 @@ for nomeArquivo in listaDeArquivos["arquivosAceitos"]:
         try:
             mensagemErro = navegador.find_element(
                 By.XPATH, '//*[@id="msgCadastrarAto"]/div[2]/ul/li/span[2]')
-            print(numPortaria, '- ERRO:', mensagemErro.text)
+            print_erro(numPortaria, ' - ', mensagemErro.text)
             listaPortariasNaoPublicadas.append(
                 numPortaria + ' - ' + mensagemErro.text)
         except:
             try:
                 mensagemSucesso = navegador.find_element(
                     By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
-                print(numPortaria, '- SUCESSO:', mensagemSucesso.text)
+                print_sucesso(numPortaria, ' - ', mensagemSucesso.text)
                 listaPortariasPublicadas.append(numPortaria)
 
                 if (configJson['config']['copiar_ou_mover'] != ""):
@@ -1153,7 +1176,7 @@ for nomeArquivo in listaDeArquivos["arquivosAceitos"]:
 
             except:
                 mensagemErro = 'Resultado não identificado! Verifique se a portaria foi publicada.'
-                print(numPortaria, '- ERRO:', mensagemErro)
+                print_erro(numPortaria, ' - ', mensagemErro)
                 listaPortariasSemResultado.append(numPortaria)
 
         navegador.get(
@@ -1194,4 +1217,4 @@ if (quantidadePortariasSemResultado > 0):
     print('IMPORTANTE: Verifique se as portarias sem resultado foram cadastradas para publicação no SIGEPE')
 
 navegador.quit()
-input('Aperte ENTER para encerrar a aplicação...')
+input_seguir('Aperte ENTER para encerrar a aplicação...')
