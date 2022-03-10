@@ -4,9 +4,8 @@
     "habilitacao_sigepe": "GESTOR - ÓRGÃO:UFES",
     "adicionar_termo_nome_arquivo": "ok",
     "diretorio_arquivo_destino": "\\\\arq-progep1\\boufes\\BOUFES 2022\\PROGEP\\[mesatual_num_extenso0]\\[hoje.]\\",
-    "copiar_ou_mover": "C",
-    "diretorio_pdf": "\\\\arq-progep1\\boufes\\BOUFES 2022\\PROGEP\\PORTARIAS PARA ASSINATURA DIGITAL\\DDP\\Aguardando assinatura - DDP"
-  },
+    "copiar_ou_mover": "C"
+    },
   
   "valores": {
       "edicao_bgp": "Normal",
