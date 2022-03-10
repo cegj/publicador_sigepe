@@ -20,7 +20,9 @@ print('Iniciando...')
 
 today = datetime.date.today()  # Hoje no formato ANSI AAAA-MM-DD
 tomorrow = today + timedelta(1)  # Amanhã no formato ANSI AAAA-MM-DD
-month = datetime.date.today().month
+day = today.day
+month = today.month
+year = today.year
 
 
 def ajustar_data(data, separador):
@@ -57,15 +59,23 @@ def print_titulo(string):
 
 
 def print_erro(string):
-    print('\033[1;31m' + 'ERRO:' + string + '\033[0m')
+    print('\033[1;31m' + 'ERRO: ' + string + '\033[0m')
 
 
 def print_sucesso(string):
-    print('\033[1;31m' + 'SUCESSO:' + string + '\033[0m')
+    print('\033[1;32m' + 'SUCESSO: ' + string + '\033[0m')
 
 
 def input_seguir(string):
     input('\033[1;33m' + string + '\033[0m')
+
+def print_color(cor, string):
+    if (cor == 'cinza'):
+        cor = '\033[1;90m'
+
+    print(cor + string + '\033[0m')
+
+
 
 
 # Definição das funções de webdriver
@@ -82,7 +92,30 @@ def abrir_webdriver():
 
 def obter_config():
 
+    def definir_valor_var(configJson):
+        opcoesVar = configJson["valores_var"]
+
+        if len(opcoesVar) > 0:
+            print("Opções de valores para [var]:\n")
+
+            for i, valor in enumerate(opcoesVar):
+                print (i, " - ", valor)
+
+            selected = input('\nInforme o número da opção para preencher [var] no arquivo de configurações, ou ENTER para deixar em branco:\n')
+
+            for i, valor in enumerate(opcoesVar):
+                if (int(selected) == i):
+                    return valor
+                    break
+
+        else:
+            return ""
+
     def atribuir_variaveis_config(configJson):
+
+        # Define o valor de [var] (pergunta ao usuário)
+
+        vVar = definir_valor_var(configJson)
 
         # Define valor variável de [hoje]
         vHojePonto = str(ajustar_data(today, '.'))
@@ -114,20 +147,38 @@ def obter_config():
         # Define o valor variável de [ano_assinatura] #########MELHORAR
 
         if (configJson['valores']['data_assinatura'].count("hoje") > 0):
-            dataAssinatura = ajustar_data(today, '/')
+            dataAssinaturaP = ajustar_data(today, '/')
+        elif(configJson['valores']['data_assinatura'].count("proximo_dia_util") > 0):
+            dataAssinaturaP = ajustar_data(tomorrow, '/')
         else:
-            dataAssinatura = configJson['valores']['data_assinatura']
+            dataAssinaturaP = configJson['valores']['data_assinatura']
 
-        dataAssinaturaArray = (dataAssinatura.split('/'))
+        dataAssinaturaArray = (dataAssinaturaP.split('/'))
         vAnoAssinatura = str(dataAssinaturaArray[2])
 
         # define o valor da variavel [hoje_dia]
-        vHojeDia = str(datetime.date.today().day)
+        vHojeDia = str(day)
+
+        if day < 10:
+            vHojeDia0 = '0' + str(day)
+        else:
+            vHojeDia0 = str(day)
+
+        # define o valor da variavel [hoje_mes]
+        vHojeDia = str(month)
+
+        if month < 10:
+            vHojeMes0 = '0' + str(month)
+        else:
+            vHojeMes0 = str(month)
+
+        # define o valor da variavel [hoje_ano]
+        vHojeAno = str(year)
 
         # Define o valor da variável [mesatual_num-extenso]
 
         meses = {
-            "1": '01 - JANEIRO',
+            "1": '1 - JANEIRO',
             "2": "2 - FEVEREIRO",
             "3": "3 - MARÇO",
             "4": "4 - ABRIL",
@@ -146,24 +197,34 @@ def obter_config():
                 vMesAtualNumExtenso = value
                 break
 
+        for key, value in meses.items():
+            if (key == str(month)):
+                if month < 10:
+                    vMesAtualNumExtenso0 = '0' + value
+                    break
+                else:
+                    vMesAtualNumExtenso0 = value
+                    break
+
         import ast
 
         configJsonStr = str(configJson)
 
+        configJsonStr = configJsonStr.replace("[var]", vVar)
         configJsonStr = configJsonStr.replace("[hoje.]", vHojePonto)
         configJsonStr = configJsonStr.replace("[hoje/]", vHojeBarra)
         configJsonStr = configJsonStr.replace("[hoje-]", vHojeTraco)
-        configJsonStr = configJsonStr.replace(
-            "[proximo_dia_util.]", vProximoUtilPonto)
-        configJsonStr = configJsonStr.replace(
-            "[proximo_dia_util/]", vProximoUtilBarra)
-        configJsonStr = configJsonStr.replace(
-            "[proximo_dia_util-]", vProximoUtilTraco)
-        configJsonStr = configJsonStr.replace(
-            "[ano_assinatura]", vAnoAssinatura)
-        configJsonStr = configJsonStr.replace(
-            "[mesatual_num-extenso]", vMesAtualNumExtenso)
         configJsonStr = configJsonStr.replace("[hoje_dia]", vHojeDia)
+        configJsonStr = configJsonStr.replace("[hoje_dia0]", vHojeDia0)
+        configJsonStr = configJsonStr.replace("[hoje_mes]", vHojeDia)
+        configJsonStr = configJsonStr.replace("[hoje_mes0]", vHojeDia0)
+        configJsonStr = configJsonStr.replace("[hoje_ano]", vHojeAno)
+        configJsonStr = configJsonStr.replace("[proximo_dia_util.]", vProximoUtilPonto)
+        configJsonStr = configJsonStr.replace("[proximo_dia_util/]", vProximoUtilBarra)
+        configJsonStr = configJsonStr.replace("[proximo_dia_util-]", vProximoUtilTraco)
+        configJsonStr = configJsonStr.replace("[ano_assinatura]", vAnoAssinatura)
+        configJsonStr = configJsonStr.replace("[mesatual_num_extenso]", vMesAtualNumExtenso)
+        configJsonStr = configJsonStr.replace("[mesatual_num_extenso0]", vMesAtualNumExtenso0)
 
         configJson = ast.literal_eval(configJsonStr)
 
@@ -196,7 +257,6 @@ def exibir_valores_config():
     print('UORG: ', uorg)
     print('Responsável pela assinatura: ', responsavelAssinatura)
     print('Cargo do responsável pela assinatura: ', cargoResponsavelAssinatura)
-    print('Para alterá-los, edite config.json e reinicie a aplicação\n')
 
 # Define função para obter dados de portaria
 
@@ -313,7 +373,7 @@ def fazer_login():
             erroLogin = navegador.find_element(
                 By.XPATH, '//*[@id="msg_alerta"] \n')
 
-            print_erro(erroLogin.text, '. Tente novamente.')
+            print_erro(erroLogin.text + '. Tente novamente.')
 
             sucesso = False
 
@@ -443,7 +503,6 @@ def copiar_mover_arquivo(nomeArquivo):
             'Não foi possível copiar ou mover arquivo. Retorno do sistema: ')
         print_erro(repr(e))
 
-
 # Início da aplicação
 
 limpar_terminal_exibir_cabecalho()
@@ -467,11 +526,9 @@ longwait = WebDriverWait(navegador, 40)
 
 print('\nConfiguração do navegador concluída')
 print('\n----------------------------------')
-input_seguir('\nAperte ENTER para continuar...')
 
 limpar_terminal_exibir_cabecalho()
-
-print_titulo('VALORES CONFIGURADOS PARA O LOTE DE PORTARIAS')
+print_titulo('CONFIGURAÇÃO DOS VALORES PARA O LOTE DE ARQUIVOS')
 
 configJson = obter_config()
 
@@ -501,6 +558,8 @@ cargoResponsavelAssinatura = configJson['valores']['cargo_responsavel']
 #    input('Aperte ENTER para encerrar a aplicação...')
 #    sys.exit()
 
+limpar_terminal_exibir_cabecalho()
+print_titulo('CONFIGURAÇÃO DOS VALORES PARA O LOTE DE ARQUIVOS')
 exibir_valores_config()
 
 print('\n----------------------------------')
@@ -519,17 +578,25 @@ operacao = configJson['config']['copiar_ou_mover']
 
 listaDeArquivos = obter_lista_arquivos(diretorioArquivos)
 
-print('- Diretório de origem: ' + diretorioArquivos + '\n')
+print('- Diretório de origem:')
+print_color('cinza', diretorioArquivos + '\n')
 
 if (operacao == "C"):
-    print('- Diretório de destino: ' + diretorioDestinoArquivos)
-    print('- Após publicação: COPIAR para o diretório de destino\n')
+    print('- Operação a ser realizada após publicação:')
+    print_color('cinza', 'COPIAR\n')
+    print('- Diretório de destino:')
+    print_color('cinza', diretorioDestinoArquivos + '\n')
 elif(operacao == "M"):
-    print('- Diretório de destino: ' + diretorioDestinoArquivos)
-    print('- Após publicação: MOVER para o diretório de destino\n')
+    print('- Operação a ser realizada após publicação:')
+    print_color('cinza', 'MOVER\n')
+    print('- Diretório de destino:')
+    print_color('cinza', diretorioDestinoArquivos + '\n')
 
 if (termoNomeArquivo != ""):
-    print('- Termo a ser adicionado ao título do arquivo: ' + termoNomeArquivo)
+    print('- Termo a ser adicionado ao título do arquivo:')
+    print_color('cinza', termoNomeArquivo + '\n')
+
+print('\n----------------------------------\n')
 
 if (type(listaDeArquivos) is dict):
 
@@ -538,26 +605,24 @@ if (type(listaDeArquivos) is dict):
 
     if (len(arquivosAceitos) > 0):
 
-        print(len(arquivosAceitos) + 'arquivo(s) aceito(s) no diretório: \n')
+        print(len(arquivosAceitos), 'ARQUIVO(S) PARA PUBLICAÇÃO: \n')
 
         for arquivoAceito in arquivosAceitos:
             print(arquivoAceito)
 
     else:
-        print_erro(
-            'Não houve arquivos aceitos no diretório. Verifique o formato dos arquivos.')
+        print_erro('Não houve arquivos aceitos no diretório. Verifique o formato dos arquivos.')
         input_seguir('Aperte ENTER para encerrar a aplicação...')
         navegador.quit()
         sys.exit()
 
     if (len(arquivosRejeitados) > 0):
-        print(len(arquivosRejeitados) +
-              'arquivo(s) rejeitado(s) no diretório: \n')
+        print(len(arquivosRejeitados), 'arquivo(s) REJEITADOS: \n')
 
         for arquivoRejeitado in arquivosRejeitados:
             print(arquivoRejeitado)
 
-        print('Os arquivos rejeitados não serão publicados.')
+        print('\nOs arquivos rejeitados não serão publicados.')
 
     print('\n----------------------------------')
     input_seguir('\nAperte ENTER para continuar...')
@@ -603,10 +668,10 @@ for nomeArquivo in arquivosAceitos:
         textoPortariaFormatado = formatar_portaria_para_publicar(textoPortaria)
 
         print(numPortaria, '- Iniciando preenchimento da portaria...')
-        print('~~~~~~')
-        print(textoPortariaFormatado[0])
-        print(textoPortariaFormatado[1])
-        print('~~~~~~')
+        print_color('cinza', '~~~~~~')
+        print_color('cinza', textoPortariaFormatado[0])
+        print_color('cinza', textoPortariaFormatado[1])
+        print_color('cinza', '~~~~~~')
 
         aguardar_loading()
 
@@ -1156,14 +1221,14 @@ for nomeArquivo in arquivosAceitos:
         try:
             mensagemErro = navegador.find_element(
                 By.XPATH, '//*[@id="msgCadastrarAto"]/div[2]/ul/li/span[2]')
-            print_erro(numPortaria, ' - ', mensagemErro.text)
+            print_erro(numPortaria + ' - ' + mensagemErro.text)
             listaPortariasNaoPublicadas.append(
                 numPortaria + ' - ' + mensagemErro.text)
         except:
             try:
                 mensagemSucesso = navegador.find_element(
                     By.XPATH, '//*[@id="idFormMsg:idMensagem"]/div/ul/li/span[2]')
-                print_sucesso(numPortaria, ' - ', mensagemSucesso.text)
+                print_sucesso(numPortaria + ' - ' + mensagemSucesso.text)
                 listaPortariasPublicadas.append(numPortaria)
 
                 if (configJson['config']['copiar_ou_mover'] != ""):
@@ -1172,11 +1237,11 @@ for nomeArquivo in arquivosAceitos:
 
                 if (configJson['config']['copiar_ou_mover'] != ""):
                     novoDiretorio = copiar_mover_arquivo(nomeArquivo)
-                    print(numPortaria, '- Arquivo movido para:', novoDiretorio)
+                    print(numPortaria, '- Arquivo copiado/movido para:', novoDiretorio)
 
             except:
                 mensagemErro = 'Resultado não identificado! Verifique se a portaria foi publicada.'
-                print_erro(numPortaria, ' - ', mensagemErro)
+                print_erro(numPortaria + ' - ' + mensagemErro)
                 listaPortariasSemResultado.append(numPortaria)
 
         navegador.get(
@@ -1192,7 +1257,7 @@ print('----------------------------------')
 print('----------------------------------')
 
 print()
-print("PUBLICAÇÕES CONCLUÍDAS!")
+print_titulo("PUBLICAÇÕES CONCLUÍDAS!")
 
 if (quantidadePortariasPublicadas > 0):
     print()
@@ -1217,4 +1282,4 @@ if (quantidadePortariasSemResultado > 0):
     print('IMPORTANTE: Verifique se as portarias sem resultado foram cadastradas para publicação no SIGEPE')
 
 navegador.quit()
-input_seguir('Aperte ENTER para encerrar a aplicação...')
+input_seguir('\n\nAperte ENTER para encerrar a aplicação...')
