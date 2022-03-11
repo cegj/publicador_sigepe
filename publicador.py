@@ -101,13 +101,26 @@ def obter_config():
             for i, valor in enumerate(opcoesVar):
                 print (i, " - ", valor)
 
-            selected = input('\nInforme o número da opção para preencher [var] no arquivo de configurações, ou ENTER para deixar em branco:\n')
+            sucesso = False
 
-            for i, valor in enumerate(opcoesVar):
-                if (int(selected) == i):
-                    return valor
-                    break
+            while (sucesso == False):
 
+                selected = input('\nInforme o número da opção para preencher [var] no arquivo de configurações, ou ENTER para deixar em branco:\n')
+
+                if (selected != ""):
+                    try:
+                        selected = int(selected)
+                        for i, valor in enumerate(opcoesVar):
+                            if (selected == i):
+                                return valor
+                        
+                        print_erro("O número informado não corresponde a uma opção.")
+                        sucesso = False
+                    except:
+                        print_erro("Você não digitou um número inteiro ou ENTER para deixar em branco.")
+                        sucesso = False
+                else:
+                    return ""
         else:
             return ""
 
@@ -229,8 +242,31 @@ def obter_config():
         configJson = ast.literal_eval(configJsonStr)
 
         return configJson
+    
+    # try:
+    #     with open('dir_config_publicador.json', 'r', encoding="utf-8") as dir_config_json_file:
+    #         dirConfigJson = json.load(dir_config_json_file)
+    #         dirConfigJson = dirConfigJson["dir"]
+    # except:
+    #     try:
+    #         with open('config_publicador.json', 'r', encoding="utf-8") as dir_config_json_file:
+    #             dirConfigJson = json.load(dir_config_json_file)
+    #             dirConfigJson = dirConfigJson["dir"]
+    #     except Exception as e:
+    #         print_erro('Não foi localizado um arquivo config.json ou dirconfig.json no diretório do aplicativo.\nVerifique e tente novamente.')
+    #         print_erro(repr(e))
+    #         input_seguir('Aperte ENTER para encerrar a aplicação...')
+    #         navegador.quit()
+    #         sys.exit()
 
-    with open('config.json', 'r', encoding="utf-8") as config_json_file:
+    with open('config_publicador.json', 'r', encoding="utf-8") as temp_config_json_file:
+        dirConfigJson = json.load(temp_config_json_file)
+        if ("dir_config" in dirConfigJson):
+            dirConfigJson = dirConfigJson["dir_config"]
+        else:
+            dirConfigJson = ""
+
+    with open(dirConfigJson + 'config_publicador.json', 'r', encoding="utf-8") as config_json_file:
         configJson = json.load(config_json_file)
         configJson = atribuir_variaveis_config(configJson)
 
@@ -630,7 +666,7 @@ if (type(listaDeArquivos) is dict):
 
 else:
     print_erro(
-        'Não foi possível importar a lista de arquivos. Retorno do sistema: ' + listaDeArquivos)
+        'Não foi possível importar a lista de arquivos.\nRetorno do sistema: ' + listaDeArquivos)
     input_seguir('Aperte ENTER para encerrar a aplicação...')
     navegador.quit()
     sys.exit()
