@@ -235,40 +235,45 @@ def obter_config():
         configJsonStr = configJsonStr.replace("[proximo_dia_util.]", vProximoUtilPonto)
         configJsonStr = configJsonStr.replace("[proximo_dia_util/]", vProximoUtilBarra)
         configJsonStr = configJsonStr.replace("[proximo_dia_util-]", vProximoUtilTraco)
-        configJsonStr = configJsonStr.replace("[ano_assinatura]", vAnoAssinatura)
         configJsonStr = configJsonStr.replace("[mesatual_num_extenso]", vMesAtualNumExtenso)
         configJsonStr = configJsonStr.replace("[mesatual_num_extenso0]", vMesAtualNumExtenso0)
+        configJsonStr = configJsonStr.replace("[ano_assinatura]", vAnoAssinatura)
 
         configJson = ast.literal_eval(configJsonStr)
 
         return configJson
-    
-    # try:
-    #     with open('dir_config_publicador.json', 'r', encoding="utf-8") as dir_config_json_file:
-    #         dirConfigJson = json.load(dir_config_json_file)
-    #         dirConfigJson = dirConfigJson["dir"]
-    # except:
-    #     try:
-    #         with open('config_publicador.json', 'r', encoding="utf-8") as dir_config_json_file:
-    #             dirConfigJson = json.load(dir_config_json_file)
-    #             dirConfigJson = dirConfigJson["dir"]
-    #     except Exception as e:
-    #         print_erro('Não foi localizado um arquivo config.json ou dirconfig.json no diretório do aplicativo.\nVerifique e tente novamente.')
-    #         print_erro(repr(e))
-    #         input_seguir('Aperte ENTER para encerrar a aplicação...')
-    #         navegador.quit()
-    #         sys.exit()
 
-    with open('config_publicador.json', 'r', encoding="utf-8") as temp_config_json_file:
-        dirConfigJson = json.load(temp_config_json_file)
-        if ("dir_config" in dirConfigJson):
-            dirConfigJson = dirConfigJson["dir_config"]
-        else:
-            dirConfigJson = ""
+    try:
+        with open('config_publicador.json', 'r', encoding="utf-8") as temp_config_json_file:
+            configJson = json.load(temp_config_json_file)
+            
+            if configJson["dir_config"]:
+                dirConfigSource = configJson["dir_config"][0]
 
-    with open(dirConfigJson + 'config_publicador.json', 'r', encoding="utf-8") as config_json_file:
-        configJson = json.load(config_json_file)
-        configJson = atribuir_variaveis_config(configJson)
+                if (dirConfigSource == "local"):
+                    dirConfigPath = configJson["dir_config"][1]
+                    with open(dirConfigPath, 'r', encoding="utf-8") as config_json_file:
+                        configJson = json.load(config_json_file)
+                        configJson = atribuir_variaveis_config(configJson)
+
+                elif (dirConfigSource == "remoto"):
+                    dirConfigPath = configJson["dir_config"][1]
+                    import urllib.request
+                    with urllib.request.urlopen(dirConfigPath) as url:
+                        configJson = json.loads(url.read().decode())
+                        configJson = atribuir_variaveis_config(configJson)
+            else:
+                with open('config_publicador.json', 'r', encoding="utf-8") as config_json_file:
+                    configJson = json.load(config_json_file)
+                    configJson = atribuir_variaveis_config(configJson)
+     
+    except Exception as e:
+        print_erro('Não foi possível importar os dados de config.json.\nVerifique se o arquivo está configurado corretamente.\nMensagem retornada pelo sistema: ' + repr(e))
+        input_seguir('Aperte ENTER para encerrar a aplicação...')
+        navegador.quit()
+        sys.exit()
+
+
 
     if (configJson):
         return configJson
