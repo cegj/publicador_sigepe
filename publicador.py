@@ -735,8 +735,9 @@ for nomeArquivo in arquivosAceitos:
 
             aguardar_loading()
 
-        except:
-            print(numPortaria, "- ERRO: Falha ao preencher tipo de assinatura")
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher edição do boletim"))
+            print(repr(e))
 
         # Tipo de assinatura
 
@@ -757,8 +758,9 @@ for nomeArquivo in arquivosAceitos:
 
             aguardar_loading()
 
-        except:
-            print(numPortaria, "- ERRO: Falha ao preencher tipo de assinatura")
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher tipo de assinatura"))
+            print(repr(e))
 
         # Tipo de preenchimento do número
 
@@ -784,15 +786,16 @@ for nomeArquivo in arquivosAceitos:
             print(numPortaria, '- Tipo de preenchimento do número selecionado: ',
                   campoTipoNumero.text)
 
-        except:
-            print(numPortaria, "- ERRO: Falha ao preencher tipo de número")
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher tipo de número"))
+            print(repr(e))
 
         # Tema
 
         if (obter_tema(textoPortariaFormatado[1])):
             temaAssunto = obter_tema(textoPortariaFormatado[1])
         else:
-            print('!!!TEMA NÃO IDENTIFICADO!!!')
+            print_erro('!!!TEMA NÃO IDENTIFICADO!!!')
 
         try:
 
@@ -825,8 +828,9 @@ for nomeArquivo in arquivosAceitos:
 
             print(numPortaria, '- Tema selecionado: ', campoTemaPreenchido.text)
 
-        except:
-            print(numPortaria, "- ERRO: Falha ao preencher tema")
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher tema"))
+            print(repr(e))
 
         # Assunto
 
@@ -871,8 +875,9 @@ for nomeArquivo in arquivosAceitos:
 
             time.sleep(0.3)
 
-        except:
-            print(numPortaria, '- ERRO: Falha ao preencher assunto!')
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher assunto"))
+            print(repr(e))
 
         # Número do ato
 
@@ -889,8 +894,10 @@ for nomeArquivo in arquivosAceitos:
             aguardar_loading()
 
             print(numPortaria, '- Número do ato preenchido')
-        except:
-            print(numPortaria, "- ERRO: Falha ao preencher número do ato")
+
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher número do ato"))
+            print(repr(e))
 
         # Data de assinatura
 
@@ -915,8 +922,9 @@ for nomeArquivo in arquivosAceitos:
                 print(
                     numPortaria, '- Tipo de assinatura é digital. Data de assinatura não é preenchida.')
 
-        except:
-            print(numPortaria, "- ERRO: Falha ao preencher data de assinatura")
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher data de assinatura"))
+            print(repr(e))
 
         # Data de publicação
 
@@ -938,8 +946,9 @@ for nomeArquivo in arquivosAceitos:
                 print(numPortaria, '- Data da publicação preenchida: ',
                       dataPublicacao)
 
-            except:
-                print(numPortaria, "- ERRO: Falha ao preencher data de publicação")
+            except Exception as e:
+                print_erro(str(numPortaria + "- Falha ao preencher data de publicação"))
+                print(repr(e))
 
         else:
             print(
@@ -971,7 +980,7 @@ for nomeArquivo in arquivosAceitos:
             print(numPortaria, '- Espécie selecionada: ', campoEspecie.text)
 
         except:
-            print(numPortaria, "- ERRO: Falha ao preencher espécie")
+            print(str(numPortaria + "- Falha ao preencher espécie"))
 
         # Texto do ato/portaria (iframe)
 
@@ -1003,8 +1012,9 @@ for nomeArquivo in arquivosAceitos:
 
             print(numPortaria, '- Texto da portaria preenchido')
 
-        except:
-            print(numPortaria, "- ERRO: Falha ao preencher texto do ato")
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher texto da portaria"))
+            print(repr(e))
 
         # Órgãos elaboradores
 
@@ -1173,8 +1183,9 @@ for nomeArquivo in arquivosAceitos:
             print(numPortaria, '- Responsável pela assinatura preenchido: ',
                   responsavelAssinaturaSelecionado.text, " - ", CargoResponsavelAssinaturaSelecionado.text)
 
-        except:
-            print(numPortaria, "- ERRO: Falha ao preencher órgão elaborador")
+        except Exception as e:
+            print_erro(str(numPortaria + "- Falha ao preencher órgão elaborador"))
+            print(repr(e))
 
         # Interessado
 
@@ -1185,7 +1196,7 @@ for nomeArquivo in arquivosAceitos:
             print(numPortaria, '- Iniciando busca e preenchimento do interessado...')
 
             botaoAbrirInteressados = wait.until(EC.element_to_be_clickable(
-                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt1415"]/span')))
+                (By.XPATH, '//*[text()="Incluir interessado"]')))
 
             botaoAbrirInteressados.click()
 
@@ -1201,7 +1212,7 @@ for nomeArquivo in arquivosAceitos:
             campoMatricula.send_keys(str(siapeInteressado))
 
             botaoPesquisarInteressado = wait.until(EC.element_to_be_clickable(
-                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt492"]/span')))
+                (By.XPATH, '//*[text()="Pesquisar"]')))
 
             botaoPesquisarInteressado.click()
 
@@ -1223,9 +1234,6 @@ for nomeArquivo in arquivosAceitos:
 
             aguardar_loading()
 
-            botaoSelecionarServidor = wait.until(EC.element_to_be_clickable(
-                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt538"]/span')))
-
             navegador.execute_script(
                 "botaoSelecionarServidor = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt538');")
 
@@ -1234,13 +1242,14 @@ for nomeArquivo in arquivosAceitos:
             aguardar_loading()
 
             nomeServidorCadastrado = wait.until(EC.presence_of_element_located(
-                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblInteressados:0:j_idt1427:txtContent"]')))
+                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblInteressados:0:j_idt1451:txtContent"]')))
 
             print(numPortaria, '- Servidor interessado cadastrado: ',
                   str(siapeInteressado), '-', nomeServidorCadastrado.text)
 
-        except:
-            print(numPortaria, "-ERRO: Falha ao preencher interessado")
+        except Exception as e:
+            print_erro(str(numPortaria + " - Falha ao preencher interessado"))
+            print(repr(e))
 
         # ENVIAR PARA PUBLICAÇÃO
 
@@ -1254,7 +1263,7 @@ for nomeArquivo in arquivosAceitos:
         aguardar_loading()
 
     except Exception as e:
-        print(numPortaria, "- ERRO: Não foi possível publicar a portaria")
+        print_erro(str(numPortaria + "- Não foi possível publicar a portaria"))
         print(repr(e))
 
     finally:

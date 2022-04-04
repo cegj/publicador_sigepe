@@ -1,5 +1,5 @@
 {
-  "dir_config": ["", ""],
+  "dir_config": ["local", "\\\\arq-progep1\\ddp_secretaria\\17 - PORTARIAS\\config_publicador.json"],
 
   "config": {
     "diretorio_arquivos": "",
