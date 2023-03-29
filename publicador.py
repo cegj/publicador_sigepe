@@ -1025,8 +1025,8 @@ for nomeArquivo in arquivosAceitos:
 
             try:  # Gatilho para modelo novo é o XPATH do botão para abrir janela, pois são diferentes
                 botaoIncluirOrgaoElabAnt = wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt395"]/span')))
-
+                    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt416"]/span')))
+                    
                 print(numPortaria,
                       '- [obs:] Cadastro pelo modelo antigo de janela')
 
@@ -1088,7 +1088,7 @@ for nomeArquivo in arquivosAceitos:
                     cargoResponsavelAssinatura)
 
                 botaoGravarOrgao = wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt699"]/span')))
+                    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt745"]/span')))
 
                 botaoGravarOrgao.click()
 
@@ -1096,7 +1096,7 @@ for nomeArquivo in arquivosAceitos:
 
             except:
                 botaoIncluirOrgaoElab = navegador.find_element(
-                    By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt396"]')
+                    By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt418"]/span')
 
                 print(numPortaria,
                       '- [obs:] Cadastro pelo novo modelo de janela')
@@ -1175,10 +1175,10 @@ for nomeArquivo in arquivosAceitos:
                 aguardar_loading()
 
             responsavelAssinaturaSelecionado = wait.until(EC.presence_of_element_located(
-                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt416:txtContent"]')))
+                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt442:txtContent"]')))
 
             CargoResponsavelAssinaturaSelecionado = wait.until(EC.presence_of_element_located(
-                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt418:txtContent"]')))
+                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt444:txtContent"]')))
 
             print(numPortaria, '- Responsável pela assinatura preenchido: ',
                   responsavelAssinaturaSelecionado.text, " - ", CargoResponsavelAssinaturaSelecionado.text)
@@ -1203,7 +1203,7 @@ for nomeArquivo in arquivosAceitos:
             aguardar_loading()
 
             campoMatricula = wait.until(EC.element_to_be_clickable(
-                (By.ID,  'frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt434:j_idt466')))
+                (By.ID,  'frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt461:j_idt493')))
 
             campoMatricula.click()
 
@@ -1219,7 +1219,7 @@ for nomeArquivo in arquivosAceitos:
             aguardar_loading()
 
             checkboxSelecionarServidor = wait.until(EC.element_to_be_clickable(
-                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt494:dataTableResultado:j_idt499"]/div/div/div[2]')))
+                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt521:dataTableResultado:j_idt528"]/div/div/div[2]')))
 
             checkboxSelecionarServidor.click()
 
@@ -1228,21 +1228,21 @@ for nomeArquivo in arquivosAceitos:
             time.sleep(0.3)
 
             navegador.execute_script(
-                "botaoIncluirServidor = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt494:j_idt517');")
+                "botaoIncluirServidor = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt521:j_idt547');")
 
             navegador.execute_script("botaoIncluirServidor.click();")
 
             aguardar_loading()
 
             navegador.execute_script(
-                "botaoSelecionarServidor = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt538');")
+                "botaoSelecionarServidor = document.getElementById('frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt569');")
 
             navegador.execute_script("botaoSelecionarServidor.click();")
 
             aguardar_loading()
 
             nomeServidorCadastrado = wait.until(EC.presence_of_element_located(
-                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblInteressados:0:j_idt1451:txtContent"]')))
+                (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblInteressados:0:j_idt1652:txtContent"]')))
 
             print(numPortaria, '- Servidor interessado cadastrado: ',
                   str(siapeInteressado), '-', nomeServidorCadastrado.text)
