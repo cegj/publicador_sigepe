@@ -3,6 +3,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
+from tkinter import *
 
 opcoes = Options()
 opcoes.add_argument("start-maximized")

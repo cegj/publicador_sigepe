@@ -5,7 +5,6 @@ from helpers import checkExistsByXpath as cebx
 from helpers import getScreenshotByXpath as gebx
 from controllers import Interfaces as i
 from Webdriver import nav
-from Master import master
 
 class Usuario:
     def __init__(self):
@@ -48,6 +47,8 @@ class Usuario:
 
             loginContainer.destroy()
             messagebox.showinfo("Sucesso", "O acesso ao Sigepe foi realizado com sucesso")
+            i.Interfaces.sessao()
+
             return True
 
         except Exception as e:

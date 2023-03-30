@@ -1,7 +1,7 @@
 import appConfig
 from selenium.webdriver.common.by import By
 
-class ConfiguracaoSessao:
+class Sessao:
   def __init__(self, master, nav):
     self.appConfig = appConfig.AppConfig()
     self.master = master
