@@ -1,71 +1,65 @@
 from tkinter import *
-import appConfig
+from tkinter import messagebox
 from selenium.webdriver.common.by import By
+from helpers import checkExistsByXpath as cebx
+from helpers import getScreenshotByXpath as gebx
+from controllers import Interfaces as i
+from Webdriver import nav
+from Master import master
 
 class Usuario:
-    def __init__(self, nav):
-        self.appConfig = appConfig.AppConfig()
-        self.nav = nav
-        self.cpf = ""
-        self.senha = ""
+    def __init__(self):
+        pass
 
-    def exibirTelaLogin(self, master=None):
-        self.loginContainer = Frame(master)
-        self.loginContainer.pack()
-        self.loginContainerTitle = Label(self.loginContainer, text="Fazer login no Sigepe")
-        self.loginContainerTitle["font"] = self.appConfig.fontes["titulo"]
-        self.loginContainerTitle.pack ()
+    @staticmethod
+    def fazerLogin(cpfInput, senhaInput, captchaInput, loginContainer):
+        try:
+            cpf = cpfInput.get()
+            senha = senhaInput.get()
+            campoUsuario = nav.find_element(
+                By.XPATH, '//*[@id="cpfUsuario"]')
+            campoUsuario.click()
+            campoUsuario.send_keys(cpf)
+            campoSenha = nav.find_element(By.XPATH, '//*[@id="password"]')
+            campoSenha.click()
+            campoSenha.send_keys(senha)
 
-        self.cpfContainer = Frame(self.loginContainer)
-        self.cpfContainer["pady"] = 5
-        self.cpfContainer.pack()
-        self.cpfLabel = Label(self.cpfContainer,text="CPF", font=self.appConfig.fontes["normal"])
-        self.cpfLabel.pack()
-        self.cpfInput = Entry(self.cpfContainer)
-        self.cpfInput["width"] = 20
-        self.cpfInput["font"] = self.appConfig.fontes["normal"]
-        self.cpfInput.pack()
+            if(cebx.checkExistsByXpath('//*[@id="captchaImg"]')):
+                captcha = captchaInput.get()
+                campoCaptcha = nav.find_element(By.XPATH, '//*[@id="j_captcha_response"]')
+                campoCaptcha.click()
+                campoCaptcha.send_keys(captcha)
 
-        self.senhaContainer = Frame(self.loginContainer)
-        self.senhaContainer["pady"] = 5
-        self.senhaContainer.pack()
-        self.senhaLabel = Label(self.senhaContainer,text="Senha", font=self.appConfig.fontes["normal"])
-        self.senhaLabel.pack()
-        self.senhaInput = Entry(self.senhaContainer)
-        self.senhaInput["width"] = 20
-        self.senhaInput["font"] = self.appConfig.fontes["normal"]
-        self.senhaInput["show"] = "*"
-        self.senhaInput.pack()
+            botaoAcessar = nav.find_element(
+                By.XPATH, '//*[@id="botaoCredenciais"]')
+            botaoAcessar.click()
 
-        self.botaoLogin = Button(self.loginContainer)
-        self.botaoLogin["text"] = "Autenticar"
-        self.botaoLogin["font"] = ("Segoe UI", "10")
-        self.botaoLogin["width"] = 12
-        self.botaoLogin["command"] = self.fazerLogin
-        self.botaoLogin.pack()
+            if (cebx.checkExistsByXpath('//*[@id="msg_alerta"]')):
+                erroLogin = nav.find_element(By.XPATH, '//*[@id="msg_alerta"]')
+                raise Exception('Mensagem do Sigepe: ' + erroLogin.text)
 
-    def fazerLogin(self):
-        self.cpf = self.cpfInput.get()
-        self.senha = self.senhaInput.get()
-        self.nav.get("https://admsistema.sigepe.planejamento.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
-        campoUsuario = self.nav.find_element(
-            By.XPATH, '//*[@id="cpfUsuario"]')
-        campoUsuario.click()
-        campoUsuario.send_keys(self.cpf)
-        campoSenha = self.nav.find_element(By.XPATH, '//*[@id="password"]')
-        campoSenha.click()
-        campoSenha.send_keys(self.senha)
-        botaoAcessar = self.nav.find_element(
-            By.XPATH, '//*[@id="botaoCredenciais"]')
-        botaoAcessar.click()
+            if (cebx.checkExistsByXpath('//*[@id="content-title"]/span')):
+                erroLogin = nav.find_element(By.XPATH, '//*[@id="content-title"]/span')
+                if (erroLogin.text == "Primeiro Acesso - Identificação de Usuário"):
+                    raise Exception("Mensagem do Sigepe: Usuário foi identificado como primeiro acesso. Verifique se o CPF foi preenchido corretamente ou faça o seu cadastro no Sigepe.")
+                else:
+                    raise Exception('Mensagem do Sigepe: ' + erroLogin.text)
+                return False
 
-        if(self.nav.find_element(By.XPATH, '//*[@id="msg_alerta"]')):
-            erroLogin = self.nav.find_element(By.XPATH, '//*[@id="msg_alerta"]')
+            loginContainer.destroy()
+            messagebox.showinfo("Sucesso", "O acesso ao Sigepe foi realizado com sucesso")
+            return True
 
-            self.errorContainer = Frame(self.loginContainer)
-            self.errorMsg = Label(self.errorContainer, text=erroLogin.text)
-            print(erroLogin.text)
-            self.errorMsg.pack()
+        except Exception as e:
+            messagebox.showerror("Erro", e)
+            loginContainer.destroy()
+            i.Interfaces.login()
+
+
+
+
+            
+
 
 # def fazer_login():
 
