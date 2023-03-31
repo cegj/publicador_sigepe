@@ -8,7 +8,4 @@ class Sessao:
     self.nav = nav
 
   def configurarSessao(self):
-    sigBotaoHabilitacao = self.nav.find_element(
-    By.XPATH, '//*[@id="j_idt62:habDisponiveisLabel"]')
-
-    sigBotaoHabilitacao.click()
+    pass

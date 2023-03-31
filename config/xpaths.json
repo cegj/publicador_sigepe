@@ -1,0 +1,19 @@
+{
+  "general": {
+    "loadingModal": "//*[@id='j_idt154:j_idt155:ajaxStatusModal']"
+  },
+  "login": {
+    "usuarioInput": "//*[@id='cpfUsuario']",
+    "senhaInput": "//*[@id='password']",
+    "captchaInput": "//*[@id='j_captcha_response']",
+    "captchaImg": "//*[@id='captchaImg']",
+    "acessarBnt": "//*[@id='botaoCredenciais']",
+    "loginError": "//*[@id='msg_alerta']",
+    "novoUsuarioPageTitle": "//*[@id='content-title']/span"
+  },
+  "habilitacao": {
+    "habilitacaoBotao": "//*[@id='j_idt62:habDisponiveisLabel']",
+    "habilitacoesLinks": "//a[contains(@class, 'link-habilitacao') and contains(@class, 'acao-local')]",
+    "fecharHabilitacaoBotao": "//*[@id='j_idt62:habDisponiveisModal']/div/div[3]/a"
+  }
+}
