@@ -24,6 +24,12 @@ day = today.day
 month = today.month
 year = today.year
 
+def checkExistsByXpath(xpath):
+    try:
+        navegador.find_element_by_xpath(xpath)
+    except NoSuchElementException:
+        return False
+    return True
 
 def ajustar_data(data, separador):
     dataArray = str(data).split('-')
@@ -48,8 +54,6 @@ def limpar_terminal_exibir_cabecalho():
     print('----------------------------------')
     print('PUBLICADOR DE PORTARIAS NO SIGEPE')
     print('----------------------------------')
-    print('----------------------------------')
-    print('******** github.com/cegj/ ********')
     print('----------------------------------')
     print()
 
@@ -325,13 +329,20 @@ def obter_lista_arquivos(diretorioArquivos):
 
 # Define funções de acesso ao SIGEPE
 
-
 def fazer_login():
 
     def acessar_pagina_login():
 
         navegador.get(
             "https://admsistema.sigepe.planejamento.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
+
+        if(checkExistsByXpath('//*[@id="details-button"]')):
+            botao_PagNaoSeguro_Avancado = navegador.find_element(
+                By.XPATH, '//*[@id="details-button"]')
+            botao_PagNaoSeguro_Avancado.click()
+            link_PagNaoSeguro_Continuar = navegador.find_element(
+                By.XPATH, '//*[@id="proceed-link"]')
+            link_PagNaoSeguro_Continuar.click()
 
         tituloPagina = navegador.title
 
@@ -399,6 +410,14 @@ def fazer_login():
 
             navegador.get(
                 "https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
+
+            if(checkExistsByXpath('//*[@id="details-button"]')):
+                botao_PagNaoSeguro_Avancado = navegador.find_element(
+                    By.XPATH, '//*[@id="details-button"]')
+                botao_PagNaoSeguro_Avancado.click()
+                link_PagNaoSeguro_Continuar = navegador.find_element(
+                    By.XPATH, '//*[@id="proceed-link"]')
+                link_PagNaoSeguro_Continuar.click()
 
             paginaAtual = navegador.find_element(
                 By.XPATH, '//*[@id="idBreadCrumb4"]/span')
@@ -1023,16 +1042,15 @@ for nomeArquivo in arquivosAceitos:
 
             # Há dois modelos de janela para selecionar uorg/upag/autoridade no SIGEPE
 
-            try:  # Gatilho para modelo novo é o XPATH do botão para abrir janela, pois são diferentes
-                botaoIncluirOrgaoElabAnt = wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt416"]/span')))
-                    
-                print(numPortaria,
-                      '- [obs:] Cadastro pelo modelo antigo de janela')
+            botaoIncluirOrgaoElabAnt = wait.until(EC.element_to_be_clickable(
+                (By.XPATH, '//button[normalize-space()="Incluir"]')))
 
-                botaoIncluirOrgaoElabAnt.click()
+            botaoIncluirOrgaoElabAnt.click()
 
-                aguardar_loading()
+            aguardar_loading()
+
+            if(checkExistsByXpath('//span[normalize-space()="Incluir Órgão Elaborador"]')):
+                print(numPortaria, '- [obs:] Cadastro pelo modelo antigo de janela')
 
                 campoUpag = wait.until(EC.element_to_be_clickable(
                     (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:sltUnidadePagadora_label"]')))
@@ -1088,18 +1106,17 @@ for nomeArquivo in arquivosAceitos:
                     cargoResponsavelAssinatura)
 
                 botaoGravarOrgao = wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt745"]/span')))
+                    (By.XPATH, '//button[normalize-space()="Gravar"]')))
 
                 botaoGravarOrgao.click()
 
                 aguardar_loading()
 
-            except:
-                botaoIncluirOrgaoElab = navegador.find_element(
-                    By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt418"]/span')
-
-                print(numPortaria,
-                      '- [obs:] Cadastro pelo novo modelo de janela')
+            elif(checkExistsByXpath('//span[normalize-space()="Pesquisar Pessoa"]')):
+                # botaoIncluirOrgaoElab = navegador.find_element(
+                #     By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt395"]')
+                print(numPortaia,
+                    '- [obs:] Cadastro pelo novo modelo de janela')
 
                 botaoIncluirOrgaoElab.click()
 
@@ -1173,6 +1190,10 @@ for nomeArquivo in arquivosAceitos:
                 botaoSelecionarAutoridade.click()
 
                 aguardar_loading()
+
+                # botaoIncluirOrgaoElabAnt.click()
+
+                #aguardar_loading()
 
             responsavelAssinaturaSelecionado = wait.until(EC.presence_of_element_located(
                 (By.XPATH, '//*[@id="frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis:0:j_idt442:txtContent"]')))

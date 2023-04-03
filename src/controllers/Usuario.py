@@ -3,7 +3,7 @@ from tkinter import messagebox
 from selenium.webdriver.common.by import By
 from helpers import checkExistsByXpath as cebx
 from helpers import getScreenshotByXpath as gebx
-from controllers import Interfaces as i
+from controllers.interfaces import Sessao as s
 from Webdriver import nav
 from appXpaths import xpaths
 
@@ -45,9 +45,9 @@ class Usuario:
                 return False
 
             loginContainer.destroy()
-            messagebox.showinfo("Sucesso", "O acesso ao Sigepe foi realizado com sucesso")
-            interface = i.Interfaces()
-            interface.sessao()
+            # messagebox.showinfo("Sucesso", "O acesso ao Sigepe foi realizado com sucesso")
+            sessao = s.Sessao()
+            sessao.sessao()
             return True
 
         except Exception as e:

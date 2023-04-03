@@ -1,105 +1,109 @@
 {
-  "habilitacao": {
-    "preferencial": "GESTOR - ÓRGÃO:UFES"
-  },
-
-  "dir": {
-    "origem": "\\\\arq-progep1\\ddp_secretaria\\17 - PORTARIAS\\[hoje_ano]\\[var]\\[mesatual_num_extenso0]\\[hoje_dia0]\\",
-    "destino": "\\\\arq-progep1\\boufes\\BOUFES 2023\\PROGEP\\[mesatual_num_extenso0]\\[hoje.]\\",
-    "copiar_mover": "C",
-    "termo_nome_arquivo": "ok"
+    "dir":{
+        "origem":"//arq-progep1/boufes/BOUFES 2023/PROGEP/03 - MARÇO/09.03.2023",
+        "habilitacao_sigepe":"GESTOR - ÓRGÃO:UFES",
+        "adicionar_termo_nome_arquivo":"ok",
+        "destino":"C:/Users/15418471724/Documents/projetos",
+        "copiar_ou_mover":"C"
     },
-  
-  "valores": {
-      "edicao_bgp": "Normal",
-      "tipo_assinatura": "Manual",
-      "especie": "Portaria",
-      "tipo_preenchimento": "Manual",
-      "data_assinatura": "[hoje/]",
-      "data_publicacao": "[proximo_dia_util/]",
-      "orgao": "26234",
-      "upag": "1202",
-      "uorg": "743",
-      "responsavel_assinatura": "JOSIANA BINDA",
-      "cargo_responsavel": "Pró-Reitora de Gestão de Pessoas"
-  },
-
-  "delimitadores" : {
-    "numero_portaria": ["Nº ", ","],
-    "siape": ["matrícula SIAPE nº ", ","],
-    "cabecalho": ["", "var_ano_assinatura"],
-    "preliminar_portaria": ["", ":"]
-  },
-
-  "valores_var": [
-    "Afastamento para pós-graduação",
-    "Colaboração técnica",
-    "Concessão de carga horária",
-    "Estágio probatório",
-    "Horário especial ao servidor estudante",
-    "Incentivo à Qualificação",
-    "Licença para capacitação",
-    "Progressão por capacitação",
-    "Progressão por mérito (TAE)",
-    "Progressão por mérito, promoção, aceleração, RT (docente)"
-  ],
-
-  "temas_assuntos": {
-
-    "termo_portaria": {
-      "tema_bgp": "",
-      "nivel_assunto_bgp": "",
-      "arrow_down": 0
+    "valores_sigepe":{
+        "edicao_bgp":"Normal",
+        "tipo_assinatura":"Manual",
+        "especie":"Portaria",
+        "tipo_preenchimento":"Manual",
+        "data_assinatura":"[hoje/]",
+        "data_publicacao":"[proximo_dia_util/]",
+        "orgao":"26234",
+        "upag":"1202",
+        "uorg":"743",
+        "responsavel_assinatura":"JOSIANA BINDA",
+        "cargo_responsavel":"Pró-Reitora de Gestão de Pessoas"
     },
-    "Progressão": {
-      "tema_bgp": "Ascensão e progressão funcional",
-      "nivel_assunto_bgp": "0_0_0",
-      "arrow_down": 0
+    "delimitadores":{
+        "numero_portaria":[
+            "Nº ",
+            ","
+        ],
+        "siape":[
+            "matrícula SIAPE nº ",
+            ","
+        ],
+        "cabecalho":[
+            "",
+            "var_ano_assinatura"
+        ],
+        "preliminar_portaria":[
+            "",
+            ":"
+        ]
     },
-    "Promoção": {
-      "tema_bgp": "Ascensão e progressão funcional",
-      "nivel_assunto_bgp": "0_0_0",
-      "arrow_down": 0
-    },
-    "Aceleração da promoção": {
-      "tema_bgp": "Ascensão e progressão funcional",
-      "nivel_assunto_bgp": "0_0_0",
-      "arrow_down": 0
-    },
-    "estágio probatório": {
-      "tema_bgp": "Admissão",
-      "nivel_assunto_bgp": "0_0_0_0",
-      "arrow_down": 1
-    },
-    "Incentivo à qualificação": {
-      "tema_bgp": "Incentivos funcionais",
-      "nivel_assunto_bgp": "0_0_0",
-      "arrow_down": 0
-    },
-    "Retribuição por Titulação": {
-      "tema_bgp": "Incentivos funcionais",
-      "nivel_assunto_bgp": "0_0_0",
-      "arrow_down": 0
-    },
-    "Afastamento": {
-      "tema_bgp": "Afastamento para estudos ou Missão no País ou Exterior",
-      "nivel_assunto_bgp": "0_0_0",
-      "arrow_down": 0
-    },
-    "Horário especial": {
-      "tema_bgp": "Horário especial para servidor estudante",
-      "nivel_assunto_bgp": "0_0_0_0",
-      "arrow_down": 0
-    },
-    "Concessão de carga horária": {
-      "tema_bgp": "Horário especial para servidor estudante",
-      "nivel_assunto_bgp": "0_0_0_0",
-      "arrow_down": 0
-    },
-    "Licença para capacitação": {
-      "tema_bgp": "Licença capacitação",
-      "nivel_assunto_bgp": "0_0_0",
-      "arrow_down": 0
+    "valores_var":[
+        "Afastamento para pós-graduação",
+        "Colaboração técnica",
+        "Concessão de carga horária",
+        "Estágio probatório",
+        "Horário especial ao servidor estudante",
+        "Incentivo à Qualificação",
+        "Licença para capacitação",
+        "Progressão por capacitação",
+        "Progressão por mérito (TAE)",
+        "Progressão por mérito, promoção, aceleração, RT (docente)"
+    ],
+    "temas_assuntos":{
+        "termo_portaria":{
+            "tema_bgp":"",
+            "nivel_assunto_bgp":"",
+            "arrow_down":0
+        },
+        "Progressão":{
+            "tema_bgp":"Ascensão e progressão funcional",
+            "nivel_assunto_bgp":"0_0_0",
+            "arrow_down":0
+        },
+        "Promoção":{
+            "tema_bgp":"Ascensão e progressão funcional",
+            "nivel_assunto_bgp":"0_0_0",
+            "arrow_down":0
+        },
+        "Aceleração da promoção":{
+            "tema_bgp":"Ascensão e progressão funcional",
+            "nivel_assunto_bgp":"0_0_0",
+            "arrow_down":0
+        },
+        "estágio probatório":{
+            "tema_bgp":"Admissão",
+            "nivel_assunto_bgp":"0_0_0_0",
+            "arrow_down":1
+        },
+        "Incentivo à qualificação":{
+            "tema_bgp":"Incentivos funcionais",
+            "nivel_assunto_bgp":"0_0_0",
+            "arrow_down":0
+        },
+        "Retribuição por Titulação":{
+            "tema_bgp":"Incentivos funcionais",
+            "nivel_assunto_bgp":"0_0_0",
+            "arrow_down":0
+        },
+        "Afastamento":{
+            "tema_bgp":"Afastamento para estudos ou Missão no País ou Exterior",
+            "nivel_assunto_bgp":"0_0_0",
+            "arrow_down":0
+        },
+        "Horário especial":{
+            "tema_bgp":"Horário especial para servidor estudante",
+            "nivel_assunto_bgp":"0_0_0_0",
+            "arrow_down":0
+        },
+        "Concessão de carga horária":{
+            "tema_bgp":"Horário especial para servidor estudante",
+            "nivel_assunto_bgp":"0_0_0_0",
+            "arrow_down":0
+        },
+        "Licença para capacitação":{
+            "tema_bgp":"Licença capacitação",
+            "nivel_assunto_bgp":"0_0_0",
+            "arrow_down":0
+        }
     }
-  }
 }

@@ -1,0 +1,79 @@
+from controllers import Interfaces as i
+from controllers import Usuario
+from tkinter import *
+import appConfig
+from helpers import checkExistsByXpath as cebx
+from helpers import getScreenshotByXpath as gebx
+from helpers import goTo as gt
+from PIL import ImageTk, Image
+from controllers import Usuario
+import os
+from appXpaths import xpaths
+
+class Login(i.Interfaces):
+  def __init__(self):
+    super().__init__(self)
+
+  @staticmethod
+  def login():
+    master = i.Interfaces.novaJanela()
+    loginContainer = Frame(master)
+    loginContainer.pack()
+    loginContainerTitulo = Label(loginContainer, text="Fazer login no Sigepe")
+    loginContainerTitulo["font"] = appConfig.fontes["titulo"]
+    loginContainerTitulo.pack ()
+
+    gt.goTo("https://admsistema.sigepe.planejamento.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
+    
+    cpfContainer = Frame(loginContainer)
+    cpfContainer["pady"] = 5
+    cpfContainer.pack()
+    cpfLabel = Label(cpfContainer,text="CPF", font=appConfig.fontes["normal"])
+    cpfLabel.pack()
+    cpfInput = Entry(cpfContainer)
+    cpfInput["width"] = 20
+    cpfInput["font"] = appConfig.fontes["normal"]
+    cpfInput.pack()
+
+    senhaContainer = Frame(loginContainer)
+    senhaContainer["pady"] = 5
+    senhaContainer.pack()
+    senhaLabel = Label(senhaContainer,text="Senha", font=appConfig.fontes["normal"])
+    senhaLabel.pack()
+    senhaInput = Entry(senhaContainer)
+    senhaInput["width"] = 20
+    senhaInput["font"] = appConfig.fontes["normal"]
+    senhaInput["show"] = "*"
+    senhaInput.pack()
+
+    captchaInput = None
+    if(cebx.checkExistsByXpath(xpaths['login']['captchaImg'])):
+        captchaContainer = Frame(loginContainer)
+        captchaContainer["pady"] = 5
+        captchaContainer.pack()
+        captchaLabel = Label(captchaContainer, text="Confirme o código", font=appConfig.fontes["normal"])
+        imgFileName = gebx.getScreenshotByXpath(xpaths['login']['captchaImg'])
+        imgFile = Image.open(imgFileName)
+        captchaImg = ImageTk.PhotoImage(imgFile)
+        captchaImg = Label(captchaContainer, image = captchaImg)
+        captchaImg.image = captchaImg
+        captchaImg.pack()
+        os.remove(imgFileName)
+        captchaInput = Entry(captchaContainer)
+        captchaInput["width"] = 20
+        captchaInput["font"] = appConfig.fontes["normal"]
+        captchaInput.pack()
+
+    botaoLogin = Button(loginContainer)
+    botaoLogin["text"] = "Autenticar"
+    botaoLogin["font"] = appConfig.fontes["botao"]
+    botaoLogin["width"] = 12
+    botaoLogin["command"] = lambda: Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, master)
+    botaoLogin.pack()
+
+    def handleEnter(event):
+      Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, master)
+
+    master.bind('<Return>', handleEnter)
+
+    master.mainloop()

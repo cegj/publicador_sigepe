@@ -1,5 +1,5 @@
 from tkinter import *
-from controllers import Interfaces as i
+from controllers.interfaces import Login as l
 from controllers import Usuario
 from controllers import Sessao
 
@@ -9,7 +9,7 @@ class Application:
       pass
 
     def executar(self):
-      i.Interfaces.login()
+      l.Login.login()
       #self.master.mainloop()
       
 app = Application()
