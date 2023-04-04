@@ -1,15 +1,19 @@
 {
     "dir":{
         "origem":"//arq-progep1/boufes/BOUFES 2023/PROGEP/03 - MARÇO/09.03.2023",
-        "habilitacao_sigepe":"GESTOR - ÓRGÃO:UFES",
         "adicionar_termo_nome_arquivo":"ok",
         "destino":"C:/Users/15418471724/Documents/projetos",
         "copiar_ou_mover":"C"
+    },
+    "habilitacao":{
+        "inicial":"GESTOR - ÓRGÃO:UFES"
     },
     "valores_sigepe":{
         "edicao_bgp":"Normal",
         "tipo_assinatura":"Manual",
         "especie":"Portaria",
+        "tema":"Afastamento para estudos ou Missão no País ou Exterior",
+        "assunto":"",
         "tipo_preenchimento":"Manual",
         "data_assinatura":"[hoje/]",
         "data_publicacao":"[proximo_dia_util/]",

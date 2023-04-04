@@ -6,6 +6,7 @@ from helpers import getScreenshotByXpath as gebx
 from controllers.interfaces import Sessao as s
 from Webdriver import nav
 from appXpaths import xpaths
+from controllers.interfaces import Login as l
 
 class Usuario:
     def __init__(self):
@@ -53,4 +54,4 @@ class Usuario:
         except Exception as e:
             messagebox.showerror("Erro", e)
             loginContainer.destroy()
-            i.Interfaces.login()
+            l.Login.login()
