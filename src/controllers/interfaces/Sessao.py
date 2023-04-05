@@ -12,16 +12,19 @@ import time
 from tkinter import filedialog
 from controllers import Interfaces as i
 from controllers.interfaces import Habilitacao as h
+from controllers.interfaces import Delimitadores as d
 from copy import copy
 from controllers import UserConfig as uc
 from helpers import goTo as gt
 from helpers import checkExistsByXpath as cebx
 from helpers import waitForLoading as wfl
+import os
 
 class Sessao(i.Interfaces):
   def __init__(self):
     super().__init__()
     self.userConfig = copy(uc.UserConfig.obterConfiguracoesSalvas())
+    self.files = []
 
   def irParaPaginaPublicacao(self):
     try:
@@ -40,10 +43,11 @@ class Sessao(i.Interfaces):
     sessaoContainerTitulo.configure(anchor="center")
     sessaoContainerTitulo["font"] = appConfig.fontes["titulo"]
     sessaoContainerTitulo.grid(column=1, row=0, columnspan=2)
-
+    self.botoesContainer = Frame(self.sessaoContainer)
+    self.botoesContainer.grid(row=13, column=1, sticky='w')
     self.definirHabilitacaoInicial()
     self.habilitacao()
-    self.diretorio_origem()
+    # self.diretorio_origem()
     self.diretorio_destino()
     self.edicao_bgp()
     self.tipo_assinatura()
@@ -59,6 +63,9 @@ class Sessao(i.Interfaces):
     self.responsavel_assinatura()
     self.cargo_responsavel()
     self.salvar_configuracoes()
+    self.abrir_edicao_delimitadores()
+    self.arquivos()
+    self.publicar()
     self.root.mainloop()
 
   def definirHabilitacaoInicial(self):
@@ -80,44 +87,43 @@ class Sessao(i.Interfaces):
       anchor="w",
       font=appConfig.fontes["normal"])
     habilitacaoAtual.grid(column=0, row=1, columnspan=2, padx=10, pady=5, sticky='w')
+    self.userConfig["habilitacao"]["inicial"] = sigepe_habilitacaoBotao.text
     botaoAlterarHabilitacao = Button(self.sessaoHabilitacaoContainer)
     botaoAlterarHabilitacao["text"] = "Alterar habilitação"
     botaoAlterarHabilitacao["font"] = appConfig.fontes["botao"]
     botaoAlterarHabilitacao["width"] = 20
     botaoAlterarHabilitacao["command"] = abrirJanelaHabilitacao
     botaoAlterarHabilitacao.grid(column=3, row=1, padx=10, pady=5, sticky='w')
-
     self.irParaPaginaPublicacao()
 
-  def diretorio_origem(self):
-    originPath = StringVar()
-    originPath.set(self.userConfig["dir"]["origem"])
-    def getOriginPath():
-      originPath.set(filedialog.askdirectory())
-      self.userConfig["dir"]["origem"] = originPath.get()
-    self.diretorioOrigemContainer = Frame(self.sessaoContainer)
-    self.diretorioOrigemContainer.grid(row=2, column=1, columnspan=2, sticky='w')
-    origemLabel = Label(
-      self.diretorioOrigemContainer,
-      text="Pasta de origem",
-      font=appConfig.fontes["normal"]
-      )
-    origemLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    origemInput = Entry(
-      self.diretorioOrigemContainer,
-      textvariable=originPath,
-      width=50,
-      font=appConfig.fontes["normal"]
-      )
-    origemInput.grid(column=2, row=0)
-    botaoDiretorioOrigem = Button(
-      self.diretorioOrigemContainer,
-      text="Alterar",
-      font=appConfig.fontes["botao"],
-      width=20,
-      command=getOriginPath
-      )
-    botaoDiretorioOrigem.grid(column=3, row=0, padx=10, pady=5, sticky='w')
+    # originPath = StringVar()
+    # originPath.set(self.userConfig["dir"]["origem"])
+    # def getOriginPath():
+    #   originPath.set(filedialog.askdirectory())
+    #   self.userConfig["dir"]["origem"] = originPath.get()
+    # self.diretorioOrigemContainer = Frame(self.sessaoContainer)
+    # self.diretorioOrigemContainer.grid(row=2, column=1, columnspan=2, sticky='w')
+    # origemLabel = Label(
+    #   self.diretorioOrigemContainer,
+    #   text="Pasta de origem",
+    #   font=appConfig.fontes["normal"]
+    #   )
+    # origemLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
+    # origemInput = Entry(
+    #   self.diretorioOrigemContainer,
+    #   textvariable=originPath,
+    #   width=50,
+    #   font=appConfig.fontes["normal"]
+    #   )
+    # origemInput.grid(column=2, row=0)
+    # botaoDiretorioOrigem = Button(
+    #   self.diretorioOrigemContainer,
+    #   text="Alterar",
+    #   font=appConfig.fontes["botao"],
+    #   width=20,
+    #   command=getOriginPath
+    #   )
+    # botaoDiretorioOrigem.grid(column=3, row=0, padx=10, pady=5, sticky='w')
 
   def diretorio_destino(self):
     targetPath = StringVar()
@@ -251,26 +257,29 @@ class Sessao(i.Interfaces):
 
 
   def obterAssunto(self, tema):
-    sigepe_temaSelect = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["temaSelect"])))
-    sigepe_temaSelect.click()
-    time.sleep(0.3)
-    sigepe_buscarTemaInput = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["buscarTemaInput"])))
-    sigepe_buscarTemaInput.send_keys(tema)
-    time.sleep(1.5)
-    sigepe_buscarTemaInput.send_keys(Keys.ENTER)
-    wfl.waitForLoading()
-    time.sleep(0.3)
-    sigepe_buscarAssuntoBtn = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["buscarAssuntoBtn"])))
-    sigepe_buscarAssuntoBtn.click()
-    wfl.waitForLoading()
-    sigepe_assuntosBtns = wait["regular"].until(EC.visibility_of_all_elements_located((By.XPATH, xpaths["publicacao"]["assuntosBtns"])))
-    ultimoNivelAssunto = sigepe_assuntosBtns[-1]
-    ultimoNivelAssunto.click()
-    sigepe_selecionarAssuntoBtn = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["selecionarAssuntoBtn"])))
-    sigepe_selecionarAssuntoBtn.click()
-    return ultimoNivelAssunto.text
+    try:
+      sigepe_temaSelect = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["temaSelect"])))
+      sigepe_temaSelect.click()
+      time.sleep(0.3)
+      sigepe_buscarTemaInput = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["buscarTemaInput"])))
+      sigepe_buscarTemaInput.send_keys(tema)
+      time.sleep(1.5)
+      sigepe_buscarTemaInput.send_keys(Keys.ENTER)
+      wfl.waitForLoading()
+      time.sleep(0.3)
+      sigepe_buscarAssuntoBtn = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["buscarAssuntoBtn"])))
+      sigepe_buscarAssuntoBtn.click()
+      wfl.waitForLoading()
+      sigepe_assuntosBtns = wait["regular"].until(EC.visibility_of_all_elements_located((By.XPATH, xpaths["publicacao"]["assuntosBtns"])))
+      ultimoNivelAssunto = sigepe_assuntosBtns[-1]
+      ultimoNivelAssunto.click()
+      sigepe_selecionarAssuntoBtn = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["selecionarAssuntoBtn"])))
+      sigepe_selecionarAssuntoBtn.click()
+      return ultimoNivelAssunto.text
+    except Exception as e:
+      messagebox.showerror("Erro ao buscar assunto", e)
+      return None
 
-  
   def tema(self):
     def setTemaAssunto(event = None):
       self.userConfig["valores_sigepe"]["tema"] = selected.get()
@@ -480,13 +489,63 @@ class Sessao(i.Interfaces):
     cargoResponsavelInput.grid(column=2, row=0)
 
   def salvar_configuracoes(self):
-    self.salvarConfiguracoesContainer = Frame(self.sessaoContainer)
-    self.salvarConfiguracoesContainer.grid(row=13, column=1, sticky='w')
     botaoSalvarConfiguracoes = Button(
-      self.salvarConfiguracoesContainer,
+      self.botoesContainer,
       text="Manter configurações",
       font=appConfig.fontes["botao"],
       width=20,
       command=lambda: uc.UserConfig.salvarConfiguracoes(self.userConfig)
       )
-    botaoSalvarConfiguracoes.grid(column=3, row=0, padx=10, pady=5, sticky='w')
+    botaoSalvarConfiguracoes.grid(column=1, row=0, padx=10, pady=5, sticky='w')
+
+  def abrir_edicao_delimitadores(self):
+    def abrirJanelaEdicao():
+      janelaEdicao = d.Delimitadores()
+    editarDeliminatoresBtn = Button(
+      self.botoesContainer,
+      text="Editar delimitadores",
+      font=appConfig.fontes["botao"],
+      width=20,
+      command=abrirJanelaEdicao
+      )
+    editarDeliminatoresBtn.grid(column=2, row=0, padx=10, pady=5, sticky='w')
+
+  def arquivos(self):
+    def getFiles():
+      listbox.delete(0, 'end')
+      self.files = filedialog.askopenfiles(mode='r', title="Selecionar arquivos para publicação", filetypes=[("Documentos RTF (Rich Text Format)", ".rtf")])
+      for index, file in enumerate(self.files):
+        listbox.insert(index, os.path.basename(file.name))
+
+    self.arquivosContainer = Frame(self.sessaoContainer)
+    self.arquivosContainer.grid(row=0, column=3, rowspan=14, sticky='w')
+    listbox = Listbox(
+      self.arquivosContainer,
+      height = 20,
+      width = 40,
+      bg = "white",
+      activestyle = 'dotbox',
+      font = "Helvetica",
+      fg = "gray"
+    )
+    listbox.grid(column=1, columnspan=2, row=1, padx=10, pady=5, sticky='')
+
+    botaoDiretorioOrigem = Button(
+      self.arquivosContainer,
+      text="Selecionar arquivos",
+      font=appConfig.fontes["botao"],
+      width=20,
+      command=getFiles
+      )
+    botaoDiretorioOrigem.grid(column=1, row=2, padx=10, pady=5, sticky='')
+
+  def publicar(self):
+    botaoDiretorioOrigem = Button(
+      self.arquivosContainer,
+      text="Publicar",
+      font=appConfig.fontes["botao"],
+      width=20,
+      bg="#429321",
+      fg="white"
+      )
+    botaoDiretorioOrigem.grid(column=2, row=2, padx=10, pady=5, sticky='')

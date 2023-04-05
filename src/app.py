@@ -5,12 +5,10 @@ from controllers import Sessao
 
 class Application:
     def __init__(self):
-      #self.master = master
       pass
 
     def executar(self):
-      l.Login.login()
-      #self.master.mainloop()
+      start = l.Login()
       
 app = Application()
 app.executar()

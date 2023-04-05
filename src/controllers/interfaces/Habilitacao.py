@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-# from tkinter import Frame
 import appConfig
 from Webdriver import nav
 from appXpaths import xpaths
@@ -9,8 +8,10 @@ from selenium.webdriver.common.by import By
 import time
 from controllers import Interfaces as i
 from controllers.interfaces import Habilitacao as h
-
 from controllers import Interfaces as i
+from controllers import UserConfig as uc
+from copy import copy
+
 class Habilitacao:
   def __init__(self, habilitacao):
       self.master = i.Interfaces.novaJanela()
@@ -53,9 +54,10 @@ class Habilitacao:
         state="readonly",
         width=50)
       self.seletorHabilitacoes.pack(fill=X, expand=YES)
+
       botaoSelecionarHabilitacao = Button(
         self.habilitacaoContainer,
-        text="OK",
+        text="Alterar habilitação",
         font=appConfig.fontes["botao"],
         width=20,
         command=self.handleMudarHabilitacao
@@ -63,7 +65,8 @@ class Habilitacao:
       botaoSelecionarHabilitacao.pack()
 
     except Exception as e:
-      messagebox.showerror("Erro em habilitações", e)
+      messagebox.showerror("Erro em Habilitações", e)
       self.master.destroy()
+      self.janelaHabilitacao()
 
     self.master.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)

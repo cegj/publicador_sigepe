@@ -12,12 +12,11 @@ from appXpaths import xpaths
 
 class Login(i.Interfaces):
   def __init__(self):
-    super().__init__(self)
+    super().__init__()
+    self.login()
 
-  @staticmethod
-  def login():
-    master = i.Interfaces.novaJanela()
-    loginContainer = Frame(master)
+  def login(self):
+    loginContainer = Frame(self.root)
     loginContainer.pack()
     loginContainerTitulo = Label(loginContainer, text="Fazer login no Sigepe")
     loginContainerTitulo["font"] = appConfig.fontes["titulo"]
@@ -68,12 +67,11 @@ class Login(i.Interfaces):
     botaoLogin["text"] = "Autenticar"
     botaoLogin["font"] = appConfig.fontes["botao"]
     botaoLogin["width"] = 12
-    botaoLogin["command"] = lambda: Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, master)
+    botaoLogin["command"] = lambda: Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
     botaoLogin.pack()
 
     def handleEnter(event):
-      Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, master)
+      Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
 
-    master.bind('<Return>', handleEnter)
-
-    master.mainloop()
+    self.root.bind('<Return>', handleEnter)
+    self.root.mainloop()

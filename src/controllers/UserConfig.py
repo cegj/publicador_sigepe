@@ -14,13 +14,9 @@ class UserConfig:
       userConfig = json.load(user_config_file)
       return userConfig
     except Exception as e:
-        messagebox.showerror("Erro ao abrir configurações do usuário", e)
+        messagebox.showerror("Erro ao carregar configurações do usuário", e)
     finally:
       user_config_file.close()
-
-    # with open('config/userconfig.json', 'r', encoding="utf-8") as user_config_file:
-    #   userConfig = json.load(user_config_file)
-    #   return userConfig
   
   @staticmethod
   def salvarConfiguracoes(newUserConfig):
@@ -33,9 +29,24 @@ class UserConfig:
     finally:
       user_config_file.close()
 
-
-    # with open('config/userconfig.json', 'r', encoding="utf-8") as user_config_file: 
-    #   with tempfile.NamedTemporaryFile('w', delete=False) as out:
-    #     out = newUserConfig
-    #     json.dump(user_config_file, out, ensure_ascii=False, indent=4, separators=(',',':'))
-    #     shutil.move(out.name, 'config/userconfig2.json')
+  @staticmethod
+  def obterDelimitadoresSalvos():
+    try:
+      delimiters_file = open('config/delimiters.json', 'r', encoding="utf-8")
+      delimiters = json.load(delimiters_file)
+      return delimiters
+    except Exception as e:
+        messagebox.showerror("Erro ao carregar delimitadores", e)
+    finally:
+      delimiters_file.close()
+  
+  @staticmethod
+  def salvarDelimitadores(newDelimiters):
+    try:
+      delimiters_file = open('config/delimiters.json', 'w', encoding="utf-8")
+      json.dump(newDelimiters, delimiters_file, ensure_ascii=False, indent=4, separators=(',',':'))
+      messagebox.showinfo("Sucesso", "Configurações salvas com sucesso")
+    except Exception as e:
+        messagebox.showerror("Erro ao salvar delimitadores", e)
+    finally:
+      delimiters_file.close()
