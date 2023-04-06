@@ -50,3 +50,25 @@ class UserConfig:
         messagebox.showerror("Erro ao salvar delimitadores", e)
     finally:
       delimiters_file.close()
+
+  @staticmethod
+  def obterConfigPosPublicacaoSalvos():
+    try:
+      after_publishing_file = open('config/afterpublishingconfig.json', 'r', encoding="utf-8")
+      afterPublishingConfig = json.load(after_publishing_file)
+      return afterPublishingConfig
+    except Exception as e:
+        messagebox.showerror("Erro ao carregar configurações de  pós-publicação", e)
+    finally:
+      after_publishing_file.close()
+  
+  @staticmethod
+  def salvarConfigPosPublicacao(newConfig):
+    try:
+      after_publishing_file = open('config/afterpublishingconfig.json', 'w', encoding="utf-8")
+      json.dump(newConfig, after_publishing_file, ensure_ascii=False, indent=4, separators=(',',':'))
+      messagebox.showinfo("Sucesso", "Configurações de pós-publicação salvas com sucesso")
+    except Exception as e:
+        messagebox.showerror("Erro ao salvar configurações de pós-publicação", e)
+    finally:
+      after_publishing_file.close()

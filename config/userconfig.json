@@ -1,9 +1,9 @@
 {
-    "dir":{
+    "apos_publicacao":{
         "origem":"//arq-progep1/boufes/BOUFES 2023/PROGEP/03 - MARÇO/09.03.2023",
         "adicionar_termo_nome_arquivo":"ok",
-        "destino":"C:/Users/15418471724/Documents/projetos",
-        "copiar_ou_mover":"C"
+        "destino":"//arq-progep1/ddp_secretaria/17 - PORTARIAS/2023/Afastamento para pós-graduação/04 - Abril/05",
+        "copiar_ou_mover":"Copiar"
     },
     "habilitacao":{
         "inicial":"GESTOR - ÓRGÃO:UFES"

@@ -18,7 +18,7 @@ class Login(i.Interfaces):
   def login(self):
     loginContainer = Frame(self.root)
     loginContainer.pack()
-    loginContainerTitulo = Label(loginContainer, text="Fazer login no Sigepe")
+    loginContainerTitulo = Label(loginContainer, text="Entrar no Sigepe")
     loginContainerTitulo["font"] = appConfig.fontes["titulo"]
     loginContainerTitulo.pack ()
 
@@ -64,7 +64,7 @@ class Login(i.Interfaces):
         captchaInput.pack()
 
     botaoLogin = Button(loginContainer)
-    botaoLogin["text"] = "Autenticar"
+    botaoLogin["text"] = "Entrar"
     botaoLogin["font"] = appConfig.fontes["botao"]
     botaoLogin["width"] = 12
     botaoLogin["command"] = lambda: Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)

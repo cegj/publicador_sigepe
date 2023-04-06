@@ -13,6 +13,7 @@ from tkinter import filedialog
 from controllers import Interfaces as i
 from controllers.interfaces import Habilitacao as h
 from controllers.interfaces import Delimitadores as d
+from controllers.interfaces import Pospublicacao as p
 from copy import copy
 from controllers import UserConfig as uc
 from helpers import goTo as gt
@@ -48,7 +49,7 @@ class Sessao(i.Interfaces):
     self.definirHabilitacaoInicial()
     self.habilitacao()
     # self.diretorio_origem()
-    self.diretorio_destino()
+    # self.opcoes_apos_publicacao()
     self.edicao_bgp()
     self.tipo_assinatura()
     self.especie()
@@ -64,6 +65,7 @@ class Sessao(i.Interfaces):
     self.cargo_responsavel()
     self.salvar_configuracoes()
     self.abrir_edicao_delimitadores()
+    self.abrir_configuracoes_pospublicacao()
     self.arquivos()
     self.publicar()
     self.root.mainloop()
@@ -79,7 +81,7 @@ class Sessao(i.Interfaces):
     def abrirJanelaHabilitacao():
       janelaHabilitacao = h.Habilitacao(self)
     self.sessaoHabilitacaoContainer = Frame(self.sessaoContainer)
-    self.sessaoHabilitacaoContainer.grid(row=1, column=1, columnspan=2, sticky='w')
+    self.sessaoHabilitacaoContainer.grid(row=3, column=1, columnspan=2, sticky='w')
     sigepe_habilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
     habilitacaoAtual = Label(
       self.sessaoHabilitacaoContainer,
@@ -96,64 +98,59 @@ class Sessao(i.Interfaces):
     botaoAlterarHabilitacao.grid(column=3, row=1, padx=10, pady=5, sticky='w')
     self.irParaPaginaPublicacao()
 
-    # originPath = StringVar()
-    # originPath.set(self.userConfig["dir"]["origem"])
-    # def getOriginPath():
-    #   originPath.set(filedialog.askdirectory())
-    #   self.userConfig["dir"]["origem"] = originPath.get()
-    # self.diretorioOrigemContainer = Frame(self.sessaoContainer)
-    # self.diretorioOrigemContainer.grid(row=2, column=1, columnspan=2, sticky='w')
-    # origemLabel = Label(
-    #   self.diretorioOrigemContainer,
-    #   text="Pasta de origem",
+  # def opcoes_apos_publicacao(self):
+    # def setCopyMoveOption(event = None):
+    #   print(copyMoveSelected.get())
+    #   self.userConfig["apos_publicacao"]["copiar_ou_mover"] = copyMoveSelected.get()
+    # def getTargetPath():
+    #   targetPath.set(filedialog.askdirectory())
+    #   self.userConfig["apos_publicacao"]["destino"] = targetPath.get()
+
+    # self.opcoesContainer = Frame(self.sessaoContainer)
+    # self.opcoesContainer.grid(row=2, column=1, columnspan=2, sticky='w')
+    # copyMoveLabel = Label(
+    #   self.opcoesContainer,
+    #   text="Após publicar",
     #   font=appConfig.fontes["normal"]
     #   )
-    # origemLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    # origemInput = Entry(
-    #   self.diretorioOrigemContainer,
-    #   textvariable=originPath,
+    # copyMoveLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
+    # copyMoveOptionsList = ["Copiar", "Mover", "Não fazer nada"]
+    # copyMoveOptionsList.remove(self.userConfig["apos_publicacao"]["copiar_ou_mover"])
+    # copyMoveSelected = StringVar()
+    # copyMoveSelected.set(self.userConfig["apos_publicacao"]["copiar_ou_mover"])
+    # copyMoveOptions = OptionMenu(
+    #   self.opcoesContainer,
+    #   copyMoveSelected,
+    #   copyMoveSelected.get(),
+    #   *copyMoveOptionsList,
+    #   command=setCopyMoveOption
+    # )
+    # copyMoveOptions.grid(column=1, row=0, padx=10, pady=5, sticky='w')
+
+    # targetPath = StringVar()
+    # targetPath.set(self.userConfig["apos_publicacao"]["destino"])
+    # destinoLabel = Label(
+    #   self.opcoesContainer,
+    #   text="Destino",
+    #   font=appConfig.fontes["normal"]
+    #   )
+    # destinoLabel.grid(column=2, row=0, padx=10, pady=5, sticky='w')
+    # destinoInput = Entry(
+    #   self.opcoesContainer,
+    #   textvariable=targetPath,
     #   width=50,
-    #   font=appConfig.fontes["normal"]
+    #   font=appConfig.fontes["normal"],
+    #   state=DISABLED
     #   )
-    # origemInput.grid(column=2, row=0)
-    # botaoDiretorioOrigem = Button(
-    #   self.diretorioOrigemContainer,
+    # destinoInput.grid(column=3, row=0)
+    # botaoDiretorioDestino = Button(
+    #   self.opcoesContainer,
     #   text="Alterar",
     #   font=appConfig.fontes["botao"],
     #   width=20,
-    #   command=getOriginPath
+    #   command=getTargetPath
     #   )
-    # botaoDiretorioOrigem.grid(column=3, row=0, padx=10, pady=5, sticky='w')
-
-  def diretorio_destino(self):
-    targetPath = StringVar()
-    targetPath.set(self.userConfig["dir"]["destino"])
-    def getTargetPath():
-      targetPath.set(filedialog.askdirectory())
-      self.userConfig["dir"]["destino"] = targetPath.get()
-    self.diretorioDestinoContainer = Frame(self.sessaoContainer)
-    self.diretorioDestinoContainer.grid(row=3, column=1, columnspan=2, sticky='w')
-    destinoLabel = Label(
-      self.diretorioDestinoContainer,
-      text="Pasta de destino",
-      font=appConfig.fontes["normal"]
-      )
-    destinoLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    destinoInput = Entry(
-      self.diretorioDestinoContainer,
-      textvariable=targetPath,
-      width=50,
-      font=appConfig.fontes["normal"]
-      )
-    destinoInput.grid(column=2, row=0)
-    botaoDiretorioDestino = Button(
-      self.diretorioDestinoContainer,
-      text="Alterar",
-      font=appConfig.fontes["botao"],
-      width=20,
-      command=getTargetPath
-      )
-    botaoDiretorioDestino.grid(column=3, row=0, padx=10, pady=5, sticky='w')
+    # botaoDiretorioDestino.grid(column=4, row=0, padx=10, pady=5, sticky='w')
 
   def edicao_bgp(self):
     def setSelected(event):
@@ -510,6 +507,18 @@ class Sessao(i.Interfaces):
       )
     editarDeliminatoresBtn.grid(column=2, row=0, padx=10, pady=5, sticky='w')
 
+  def abrir_configuracoes_pospublicacao(self):
+    def abrirJanela():
+      janelaEdicao = p.Pospublicacao()
+    configurarPosPublicacaoBtn = Button(
+      self.botoesContainer,
+      text="Configurar pós-publicação",
+      font=appConfig.fontes["botao"],
+      width=25,
+      command=abrirJanela
+      )
+    configurarPosPublicacaoBtn.grid(column=3, row=0, padx=10, pady=5, sticky='w')
+
   def arquivos(self):
     def getFiles():
       listbox.delete(0, 'end')
@@ -540,7 +549,7 @@ class Sessao(i.Interfaces):
     botaoDiretorioOrigem.grid(column=1, row=2, padx=10, pady=5, sticky='')
 
   def publicar(self):
-    botaoDiretorioOrigem = Button(
+    self.botaoPublicar = Button(
       self.arquivosContainer,
       text="Publicar",
       font=appConfig.fontes["botao"],
@@ -548,4 +557,4 @@ class Sessao(i.Interfaces):
       bg="#429321",
       fg="white"
       )
-    botaoDiretorioOrigem.grid(column=2, row=2, padx=10, pady=5, sticky='')
+    self.botaoPublicar.grid(column=2, row=2, padx=10, pady=5, sticky='')
