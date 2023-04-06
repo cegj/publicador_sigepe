@@ -555,6 +555,6 @@ class Sessao(i.Interfaces):
       font=appConfig.fontes["botao"],
       width=20,
       bg="#429321",
-      fg="white"
+      fg="white",
       )
     self.botaoPublicar.grid(column=2, row=2, padx=10, pady=5, sticky='')

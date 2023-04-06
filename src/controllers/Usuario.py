@@ -46,7 +46,6 @@ class Usuario:
                 return False
 
             loginContainer.destroy()
-            # messagebox.showinfo("Sucesso", "O acesso ao Sigepe foi realizado com sucesso")
             sessao = s.Sessao()
             sessao.sessao()
             return True

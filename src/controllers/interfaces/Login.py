@@ -70,7 +70,7 @@ class Login(i.Interfaces):
     botaoLogin["command"] = lambda: Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
     botaoLogin.pack()
 
-    def handleEnter(event):
+    def handleEnter(event = None):
       Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
 
     self.root.bind('<Return>', handleEnter)
