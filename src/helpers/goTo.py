@@ -6,7 +6,7 @@ from helpers import checkExistsByXpath as cebx
 def goTo(url):
     try:
         nav.get(url)
-        if(cebx.checkExistsByXpath('//*[@id="details-button"]')):
+        if(cebx.checkExistsByXpath('//*[@id="details-button"]')): #If Chrome SSL Error
             detailsBtn = nav.find_element(
                 By.XPATH, '//*[@id="details-button"]')
             detailsBtn.click()
