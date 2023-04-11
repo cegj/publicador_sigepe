@@ -40,7 +40,7 @@ class Publicacao:
 
   def insertLog(self, logtext):
     self.logbox.configure(state='normal')
-    self.logbox.insert(INSERT, f"logtext\n")
+    self.logbox.insert(INSERT, f"{logtext}\n")
     self.logbox.configure(state='disabled')
     self.logbox.yview(END)
 

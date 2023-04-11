@@ -23,6 +23,11 @@ class Publicador:
       completeFiletext = self.obterTextoDocumento(file)
       filetext = self.removerPrimeiraLinha(completeFiletext)
       self.publicacao.insertFileText(filetext)
+      
+      numeroDocumento = self.obterDoTexto("numero_documento", completeFiletext)
+      self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado")
+      matriculaSiape = self.obterDoTexto("matricula_siape", completeFiletext)
+      self.publicacao.insertLog(f"{numeroDocumento} - Matrícula SIAPE identificada: {matriculaSiape}")
       time.sleep(2)
 
   def obterTextoDocumento(self, file):
