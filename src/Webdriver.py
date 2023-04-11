@@ -8,6 +8,7 @@ from tkinter import messagebox
 
 try:
   opcoes = Options()
+  opcoes.add_argument('ignore-certificate-errors')
   opcoes.add_argument("start-maximized")
   opcoes.add_experimental_option('excludeSwitches', ['enable-logging'])
   nav = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opcoes)

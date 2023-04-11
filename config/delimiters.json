@@ -5,7 +5,7 @@
     ],
     "titulo_documento":[
         "",
-        "var_ano_assinatura"
+        "[hoje_ano]"
     ],
     "matricula_siape":[
         "matrícula SIAPE nº ",

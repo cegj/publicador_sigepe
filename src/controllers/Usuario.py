@@ -53,4 +53,4 @@ class Usuario:
         except Exception as e:
             messagebox.showerror("Erro", e)
             loginContainer.destroy()
-            l.Login.login()
+            l.Login()

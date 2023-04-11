@@ -13,7 +13,8 @@ from tkinter import filedialog
 from controllers import Interfaces as i
 from controllers.interfaces import Habilitacao as h
 from controllers.interfaces import Delimitadores as d
-from controllers.interfaces import Pospublicacao as p
+from controllers.interfaces import Pospublicacao as pp
+from controllers.interfaces import Publicacao as p
 from copy import copy
 from controllers import UserConfig as uc
 from helpers import goTo as gt
@@ -48,8 +49,6 @@ class Sessao(i.Interfaces):
     self.botoesContainer.grid(row=13, column=1, sticky='w')
     self.definirHabilitacaoInicial()
     self.habilitacao()
-    # self.diretorio_origem()
-    # self.opcoes_apos_publicacao()
     self.edicao_bgp()
     self.tipo_assinatura()
     self.especie()
@@ -97,60 +96,6 @@ class Sessao(i.Interfaces):
     botaoAlterarHabilitacao["command"] = abrirJanelaHabilitacao
     botaoAlterarHabilitacao.grid(column=3, row=1, padx=10, pady=5, sticky='w')
     self.irParaPaginaPublicacao()
-
-  # def opcoes_apos_publicacao(self):
-    # def setCopyMoveOption(event = None):
-    #   print(copyMoveSelected.get())
-    #   self.userConfig["apos_publicacao"]["copiar_ou_mover"] = copyMoveSelected.get()
-    # def getTargetPath():
-    #   targetPath.set(filedialog.askdirectory())
-    #   self.userConfig["apos_publicacao"]["destino"] = targetPath.get()
-
-    # self.opcoesContainer = Frame(self.sessaoContainer)
-    # self.opcoesContainer.grid(row=2, column=1, columnspan=2, sticky='w')
-    # copyMoveLabel = Label(
-    #   self.opcoesContainer,
-    #   text="Após publicar",
-    #   font=appConfig.fontes["normal"]
-    #   )
-    # copyMoveLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    # copyMoveOptionsList = ["Copiar", "Mover", "Não fazer nada"]
-    # copyMoveOptionsList.remove(self.userConfig["apos_publicacao"]["copiar_ou_mover"])
-    # copyMoveSelected = StringVar()
-    # copyMoveSelected.set(self.userConfig["apos_publicacao"]["copiar_ou_mover"])
-    # copyMoveOptions = OptionMenu(
-    #   self.opcoesContainer,
-    #   copyMoveSelected,
-    #   copyMoveSelected.get(),
-    #   *copyMoveOptionsList,
-    #   command=setCopyMoveOption
-    # )
-    # copyMoveOptions.grid(column=1, row=0, padx=10, pady=5, sticky='w')
-
-    # targetPath = StringVar()
-    # targetPath.set(self.userConfig["apos_publicacao"]["destino"])
-    # destinoLabel = Label(
-    #   self.opcoesContainer,
-    #   text="Destino",
-    #   font=appConfig.fontes["normal"]
-    #   )
-    # destinoLabel.grid(column=2, row=0, padx=10, pady=5, sticky='w')
-    # destinoInput = Entry(
-    #   self.opcoesContainer,
-    #   textvariable=targetPath,
-    #   width=50,
-    #   font=appConfig.fontes["normal"],
-    #   state=DISABLED
-    #   )
-    # destinoInput.grid(column=3, row=0)
-    # botaoDiretorioDestino = Button(
-    #   self.opcoesContainer,
-    #   text="Alterar",
-    #   font=appConfig.fontes["botao"],
-    #   width=20,
-    #   command=getTargetPath
-    #   )
-    # botaoDiretorioDestino.grid(column=4, row=0, padx=10, pady=5, sticky='w')
 
   def edicao_bgp(self):
     def setSelected(event):
@@ -509,7 +454,7 @@ class Sessao(i.Interfaces):
 
   def abrir_configuracoes_pospublicacao(self):
     def abrirJanela():
-      janelaEdicao = p.Pospublicacao()
+      janelaEdicao = pp.Pospublicacao()
     configurarPosPublicacaoBtn = Button(
       self.botoesContainer,
       text="Configurar pós-publicação",
@@ -549,6 +494,12 @@ class Sessao(i.Interfaces):
     botaoDiretorioOrigem.grid(column=1, row=2, padx=10, pady=5, sticky='')
 
   def publicar(self):
+    def iniciarPublicacao():
+      if (len(self.files) > 0):
+        publicacao = p.Publicacao(self.userConfig, self.files)
+      else:
+        messagebox.showerror("Erro", "Nenhum arquivo selecionado para publicação. Selecione os arquivos para continuar.")
+
     self.botaoPublicar = Button(
       self.arquivosContainer,
       text="Publicar",
@@ -556,5 +507,6 @@ class Sessao(i.Interfaces):
       width=20,
       bg="#429321",
       fg="white",
+      command=iniciarPublicacao
       )
     self.botaoPublicar.grid(column=2, row=2, padx=10, pady=5, sticky='')

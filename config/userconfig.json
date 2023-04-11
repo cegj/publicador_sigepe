@@ -1,10 +1,4 @@
 {
-    "apos_publicacao":{
-        "origem":"//arq-progep1/boufes/BOUFES 2023/PROGEP/03 - MARÇO/09.03.2023",
-        "adicionar_termo_nome_arquivo":"ok",
-        "destino":"//arq-progep1/ddp_secretaria/17 - PORTARIAS/2023/Afastamento para pós-graduação/04 - Abril/05",
-        "copiar_ou_mover":"Copiar"
-    },
     "habilitacao":{
         "inicial":"GESTOR - ÓRGÃO:UFES"
     },
@@ -13,7 +7,6 @@
         "tipo_assinatura":"Manual",
         "especie":"Portaria",
         "tema":"Afastamento para estudos ou Missão no País ou Exterior",
-        "assunto":"",
         "tipo_preenchimento":"Manual",
         "data_assinatura":"[hoje/]",
         "data_publicacao":"[proximo_dia_util/]",
@@ -22,74 +15,5 @@
         "uorg":"743",
         "responsavel_assinatura":"JOSIANA BINDA",
         "cargo_responsavel":"Pró-Reitora de Gestão de Pessoas"
-    },
-    "valores_var":[
-        "Afastamento para pós-graduação",
-        "Colaboração técnica",
-        "Concessão de carga horária",
-        "Estágio probatório",
-        "Horário especial ao servidor estudante",
-        "Incentivo à Qualificação",
-        "Licença para capacitação",
-        "Progressão por capacitação",
-        "Progressão por mérito (TAE)",
-        "Progressão por mérito, promoção, aceleração, RT (docente)"
-    ],
-    "temas_assuntos":{
-        "termo_portaria":{
-            "tema_bgp":"",
-            "nivel_assunto_bgp":"",
-            "arrow_down":0
-        },
-        "Progressão":{
-            "tema_bgp":"Ascensão e progressão funcional",
-            "nivel_assunto_bgp":"0_0_0",
-            "arrow_down":0
-        },
-        "Promoção":{
-            "tema_bgp":"Ascensão e progressão funcional",
-            "nivel_assunto_bgp":"0_0_0",
-            "arrow_down":0
-        },
-        "Aceleração da promoção":{
-            "tema_bgp":"Ascensão e progressão funcional",
-            "nivel_assunto_bgp":"0_0_0",
-            "arrow_down":0
-        },
-        "estágio probatório":{
-            "tema_bgp":"Admissão",
-            "nivel_assunto_bgp":"0_0_0_0",
-            "arrow_down":1
-        },
-        "Incentivo à qualificação":{
-            "tema_bgp":"Incentivos funcionais",
-            "nivel_assunto_bgp":"0_0_0",
-            "arrow_down":0
-        },
-        "Retribuição por Titulação":{
-            "tema_bgp":"Incentivos funcionais",
-            "nivel_assunto_bgp":"0_0_0",
-            "arrow_down":0
-        },
-        "Afastamento":{
-            "tema_bgp":"Afastamento para estudos ou Missão no País ou Exterior",
-            "nivel_assunto_bgp":"0_0_0",
-            "arrow_down":0
-        },
-        "Horário especial":{
-            "tema_bgp":"Horário especial para servidor estudante",
-            "nivel_assunto_bgp":"0_0_0_0",
-            "arrow_down":0
-        },
-        "Concessão de carga horária":{
-            "tema_bgp":"Horário especial para servidor estudante",
-            "nivel_assunto_bgp":"0_0_0_0",
-            "arrow_down":0
-        },
-        "Licença para capacitação":{
-            "tema_bgp":"Licença capacitação",
-            "nivel_assunto_bgp":"0_0_0",
-            "arrow_down":0
-        }
     }
 }

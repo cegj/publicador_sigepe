@@ -161,18 +161,6 @@ def obter_config():
         else:
             vProximoUtilTraco = str(ajustar_data(tomorrow, '-'))
 
-        # Define o valor variável de [ano_assinatura] #########MELHORAR
-
-        if (configJson['valores']['data_assinatura'].count("hoje") > 0):
-            dataAssinaturaP = ajustar_data(today, '/')
-        elif(configJson['valores']['data_assinatura'].count("proximo_dia_util") > 0):
-            dataAssinaturaP = ajustar_data(tomorrow, '/')
-        else:
-            dataAssinaturaP = configJson['valores']['data_assinatura']
-
-        dataAssinaturaArray = (dataAssinaturaP.split('/'))
-        vAnoAssinatura = str(dataAssinaturaArray[2])
-
         # define o valor da variavel [hoje_dia]
         vHojeDia = str(day)
 
@@ -225,7 +213,7 @@ def obter_config():
 
         import ast
 
-        configJsonStr = str(configJson)
+        configJsonStr = json.dumps(configJson)
 
         configJsonStr = configJsonStr.replace("[var]", vVar)
         configJsonStr = configJsonStr.replace("[hoje.]", vHojePonto)
