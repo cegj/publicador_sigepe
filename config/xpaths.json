@@ -1,6 +1,8 @@
 {
   "general": {
-    "loadingModal": "//*[@id='j_idt154:j_idt155:ajaxStatusModal']"
+    "loadingModal": "//*[@id='j_idt154:j_idt155:ajaxStatusModal']",
+    "erroInternoHeader": "//header[normalize-space()='ERRO INTERNO']",
+    "erroInternoVoltarAreaDeTrabalhoLink": "//*[@id='main-content']/section/div/ul/li[2]/a"
   },
   "login": {
     "usuarioInput": "//*[@id='cpfUsuario']",
