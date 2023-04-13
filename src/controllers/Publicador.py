@@ -7,12 +7,17 @@ from tkinter import messagebox
 import os
 from threading import Thread
 import time
+from helpers import goTo as gt
 from controllers.publicador import EdicaoBoletim as eb
 from controllers.publicador import TipoAssinatura as ta
 from controllers.publicador import TipoNumero as tn
 from controllers.publicador import Tema as t
 from controllers.publicador import Assunto as a
-from helpers import goTo as gt
+from controllers.publicador import Numero as n
+from controllers.publicador import DataAssinatura as da
+from controllers.publicador import DataPublicacao as dp
+from controllers.publicador import Especie as e
+from controllers.publicador import TextoDocumento as td
 
 class Publicador:
   def __init__(self, publicacao):
@@ -56,6 +61,30 @@ class Publicador:
 
       assuntoResult = a.Assunto.preencher()
       self.sendLogToInterface(assuntoResult, numeroDocumento)
+
+      if (self.config["valores_sigepe"]["tipo_preenchimento"] == "Manual"):
+        numeroResult = n.Numero.preencher(numeroDocumento)
+        self.sendLogToInterface(numeroResult, numeroDocumento)
+      else:
+        pass
+
+      if (self.config["valores_sigepe"]["tipo_preenchimento"] == "Manual"):
+        dataAssinaturaResult = da.DataAssinatura.preencher(self.config["valores_sigepe"]["data_assinatura"])
+        self.sendLogToInterface(dataAssinaturaResult, numeroDocumento)
+      else:
+        pass
+
+      if (self.config["valores_sigepe"]["edicao_bgp"] == "Normal"):
+        dataPublicacaoResult = dp.DataPublicacao.preencher(self.config["valores_sigepe"]["data_assinatura"])
+        self.sendLogToInterface(dataPublicacaoResult, numeroDocumento)
+      else:
+        pass
+
+      especieResult = e.Especie.preencher(self.config["valores_sigepe"]["especie"])
+      self.sendLogToInterface(especieResult, numeroDocumento)
+
+      textoDocumentoResult = td.TextoDocumento.preencher(filetext)
+      self.sendLogToInterface(textoDocumentoResult, numeroDocumento)
 
       time.sleep(2)
       gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")

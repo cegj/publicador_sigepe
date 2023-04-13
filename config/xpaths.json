@@ -26,12 +26,17 @@
     "tipoAssinaturaManualLabel": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:radTipoAssinatura']/tbody/tr/td[4]/label",
     "tipoNumeroCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTipoPreenchimento_label']",
     "tipoNumeroBuscar": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTipoPreenchimento_filter']",
-    "temas": "//div[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_panel']/div/ul/li",
-    "temaCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_label']",
+    "temas": "//div[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_panel']/div/ul/li",    
     "temaSelect": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_label']",
     "buscarTemaInput": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_filter']",
     "buscarAssuntoBtn": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnSelecionarClassificacaoAssunto']",
     "assuntosBtns": "//span[contains(@class, 'ui-treenode-label')]",
-    "selecionarAssuntoBtn": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnSelecionar']/span"
+    "selecionarAssuntoBtn": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnSelecionar']/span",
+    "numeroCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptNumeroAto']",
+    "dataAssinaturaCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataAssinatura_input']",
+    "dataPublicacaoCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input']",
+    "especieSelect": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_label']",
+    "buscarEspecieInput": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_filter']",
+    "textoDocumentoTextarea": "/body"
   }
 }
