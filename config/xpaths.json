@@ -20,7 +20,14 @@
     "acessoNegadoHeader": "//header[normalize-space()='ACESSO NEGADO']"
   },
   "publicacao": {
+    "edicaoBoletimNormalLabel": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:radEdicao']/tbody/tr/td[2]/label",
+    "edicaoBoletimExtraordinariaLabel": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:radEdicao']/tbody/tr/td[4]/label",
+    "tipoAssinaturaDigitalLabel": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:radTipoAssinatura']/tbody/tr/td[2]/label",
+    "tipoAssinaturaManualLabel": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:radTipoAssinatura']/tbody/tr/td[4]/label",
+    "tipoNumeroCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTipoPreenchimento_label']",
+    "tipoNumeroBuscar": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTipoPreenchimento_filter']",
     "temas": "//div[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_panel']/div/ul/li",
+    "temaCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_label']",
     "temaSelect": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_label']",
     "buscarTemaInput": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selTema_filter']",
     "buscarAssuntoBtn": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnSelecionarClassificacaoAssunto']",

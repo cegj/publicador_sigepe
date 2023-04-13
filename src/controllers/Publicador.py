@@ -7,6 +7,12 @@ from tkinter import messagebox
 import os
 from threading import Thread
 import time
+from controllers.publicador import EdicaoBoletim as eb
+from controllers.publicador import TipoAssinatura as ta
+from controllers.publicador import TipoNumero as tn
+from controllers.publicador import Tema as t
+from controllers.publicador import Assunto as a
+from helpers import goTo as gt
 
 class Publicador:
   def __init__(self, publicacao):
@@ -23,15 +29,36 @@ class Publicador:
       completeFiletext = self.obterTextoDocumento(file)
       filetext = self.removerPrimeiraLinha(completeFiletext)
       self.publicacao.insertFileText(filetext)
-      
+
+      self.publicacao.insertLog("Iniciando publicação de documento", "a")
       numeroDocumento = self.obterDoTexto("numero_documento", completeFiletext)
-      self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado")
-      self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado")
-      self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado")
-      self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado", "s")
+      if (numeroDocumento != ""):
+        self.publicacao.insertLog("Número do documento identificado", "", numeroDocumento)
+      else:
+        self.publicacao.insertLog("Não foi localizado um número no texto do documento", "a", numeroDocumento)
       matriculaSiape = self.obterDoTexto("matricula_siape", completeFiletext)
-      self.publicacao.insertLog(f"{numeroDocumento} - Matrícula SIAPE identificada: {matriculaSiape}", "e")
+      if (matriculaSiape != ""):
+        self.publicacao.insertLog(f"Matrícula SIAPE identificada: {matriculaSiape}", "n", numeroDocumento)
+      else:
+        self.publicacao.insertLog("Não foi localizada uma matrícula SIAPE no texto do documento", "a")
+
+      edicaoBoletimResult = eb.EdicaoBoletim.preencher(self.config["valores_sigepe"]["edicao_bgp"])
+      self.sendLogToInterface(edicaoBoletimResult, numeroDocumento)
+
+      tipoAssinaturaResult = ta.TipoAssinatura.preencher(self.config["valores_sigepe"]["tipo_assinatura"])
+      self.sendLogToInterface(tipoAssinaturaResult, numeroDocumento)
+
+      tipoNumeroResult = tn.TipoNumero.preencher(self.config["valores_sigepe"]["tipo_preenchimento"])
+      self.sendLogToInterface(tipoNumeroResult, numeroDocumento)
+
+      temaResult = t.Tema.preencher(self.config["valores_sigepe"]["tema"])
+      self.sendLogToInterface(temaResult, numeroDocumento)
+
+      assuntoResult = a.Assunto.preencher()
+      self.sendLogToInterface(assuntoResult, numeroDocumento)
+
       time.sleep(2)
+      gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
 
   def obterTextoDocumento(self, file):
     try:
@@ -57,3 +84,6 @@ class Publicador:
       return result
     except Exception as e:
       messagebox.showerror("Erro ao remover primeira linha do conteúdo do documento", e)
+
+  def sendLogToInterface(self, result, docnumber = ""):
+    self.publicacao.insertLog(result["log"], result["type"], docnumber)
