@@ -26,8 +26,11 @@ class Publicador:
       
       numeroDocumento = self.obterDoTexto("numero_documento", completeFiletext)
       self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado")
+      self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado")
+      self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado")
+      self.publicacao.insertLog(f"{numeroDocumento} - Número do documento identificado", "s")
       matriculaSiape = self.obterDoTexto("matricula_siape", completeFiletext)
-      self.publicacao.insertLog(f"{numeroDocumento} - Matrícula SIAPE identificada: {matriculaSiape}")
+      self.publicacao.insertLog(f"{numeroDocumento} - Matrícula SIAPE identificada: {matriculaSiape}", "e")
       time.sleep(2)
 
   def obterTextoDocumento(self, file):

@@ -38,9 +38,12 @@ class Publicacao:
       )
     self.fileContentBox.grid(row=0, column=1, pady=10, padx=10)
 
-  def insertLog(self, logtext):
+  def insertLog(self, logtext, tag = None):
     self.logbox.configure(state='normal')
-    self.logbox.insert(INSERT, f"{logtext}\n")
+    self.logbox.insert(INSERT, f"{logtext}\n", tag)
+    self.logbox.tag_config('e', background="#c23b3b", foreground="white") #error
+    self.logbox.tag_config('s', background="#489c2f", foreground="white") #success
+    self.logbox.tag_config('a', background="#e6e483") #alert
     self.logbox.configure(state='disabled')
     self.logbox.yview(END)
 
