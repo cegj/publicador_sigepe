@@ -17,7 +17,7 @@ from controllers.publicador import Numero as n
 from controllers.publicador import DataAssinatura as da
 from controllers.publicador import DataPublicacao as dp
 from controllers.publicador import Especie as e
-from controllers.publicador import TextoDocumento as td
+from controllers.publicador import ConteudoDocumento as cd
 
 class Publicador:
   def __init__(self, publicacao):
@@ -83,10 +83,10 @@ class Publicador:
       especieResult = e.Especie.preencher(self.config["valores_sigepe"]["especie"])
       self.sendLogToInterface(especieResult, numeroDocumento)
 
-      textoDocumentoResult = td.TextoDocumento.preencher(filetext)
+      textoDocumentoResult = cd.ConteudoDocumento.preencher(filetext)
       self.sendLogToInterface(textoDocumentoResult, numeroDocumento)
 
-      time.sleep(2)
+      time.sleep(4)
       gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
 
   def obterTextoDocumento(self, file):

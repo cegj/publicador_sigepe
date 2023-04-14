@@ -37,6 +37,6 @@
     "dataPublicacaoCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input']",
     "especieSelect": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_label']",
     "buscarEspecieInput": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_filter']",
-    "textoDocumentoTextarea": "/body"
+    "conteudoDocumentoTextarea": "/html/body"
   }
 }
