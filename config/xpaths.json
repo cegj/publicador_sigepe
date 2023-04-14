@@ -37,6 +37,13 @@
     "dataPublicacaoCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input']",
     "especieSelect": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_label']",
     "buscarEspecieInput": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selEspecie_filter']",
-    "conteudoDocumentoTextarea": "/html/body"
+    "conteudoDocumentoTextarea": "/html/body",
+    "incluirOrgaoElaboradorBotao": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:grpCamposListaResponsaveis'][contains(@id, 'frmCadastrarAto:cadastradorDeAtoParaPublicacao')]",
+    "janelaOrgaoElaboradorTitulo_t1": "//span[normalize-space()='Incluir Órgão Elaborador']",
+    "janelaOrgaoElaboradorTitulo_t2": "//span[normalize-space()='Pesquisar Pessoa']",
+    "nomeResponsavelOrgaoElaboradorInput_t2": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[1]/div/span/span/div[1]/div/button/span",
+    "selecionarResponsavelRadio_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt565:dataTableResultado_data']/tr/td[1]/div/div/div[2]",
+    "selecionarResponsavelBotao_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt625']/span",
+    "responsavelSelecionado_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis_data']/tr/td[6]/div"
   }
 }

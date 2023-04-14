@@ -18,6 +18,7 @@ from controllers.publicador import DataAssinatura as da
 from controllers.publicador import DataPublicacao as dp
 from controllers.publicador import Especie as e
 from controllers.publicador import ConteudoDocumento as cd
+from controllers.publicador import OrgaoElaborador as oe
 
 class Publicador:
   def __init__(self, publicacao):
@@ -86,7 +87,15 @@ class Publicador:
       textoDocumentoResult = cd.ConteudoDocumento.preencher(filetext)
       self.sendLogToInterface(textoDocumentoResult, numeroDocumento)
 
-      time.sleep(4)
+      orgaoElaboradorResult = oe.OrgaoElaborador.preencher(
+        self.config["valores_sigepe"]["upag"],
+        self.config["valores_sigepe"]["uorg"],
+        self.config["valores_sigepe"]["responsavel_assinatura"],
+        self.config["valores_sigepe"]["cargo_responsavel"]
+      )
+      self.sendLogToInterface(orgaoElaboradorResult, numeroDocumento)
+
+      time.sleep(10)
       gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
 
   def obterTextoDocumento(self, file):
