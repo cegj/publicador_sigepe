@@ -5,6 +5,6 @@ from Webdriver import nav
 
 def getScreenshotByXpath(xpath, filename):
   loc = nav.find_element(
-  By.XPATH, xpath).screenshot(f'{filename}.jpg')
+  By.XPATH, xpath).screenshot(f'{filename}.png')
   nav.minimize_window()
-  return f'{filename}.jpg'
+  return f'{filename}.png'
