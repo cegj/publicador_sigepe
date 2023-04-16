@@ -1,12 +1,12 @@
 from controllers import Interfaces as i
-from controllers import Usuario
+from controllers import Acesso as a
 from tkinter import *
 import appConfig
 from helpers import checkExistsByXpath as cebx
 from helpers import getScreenshotByXpath as gebx
 from helpers import goTo as gt
 from PIL import ImageTk, Image
-from controllers import Usuario
+# from controllers import Acesso as a
 import os
 from appXpaths import xpaths
 
@@ -67,11 +67,11 @@ class Login(i.Interfaces):
     botaoLogin["text"] = "Entrar"
     botaoLogin["font"] = appConfig.fontes["botao"]
     botaoLogin["width"] = 12
-    botaoLogin["command"] = lambda: Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
+    botaoLogin["command"] = lambda: a.Acesso.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
     botaoLogin.pack()
 
     def handleEnter(event = None):
-      Usuario.Usuario.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
+      a.Acesso.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
 
     self.root.bind('<Return>', handleEnter)
     self.root.mainloop()

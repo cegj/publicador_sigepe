@@ -20,7 +20,54 @@ class OrgaoElaborador:
       tipo = OrgaoElaborador.definirTipoDeCadastro()
 
       if (tipo == 1):
-        pass
+        sigepe_campoOrgao = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["orgaoElaboradorSelect_t1"])))
+        sigepe_campoOrgao.click()
+        time.sleep(0.3)
+        sigepe_campoBuscarOrgao = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["buscarOrgaoElaboradorInput_t1"])))
+        sigepe_campoBuscarOrgao.send_keys(orgao)
+        time.sleep(1.5)
+        sigepe_campoBuscarOrgao.send_keys(Keys.ENTER)
+        wfl.waitForLoading()
+
+        sigepe_campoUpag = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["upagSelect_t1"])))
+        sigepe_campoUpag.click()
+        time.sleep(0.3)
+        sigepe_campoBuscarUpag = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["buscarUpagInput_t1"])))
+        sigepe_campoBuscarUpag.send_keys(upag)
+        time.sleep(1.5)
+        sigepe_campoBuscarUpag.send_keys(Keys.ENTER)
+        wfl.waitForLoading()
+
+        sigepe_campoUorg = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["uorgSelect_t1"])))
+        sigepe_campoUorg.click()
+        time.sleep(0.3)
+        sigepe_campoBuscarUorg = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["buscarUorgInput_t1"])))
+        sigepe_campoBuscarUorg.send_keys(uorg)
+        time.sleep(1.5)
+        sigepe_campoBuscarUorg.send_keys(Keys.ENTER)
+        wfl.waitForLoading()
+
+        sigepe_campoResponsavel = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["responsavelAssinaturaInput_t1"])))
+        sigepe_campoResponsavel.send_keys(responsavel)
+
+        sigepe_campoCargoResponsavel = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["cargoResponsavelInput_t1"])))
+        sigepe_campoCargoResponsavel.send_keys(cargo)
+
+        sigepe_botaoGravarOrgaoElab = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["botaoGravarOrgaoElaborador_t1"])))
+        sigepe_botaoGravarOrgaoElab.click()
+
+        wfl.waitForLoading()
+        return {"log": f"Órgão elaborador preenchido: {sigepe_botaoSelecionarResponsavel.text()}", "type": "n"}
+
       elif (tipo == 2):
         sigepe_campoNomeResponsavel = wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, xpaths["publicacao"]["nomeResponsavelOrgaoElaboradorInput_t2"])))
@@ -51,7 +98,7 @@ class OrgaoElaborador:
 
   @staticmethod
   def definirTipoDeCadastro():
-    tipo = 0
+    tipo = None
     try:
       wfl.waitForLoading()
       tipo1JanelaTitulo = wait["regular"].until(EC.element_to_be_clickable(
@@ -59,7 +106,7 @@ class OrgaoElaborador:
       tipo = 1
     except:
       wfl.waitForLoading()
-      tipo1JanelaTitulo = wait["regular"].until(EC.element_to_be_clickable(
+      tipo2JanelaTitulo = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["janelaOrgaoElaboradorTitulo_t2"])))
       tipo = 2
     finally:

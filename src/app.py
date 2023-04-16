@@ -1,6 +1,5 @@
 from tkinter import *
 from controllers.interfaces import Login as l
-from controllers import Usuario
 
 class Application:
     def __init__(self):

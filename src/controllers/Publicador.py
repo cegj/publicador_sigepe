@@ -32,6 +32,8 @@ class Publicador:
 
   def publicar(self):
     for file in self.files:
+      gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
+
       completeFiletext = self.obterTextoDocumento(file)
       filetext = self.removerPrimeiraLinha(completeFiletext)
       self.publicacao.insertFileText(filetext)
@@ -96,7 +98,6 @@ class Publicador:
       self.sendLogToInterface(orgaoElaboradorResult, numeroDocumento)
 
       time.sleep(10)
-      gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
 
   def obterTextoDocumento(self, file):
     try:

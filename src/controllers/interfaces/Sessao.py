@@ -21,6 +21,7 @@ from helpers import goTo as gt
 from helpers import checkExistsByXpath as cebx
 from helpers import waitForLoading as wfl
 import os
+from threading import Thread
 
 class Sessao(i.Interfaces):
   def __init__(self):
@@ -28,15 +29,17 @@ class Sessao(i.Interfaces):
     self.userConfig = copy(uc.UserConfig.obterConfiguracoesSalvas())
     self.files = []
 
-  def irParaPaginaPublicacao(self):
-    try:
-      gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
-      if(cebx.checkExistsByXpath(xpaths["habilitacao"]["acessoNegadoHeader"])):
-        messagebox.showerror("Acesso negado", "A habilitação não possui acesso ao módulo de Publicação. Selecione uma habilitação com acesso.")
-        gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
-    except Exception as e:
-        messagebox.showerror("Erro ao acessar Cadastrar Ato para Publicação", e)
-
+  # @staticmethod
+  # def checarAcessoHabilitacao():
+  #   try:
+  #     gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
+  #     if(cebx.checkExistsByXpath(xpaths["habilitacao"]["acessoNegadoHeader"])):
+  #       gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
+  #       return False
+  #     else:
+  #       return True
+  #   except Exception as e:
+  #       messagebox.showerror("Erro ao verificar o acesso da habilitação selecionada", e)
 
   def sessao(self):
     self.sessaoContainer = Frame(self.root)
@@ -47,7 +50,6 @@ class Sessao(i.Interfaces):
     sessaoContainerTitulo.grid(column=1, row=0, columnspan=2)
     self.botoesContainer = Frame(self.sessaoContainer)
     self.botoesContainer.grid(row=13, column=1, sticky='w')
-    self.definirHabilitacaoInicial()
     self.habilitacao()
     self.edicao_bgp()
     self.tipo_assinatura()
@@ -66,19 +68,13 @@ class Sessao(i.Interfaces):
     self.abrir_edicao_delimitadores()
     self.abrir_configuracoes_pospublicacao()
     self.arquivos()
-    self.publicar()
+    self.publicar()    
     self.root.mainloop()
-
-  def definirHabilitacaoInicial(self):
-    sigepe_habilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
-    sigepe_habilitacaoBotao.click()
-    sigepe_novaHabilitacaoBotao = nav.find_element(By.XPATH, f"//*[contains(text(), '{self.userConfig['habilitacao']['inicial']}')]")
-    sigepe_novaHabilitacaoBotao.click()
-    time.sleep(2)
 
   def habilitacao(self):
     def abrirJanelaHabilitacao():
-      janelaHabilitacao = h.Habilitacao(self)
+      self.root.destroy()
+      janelaHabilitacao = h.Habilitacao()
     self.sessaoHabilitacaoContainer = Frame(self.sessaoContainer)
     self.sessaoHabilitacaoContainer.grid(row=3, column=1, columnspan=2, sticky='w')
     sigepe_habilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
@@ -95,7 +91,6 @@ class Sessao(i.Interfaces):
     botaoAlterarHabilitacao["width"] = 20
     botaoAlterarHabilitacao["command"] = abrirJanelaHabilitacao
     botaoAlterarHabilitacao.grid(column=3, row=1, padx=10, pady=5, sticky='w')
-    self.irParaPaginaPublicacao()
 
   def edicao_bgp(self):
     def setSelected(event):

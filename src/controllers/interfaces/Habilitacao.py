@@ -11,38 +11,57 @@ from controllers.interfaces import Habilitacao as h
 from controllers import Interfaces as i
 from controllers import UserConfig as uc
 from copy import copy
+from helpers import goTo as gt
+from helpers import checkExistsByXpath as cebx
 
-class Habilitacao:
-  def __init__(self, habilitacao):
-      self.master = i.Interfaces.novaJanela()
-      self.habilitacaoContainer = Frame(self.master)
-      self.habilitacaoContainer.pack()
-      self.sessao_habilitacao = habilitacao
-      self.janelaHabilitacao()
+class Habilitacao(i.Interfaces):
+  def __init__(self):
+    super().__init__()
+    self.master = Frame(self.root)
+    self.master.pack()
+    self.habilitacaoContainer = Frame(self.master)
+    self.habilitacaoContainer.pack()
+    self.janelaHabilitacao()
+
+  @staticmethod
+  def checarAcessoHabilitacao():
+    try:
+      gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
+      if(cebx.checkExistsByXpath(xpaths["habilitacao"]["acessoNegadoHeader"])):
+        gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
+        return False
+      else:
+        return True
+    except Exception as e:
+        messagebox.showerror("Erro ao verificar o acesso da habilitação selecionada", e)
 
   def handleMudarHabilitacao(self):
-    sigepe_novaHabilitacaoBotao = nav.find_element(By.XPATH, f"//*[contains(text(), '{self.seletorHabilitacoes.get()}')]")
-    sigepe_novaHabilitacaoBotao.click()
-    time.sleep(2)
-    self.master.destroy()
-    self.sessao_habilitacao.sessaoHabilitacaoContainer.destroy()
-    self.sessao_habilitacao.habilitacao()
+    if (self.sigepe_habilitacaoBotao.text == self.seletorHabilitacoes.get()):
+      messagebox.showinfo("Não houve alteração", f"A habilitação {self.seletorHabilitacoes.get()} já é a habilitação ativa no Sigepe no momento.")
+    else:
+      sigepe_novaHabilitacaoBotao = nav.find_element(By.XPATH, f"//*[contains(text(), '{self.seletorHabilitacoes.get()}')]")
+      sigepe_novaHabilitacaoBotao.click()
+      time.sleep(2)
+      self.root.destroy()
+      sessao = s.Sessao()
+      sessao.sessao()
+      self.root.mainloop()
 
   def handleFecharJanela(self):
     sigepe_fecharHabilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['fecharHabilitacaoBotao'])
     sigepe_fecharHabilitacaoBotao.click()
-    self.master.destroy()
+    self.root.destroy()
 
   def janelaHabilitacao(self):
     try:
-      sigepe_habilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
-      sigepe_habilitacaoBotao.click()
+      gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
+      self.sigepe_habilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
+      self.sigepe_habilitacaoBotao.click()
       sigepe_HabilitacoesLinks = nav.find_elements(By.XPATH, xpaths['habilitacao']['habilitacoesLinks'])
 
       listaHabilitacoes = []
       for habilitacao in sigepe_HabilitacoesLinks:
         listaHabilitacoes.append(habilitacao.text)
-      listaHabilitacoes.pop(0)
 
       label = ttk.Label(self.habilitacaoContainer, text="Selecione a habilitação:")
       label.pack()
@@ -69,4 +88,4 @@ class Habilitacao:
       self.master.destroy()
       self.janelaHabilitacao()
 
-    self.master.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
+    self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
