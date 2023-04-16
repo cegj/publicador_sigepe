@@ -51,13 +51,13 @@ class Login(i.Interfaces):
         captchaContainer["pady"] = 5
         captchaContainer.pack()
         captchaLabel = Label(captchaContainer, text="Confirme o código", font=appConfig.fontes["normal"])
-        imgFileName = gebx.getScreenshotByXpath(xpaths['login']['captchaImg'])
+        imgFileName = gebx.getScreenshotByXpath(xpaths['login']['captchaImg'], 'captcha')
         imgFile = Image.open(imgFileName)
         captchaImg = ImageTk.PhotoImage(imgFile)
-        captchaImg = Label(captchaContainer, image = captchaImg)
-        captchaImg.image = captchaImg
-        captchaImg.pack()
-        os.remove(imgFileName)
+        captchaImgLabel = Label(captchaContainer, image = captchaImg)
+        captchaImgLabel.image = captchaImg
+        captchaImgLabel.pack()
+        # os.remove(imgFileName)
         captchaInput = Entry(captchaContainer)
         captchaInput["width"] = 20
         captchaInput["font"] = appConfig.fontes["normal"]

@@ -3,8 +3,8 @@ import cv2
 import os
 from Webdriver import nav
 
-def getScreenshotByXpath(xpath):
+def getScreenshotByXpath(xpath, filename):
   loc = nav.find_element(
-  By.XPATH, xpath).screenshot('captcha.png')
+  By.XPATH, xpath).screenshot(f'{filename}.jpg')
   nav.minimize_window()
-  return 'captcha.png'
+  return f'{filename}.jpg'

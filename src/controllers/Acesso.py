@@ -38,14 +38,14 @@ class Acesso:
 
             if (cebx.checkExistsByXpath('//*[@id="msg_alerta"]')):
                 erroLogin = nav.find_element(By.XPATH, xpaths['login']['loginError'])
-                raise Exception('Mensagem do Sigepe: ' + erroLogin.text)
+                raise Exception(erroLogin.text)
 
             if (cebx.checkExistsByXpath(xpaths['login']['novoUsuarioPageTitle'])):
                 erroLogin = nav.find_element(By.XPATH, xpaths['login']['novoUsuarioPageTitle'])
                 if (erroLogin.text == "Primeiro Acesso - Identificação de Usuário"):
-                    raise Exception("Mensagem do Sigepe: Usuário foi identificado como primeiro acesso. Verifique se o CPF foi preenchido corretamente ou faça o seu cadastro no Sigepe.")
+                    raise Exception("Usuário foi identificado como de primeiro acesso. Verifique se o CPF foi preenchido corretamente ou faça o seu cadastro no Sigepe.")
                 else:
-                    raise Exception('Mensagem do Sigepe: ' + erroLogin.text)
+                    raise Exception(erroLogin.text)
                 return False
 
             loginContainer.destroy()
