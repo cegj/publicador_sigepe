@@ -60,7 +60,7 @@ class Acesso:
             return True
 
         except Exception as e:
-            messagebox.showerror("Erro", e)
+            messagebox.showerror("Erro ao realizar acesso", e)
             loginContainer.destroy()
             l.Login()
     

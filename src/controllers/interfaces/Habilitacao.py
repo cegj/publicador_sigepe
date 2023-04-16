@@ -35,7 +35,7 @@ class Habilitacao(i.Interfaces):
     except Exception as e:
         messagebox.showerror("Erro ao verificar o acesso da habilitação selecionada", e)
 
-  def handleMudarHabilitacao(self):
+  def handleMudarHabilitacao(self, event = None):
     if (self.sigepe_habilitacaoBotao.text == self.seletorHabilitacoes.get()):
       messagebox.showinfo("Não houve alteração", f"A habilitação {self.seletorHabilitacoes.get()} já é a habilitação ativa no Sigepe no momento.")
     else:
@@ -45,7 +45,6 @@ class Habilitacao(i.Interfaces):
       self.root.destroy()
       sessao = s.Sessao()
       sessao.sessao()
-      self.root.mainloop()
 
   def handleFecharJanela(self):
     confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar? Caso confirme, a aplicação será encerrada.")
@@ -84,10 +83,11 @@ class Habilitacao(i.Interfaces):
         command=self.handleMudarHabilitacao
       )
       botaoSelecionarHabilitacao.pack()
+      self.root.bind('<Return>', self.handleMudarHabilitacao)
+      self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
+      self.root.mainloop()
 
     except Exception as e:
       messagebox.showerror("Erro em Habilitações", e)
       self.master.destroy()
       self.janelaHabilitacao()
-
-    self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
