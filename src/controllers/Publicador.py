@@ -51,51 +51,52 @@ class Publicador:
         self.publicacao.insertLog("Não foi localizada uma matrícula SIAPE no texto do documento", "a")
 
       edicaoBoletimResult = eb.EdicaoBoletim.preencher(self.config["valores_sigepe"]["edicao_bgp"])
-      self.sendLogToInterface(edicaoBoletimResult, numeroDocumento)
+      self.handleResult(edicaoBoletimResult, numeroDocumento)
 
       tipoAssinaturaResult = ta.TipoAssinatura.preencher(self.config["valores_sigepe"]["tipo_assinatura"])
-      self.sendLogToInterface(tipoAssinaturaResult, numeroDocumento)
+      self.handleResult(tipoAssinaturaResult, numeroDocumento)
 
       tipoNumeroResult = tn.TipoNumero.preencher(self.config["valores_sigepe"]["tipo_preenchimento"])
-      self.sendLogToInterface(tipoNumeroResult, numeroDocumento)
+      self.handleResult(tipoNumeroResult, numeroDocumento)
 
       temaResult = t.Tema.preencher(self.config["valores_sigepe"]["tema"])
-      self.sendLogToInterface(temaResult, numeroDocumento)
+      self.handleResult(temaResult, numeroDocumento)
 
       assuntoResult = a.Assunto.preencher()
-      self.sendLogToInterface(assuntoResult, numeroDocumento)
+      self.handleResult(assuntoResult, numeroDocumento)
 
       if (self.config["valores_sigepe"]["tipo_preenchimento"] == "Manual"):
         numeroResult = n.Numero.preencher(numeroDocumento)
-        self.sendLogToInterface(numeroResult, numeroDocumento)
+        self.handleResult(numeroResult, numeroDocumento)
       else:
         pass
 
       if (self.config["valores_sigepe"]["tipo_preenchimento"] == "Manual"):
         dataAssinaturaResult = da.DataAssinatura.preencher(self.config["valores_sigepe"]["data_assinatura"])
-        self.sendLogToInterface(dataAssinaturaResult, numeroDocumento)
+        self.handleResult(dataAssinaturaResult, numeroDocumento)
       else:
         pass
 
       if (self.config["valores_sigepe"]["edicao_bgp"] == "Normal"):
         dataPublicacaoResult = dp.DataPublicacao.preencher(self.config["valores_sigepe"]["data_assinatura"])
-        self.sendLogToInterface(dataPublicacaoResult, numeroDocumento)
+        self.handleResult(dataPublicacaoResult, numeroDocumento)
       else:
         pass
 
       especieResult = e.Especie.preencher(self.config["valores_sigepe"]["especie"])
-      self.sendLogToInterface(especieResult, numeroDocumento)
+      self.handleResult(especieResult, numeroDocumento)
 
       textoDocumentoResult = cd.ConteudoDocumento.preencher(filetext)
-      self.sendLogToInterface(textoDocumentoResult, numeroDocumento)
+      self.handleResult(textoDocumentoResult, numeroDocumento)
 
       orgaoElaboradorResult = oe.OrgaoElaborador.preencher(
+        self.config["valores_sigepe"]["orgao"],
         self.config["valores_sigepe"]["upag"],
         self.config["valores_sigepe"]["uorg"],
         self.config["valores_sigepe"]["responsavel_assinatura"],
         self.config["valores_sigepe"]["cargo_responsavel"]
       )
-      self.sendLogToInterface(orgaoElaboradorResult, numeroDocumento)
+      self.handleResult(orgaoElaboradorResult, numeroDocumento)
 
       time.sleep(10)
 
@@ -124,5 +125,5 @@ class Publicador:
     except Exception as e:
       messagebox.showerror("Erro ao remover primeira linha do conteúdo do documento", e)
 
-  def sendLogToInterface(self, result, docnumber = ""):
+  def handleResult(self, result, docnumber = ""):
     self.publicacao.insertLog(result["log"], result["type"], docnumber)
