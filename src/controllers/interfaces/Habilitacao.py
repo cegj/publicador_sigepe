@@ -55,8 +55,6 @@ class Habilitacao(i.Interfaces):
   def handleFecharJanela(self):
     confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar? Caso confirme, a aplicação será encerrada.")
     if (confirmarFechar == 'yes'):
-      # sigepe_fecharHabilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['fecharHabilitacaoBotao'])
-      # sigepe_fecharHabilitacaoBotao.click()
       nav.quit()
       self.root.destroy()
 
