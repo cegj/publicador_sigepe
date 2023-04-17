@@ -10,6 +10,7 @@ from controllers import Interfaces as i
 from controllers.interfaces import Habilitacao as h
 from controllers import Interfaces as i
 from controllers import UserConfig as uc
+from controllers.interfaces import Sessao as s
 from copy import copy
 from helpers import goTo as gt
 from helpers import checkExistsByXpath as cebx
@@ -42,15 +43,21 @@ class Habilitacao(i.Interfaces):
       sigepe_novaHabilitacaoBotao = nav.find_element(By.XPATH, f"//*[contains(text(), '{self.seletorHabilitacoes.get()}')]")
       sigepe_novaHabilitacaoBotao.click()
       time.sleep(2)
-      self.root.destroy()
-      sessao = s.Sessao()
-      sessao.sessao()
+      if (Habilitacao.checarAcessoHabilitacao()):
+        self.root.destroy()
+        sessao = s.Sessao()
+        sessao.sessao()
+      else:
+        messagebox.showinfo("Habilitação sem acesso", f"A habilitação {self.seletorHabilitacoes.get()} não tem acesso ao módulo Publicação do Sigepe. Selecione outra.")
+        self.root.destroy()
+        novaInstancia = Habilitacao()
 
   def handleFecharJanela(self):
     confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar? Caso confirme, a aplicação será encerrada.")
     if (confirmarFechar == 'yes'):
-      sigepe_fecharHabilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['fecharHabilitacaoBotao'])
-      sigepe_fecharHabilitacaoBotao.click()
+      # sigepe_fecharHabilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['fecharHabilitacaoBotao'])
+      # sigepe_fecharHabilitacaoBotao.click()
+      nav.quit()
       self.root.destroy()
 
   def janelaHabilitacao(self):
