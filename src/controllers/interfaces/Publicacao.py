@@ -22,21 +22,53 @@ class Publicacao:
       publicador = p.Publicador(self)
 
   def janelaPublicacao(self):
+    logboxContainer = Frame(self.publicacaoContainer)
+    logboxContainer.grid(row=0, column=0, pady=10, padx=10)
+    logBoxLabel = Label(
+      logboxContainer,
+      text="Logs da publicação",
+      font=appConfig.fontes["normal"]
+    )
+    logBoxLabel.pack()
     self.logbox = st.ScrolledText(
-      self.publicacaoContainer,
+      logboxContainer,
       width=50,
       height=10,
-      font=appConfig.fontes["normal"],
+      font=appConfig.fontes["log"],
       )
-    self.logbox.grid(row=0, column=0, pady=10, padx=10)
+    self.logbox.pack()
 
+    fileContentContainer = Frame(self.publicacaoContainer)
+    fileContentContainer.grid(row=0, column=1, pady=10, padx=10)
+    fileContentLabel = Label(
+      fileContentContainer,
+      text="Conteúdo do documento",
+      font=appConfig.fontes["normal"]
+    )
+    fileContentLabel.pack()
     self.fileContentBox = st.ScrolledText(
-      self.publicacaoContainer,
+      fileContentContainer,
       width=50,
       height=10,
-      font=appConfig.fontes["normal"],
+      font=appConfig.fontes["log"],
       )
-    self.fileContentBox.grid(row=0, column=1, pady=10, padx=10)
+    self.fileContentBox.pack()
+
+    resultBoxContainer = Frame(self.publicacaoContainer)
+    resultBoxContainer.grid(row=1, column=0, pady=10, padx=10)
+    fileContentLabel = Label(
+      resultBoxContainer,
+      text="Resultados",
+      font=appConfig.fontes["normal"]
+    )
+    fileContentLabel.pack()
+    self.resultBox = st.ScrolledText(
+      resultBoxContainer,
+      width=50,
+      height=10,
+      font=appConfig.fontes["log"],
+      )
+    self.resultBox.pack()
 
   def insertLog(self, logtext, tag = None, docNumber = ""):
     self.logbox.configure(state='normal')
@@ -52,3 +84,12 @@ class Publicacao:
     self.fileContentBox.delete('0.0', END)
     self.fileContentBox.insert(INSERT, filetext)
     self.fileContentBox.configure(state='disabled')
+
+  def insertResult(self, filename, logtext, tag = None, docNumber = ""):
+    self.resultBox.configure(state='normal')
+    self.resultBox.insert(INSERT, f"{docNumber} - {filename}: {logtext}\n", tag)
+    self.resultBox.tag_config('s', background="#489c2f", foreground="white") #success
+    self.resultBox.tag_config('e', background="#c23b3b", foreground="white") #error
+    self.resultBox.tag_config('a', background="#e6e483") #alert
+    self.resultBox.configure(state='disabled')
+    self.resultBox.yview(END)

@@ -76,23 +76,6 @@ class Variaveis:
           variaveis["hoje_mes_extenso"] = value
           break
 
-    # valorDataAssinatura = copy(config["valores_sigepe"]["data_assinatura"])
-    # match valorDataAssinatura:
-    #   case "[hoje.]":
-    #     variaveis["ano_assinatura"] = variaveis["hoje."].split('.')[2]
-    #   case "[hoje/]":
-    #     variaveis["ano_assinatura"] = variaveis["hoje/"].split('/')[2]
-    #   case "[hoje-]":
-    #     variaveis["ano_assinatura"] = variaveis["hoje-"].split('-')[2]
-    #   case "[proximo_dia_util.]":
-    #     variaveis["ano_assinatura"] = variaveis["proximo_dia_util."].split('.')[2]
-    #   case "[proximo_dia_util/]":
-    #     variaveis["ano_assinatura"] = variaveis["proximo_dia_util/"].split('/')[2]
-    #   case "[proximo_dia_util-]":
-    #     variaveis["ano_assinatura"] = variaveis["proximo_dia_util-"].split('-')[2]
-    #   case _:
-    #     variaveis["ano_assinatura"] = valorDataAssinatura.split('/')[2]
-
     return variaveis
   
   @staticmethod

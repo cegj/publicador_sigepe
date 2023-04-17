@@ -2,7 +2,8 @@
   "general": {
     "loadingModal": "//*[@id='j_idt154:j_idt155:ajaxStatusModal']",
     "erroInternoHeader": "//header[normalize-space()='ERRO INTERNO']",
-    "erroInternoVoltarAreaDeTrabalhoLink": "//*[@id='main-content']/section/div/ul/li[2]/a"
+    "erroInternoVoltarAreaDeTrabalhoLink": "//*[@id='main-content']/section/div/ul/li[2]/a",
+    "erroDesconhecidoModal": "//*[@id='j_idt154:j_idt155:ajaxResponseWithErrorModal']/div[2]"
   },
   "login": {
     "usuarioInput": "//*[@id='cpfUsuario']",
@@ -61,7 +62,9 @@
     "selecionarInteressadoCheckbox": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt494:dataTableResultado:j_idt499']/div/div/div[2]",
     "incluirInteressadoNaListaBotao": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt494:j_idt517']/span",
     "selecionarServidorBotao": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt538']",
-    "interessadoSelecionado": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblInteressados:0:j_idt1451:txtContent']"
-
+    "interessadoSelecionado": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblInteressados:0:j_idt1451:txtContent']",
+    "enviarParaPublicacaoBotao": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnEnviarPublicacao']/span",
+    "mensagemErroPublicacao": "//*[@id='msgCadastrarAto']/div[2]/ul/li/span[2]",
+    "mensagemSucessoPublicacao": "//*[@id='idFormMsg:idMensagem']/div/ul/li/span[2]"
   }
 }

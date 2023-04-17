@@ -8,6 +8,7 @@ import os
 from threading import Thread
 import time
 from helpers import goTo as gt
+from helpers import checkExistsByXpath as cebx
 from controllers.publicador import EdicaoBoletim as eb
 from controllers.publicador import TipoAssinatura as ta
 from controllers.publicador import TipoNumero as tn
@@ -20,6 +21,14 @@ from controllers.publicador import Especie as e
 from controllers.publicador import ConteudoDocumento as cd
 from controllers.publicador import OrgaoElaborador as oe
 from controllers.publicador import Interessado as i
+import os
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+import time
+from Webdriver import wait
+from appXpaths import xpaths
+from helpers import waitForLoading as wfl
 
 class Publicador:
   def __init__(self, publicacao):
@@ -28,6 +37,7 @@ class Publicador:
     self.config = v.Variaveis.atribuirValorVariaveis(self.publicacao.config)
     self.delimitadores = v.Variaveis.atribuirValorVariaveis(uc.UserConfig.obterDelimitadoresSalvos())
     self.pospublicacao = v.Variaveis.atribuirValorVariaveis(uc.UserConfig.obterConfigPosPublicacaoSalvos())
+    self.resultados = {"sucesso": [], "erro": [], "indefinido": []}
     t = Thread(target=self.publicar)
     t.start()
 
@@ -35,6 +45,7 @@ class Publicador:
     for file in self.files:
       gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
 
+      filename = os.path.basename(file.name)
       completeFiletext = self.obterTextoDocumento(file)
       filetext = self.removerPrimeiraLinha(completeFiletext)
       self.publicacao.insertFileText(filetext)
@@ -79,7 +90,7 @@ class Publicador:
         pass
 
       if (self.config["valores_sigepe"]["edicao_bgp"] == "Normal"):
-        dataPublicacaoResult = dp.DataPublicacao.preencher(self.config["valores_sigepe"]["data_assinatura"])
+        dataPublicacaoResult = dp.DataPublicacao.preencher(self.config["valores_sigepe"]["data_publicacao"])
         self.handleResult(dataPublicacaoResult, numeroDocumento)
       else:
         pass
@@ -90,6 +101,7 @@ class Publicador:
       textoDocumentoResult = cd.ConteudoDocumento.preencher(filetext)
       self.handleResult(textoDocumentoResult, numeroDocumento)
 
+      self.publicacao.insertLog("Selecionando órgão elaborador...", "n", numeroDocumento)
       orgaoElaboradorResult = oe.OrgaoElaborador.preencher(
         self.config["valores_sigepe"]["orgao"],
         self.config["valores_sigepe"]["upag"],
@@ -99,10 +111,11 @@ class Publicador:
       )
       self.handleResult(orgaoElaboradorResult, numeroDocumento)
 
-      textoDocumentoResult = i.Interessado.preencher(matriculaSiape)
-      self.handleResult(textoDocumentoResult, numeroDocumento)
+      self.publicacao.insertLog("Selecionando interessado...", "n", numeroDocumento)
+      interessadoResult = i.Interessado.preencher(matriculaSiape)
+      self.handleResult(interessadoResult, numeroDocumento)
 
-      time.sleep(3)
+      self.enviarParaPublicacao(numeroDocumento, filename)
 
   def obterTextoDocumento(self, file):
     try:
@@ -128,6 +141,32 @@ class Publicador:
       return result
     except Exception as e:
       messagebox.showerror("Erro ao remover primeira linha do conteúdo do documento", e)
+
+  def enviarParaPublicacao(self, numeroDocumento, filename):
+    try:
+      self.publicacao.insertLog("Enviando documento para publicação...", "n", numeroDocumento)
+      sigepe_botaoEnviarPublicacao = wait["regular"].until(EC.element_to_be_clickable(
+        (By.XPATH, xpaths["publicacao"]["enviarParaPublicacaoBotao"])))
+      sigepe_botaoEnviarPublicacao.click()
+      wfl.waitForLoading()
+
+      if (cebx.checkExistsByXpath(xpaths["publicacao"]["mensagemErroPublicacao"])):
+        self.resultados["erro"].append(filename)
+        mensagemErro = wait["regular"].until(EC.presence_of_element_located(
+          (By.XPATH, xpaths["publicacao"]["mensagemErroPublicacao"])))
+        self.publicacao.insertResult(filename, mensagemErro.text, 'e', numeroDocumento)
+        return False
+      
+      if (cebx.checkExistsByXpath(xpaths["publicacao"]["mensagemSucessoPublicacao"])):
+        self.resultados["sucesso"].append(filename)
+        mensagemSucesso = wait["regular"].until(EC.presence_of_element_located(
+          (By.XPATH, xpaths["publicacao"]["mensagemSucessoPublicacao"])))
+        self.publicacao.insertResult(filename, mensagemSucesso.text, 's', numeroDocumento)
+        return True
+
+    except Exception as e:
+      print(e)
+      return {"log": f"Falha ao enviar documento para publicação: {e}", "type": "e", "e": e}
 
   def handleResult(self, result, docnumber = ""):
     self.publicacao.insertLog(result["log"], result["type"], docnumber)
