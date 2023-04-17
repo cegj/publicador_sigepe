@@ -49,11 +49,19 @@
     "responsavelAssinaturaInput_t1": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptNomeResponsavel']",
     "cargoResponsavelInput_t1": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptCargoResponsavel']",
     "botaoGravarOrgaoElaborador_t1": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:j_idt699']/span",
-    "responsavelSelecionado_t1": "",
+    "responsavelSelecionado_t1": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis_data']/tr/td[6]/div",
     "janelaOrgaoElaboradorTitulo_t2": "//span[normalize-space()='Pesquisar Pessoa']",
     "nomeResponsavelOrgaoElaboradorInput_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt434:j_idt463']",
     "selecionarResponsavelRadio_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt565:dataTableResultado_data']/tr/td[1]/div/div/div[2]",
     "selecionarResponsavelBotao_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt625']/span",
-    "responsavelSelecionado_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis_data']/tr/td[6]/div"
+    "responsavelSelecionado_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis_data']/tr/td[6]/div",
+    "incluirInteressadoBotao": "//*[text()='Incluir interessado']",
+    "matriculaInteressadoInput": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt434:j_idt466']",
+    "pesquisarInteressadoBotao": "//*[text()='Pesquisar']",
+    "selecionarInteressadoCheckbox": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt494:dataTableResultado:j_idt499']/div/div/div[2]",
+    "incluirInteressadoNaListaBotao": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt494:j_idt517']/span",
+    "selecionarServidorBotao": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorInteressado:j_idt538']",
+    "interessadoSelecionado": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblInteressados:0:j_idt1451:txtContent']"
+
   }
 }

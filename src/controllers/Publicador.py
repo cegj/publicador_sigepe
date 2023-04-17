@@ -19,6 +19,7 @@ from controllers.publicador import DataPublicacao as dp
 from controllers.publicador import Especie as e
 from controllers.publicador import ConteudoDocumento as cd
 from controllers.publicador import OrgaoElaborador as oe
+from controllers.publicador import Interessado as i
 
 class Publicador:
   def __init__(self, publicacao):
@@ -98,7 +99,10 @@ class Publicador:
       )
       self.handleResult(orgaoElaboradorResult, numeroDocumento)
 
-      time.sleep(10)
+      textoDocumentoResult = i.Interessado.preencher(matriculaSiape)
+      self.handleResult(textoDocumentoResult, numeroDocumento)
+
+      time.sleep(3)
 
   def obterTextoDocumento(self, file):
     try:

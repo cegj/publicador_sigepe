@@ -29,19 +29,14 @@ class Sessao(i.Interfaces):
     self.userConfig = copy(uc.UserConfig.obterConfiguracoesSalvas())
     self.files = []
 
-  # @staticmethod
-  # def checarAcessoHabilitacao():
-  #   try:
-  #     gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
-  #     if(cebx.checkExistsByXpath(xpaths["habilitacao"]["acessoNegadoHeader"])):
-  #       gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
-  #       return False
-  #     else:
-  #       return True
-  #   except Exception as e:
-  #       messagebox.showerror("Erro ao verificar o acesso da habilitação selecionada", e)
+  def handleFecharJanela(self):
+    confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar? Caso confirme, a aplicação será encerrada.")
+    if (confirmarFechar == 'yes'):
+      nav.quit()
+      self.root.destroy()
 
   def sessao(self):
+    gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
     self.sessaoContainer = Frame(self.root)
     self.sessaoContainer.grid()
     sessaoContainerTitulo = Label(self.sessaoContainer, text="Publicar documentos")
@@ -69,6 +64,7 @@ class Sessao(i.Interfaces):
     self.abrir_configuracoes_pospublicacao()
     self.arquivos()
     self.publicar()    
+    self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
     self.root.mainloop()
 
   def habilitacao(self):

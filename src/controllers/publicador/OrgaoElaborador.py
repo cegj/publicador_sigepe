@@ -18,9 +18,11 @@ class OrgaoElaborador:
       wfl.waitForLoading()
       tipo = OrgaoElaborador.definirTipoDeCadastro()
       if (tipo == 1):
-        OrgaoElaborador.preencherTipo1(orgao, upag, uorg, responsavel, cargo)
+        result = OrgaoElaborador.preencherTipo1(orgao, upag, uorg, responsavel, cargo)
+        return result
       elif (tipo == 2):
-        OrgaoElaborador.preencherTipo2(responsavel)
+        result = OrgaoElaborador.preencherTipo2(responsavel)
+        return result
       else:
         raise Exception("Não foi possível definir o tipo de janela de cadastro")
 
@@ -78,7 +80,7 @@ class OrgaoElaborador:
 
     sigepe_responsavelSelecionado = wait["regular"].until(EC.element_to_be_clickable(
       (By.XPATH, xpaths["publicacao"]["responsavelSelecionado_t1"])))
-    return {"log": f"Órgão elaborador preenchido: {sigepe_responsavelSelecionado.text()}", "type": "n"}
+    return {"log": f"Órgão elaborador preenchido: {sigepe_responsavelSelecionado.text}", "type": "n"}
 
   @staticmethod
   def preencherTipo2(responsavel):
@@ -102,7 +104,7 @@ class OrgaoElaborador:
     sigepe_responsavelSelecionado = wait["regular"].until(EC.element_to_be_clickable(
       (By.XPATH, xpaths["publicacao"]["responsavelSelecionado_t2"])))
 
-    return {"log": f"Órgão elaborador preenchido: {sigepe_responsavelSelecionado.text()}", "type": "n"}
+    return {"log": f"Órgão elaborador preenchido: {sigepe_responsavelSelecionado.text}", "type": "n"}
 
   @staticmethod
   def definirTipoDeCadastro():
