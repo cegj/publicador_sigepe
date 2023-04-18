@@ -74,8 +74,7 @@ class OrgaoElaborador:
 
     sigepe_botaoGravarOrgaoElab = wait["regular"].until(EC.element_to_be_clickable(
       (By.XPATH, xpaths["publicacao"]["botaoGravarOrgaoElaborador_t1"])))
-    sigepe_botaoGravarOrgaoElab.click()
-
+    nav.execute_script("arguments[0].click();", sigepe_botaoGravarOrgaoElab);
     wfl.waitForLoading()
 
     sigepe_responsavelSelecionado = wait["regular"].until(EC.element_to_be_clickable(

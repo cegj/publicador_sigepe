@@ -29,6 +29,7 @@ import time
 from Webdriver import wait
 from appXpaths import xpaths
 from helpers import waitForLoading as wfl
+import re
 
 class Publicador:
   def __init__(self, publicacao):
@@ -37,6 +38,7 @@ class Publicador:
     self.config = v.Variaveis.atribuirValorVariaveis(self.publicacao.config)
     self.delimitadores = v.Variaveis.atribuirValorVariaveis(uc.UserConfig.obterDelimitadoresSalvos())
     self.pospublicacao = v.Variaveis.atribuirValorVariaveis(uc.UserConfig.obterConfigPosPublicacaoSalvos())
+    self.termosremover = v.Variaveis.atribuirValorVariaveis(uc.UserConfig.obterTermosConteudoRemover())
     self.resultados = {"sucesso": [], "erro": [], "indefinido": []}
     t = Thread(target=self.publicar)
     t.start()
@@ -47,7 +49,9 @@ class Publicador:
 
       filename = os.path.basename(file.name)
       completeFiletext = self.obterTextoDocumento(file)
-      filetext = self.removerPrimeiraLinha(completeFiletext)
+      textBeforeRemoveTerms = self.removerPrimeiraLinha(completeFiletext)
+      filetext = self.removerTermosConteudo(textBeforeRemoveTerms)
+      filetext = Publicador.stripText(filetext)
       self.publicacao.insertFileText(filetext)
 
       self.publicacao.insertLog("Iniciando publicação de documento", "a")
@@ -115,16 +119,21 @@ class Publicador:
       interessadoResult = i.Interessado.preencher(matriculaSiape)
       self.handleResult(interessadoResult, numeroDocumento)
 
-      self.enviarParaPublicacao(numeroDocumento, filename)
+      publicacaoResult = self.enviarParaPublicacao(numeroDocumento, filename)
+      self.handleResult(publicacaoResult, numeroDocumento)
 
   def obterTextoDocumento(self, file):
     try:
       rtfdocument = file.read()
-      text = rtf_to_text(rtfdocument).strip()
+      text = rtf_to_text(rtfdocument)
       return text
     except Exception as e:
       messagebox.showerror("Erro ao carregar conteúdo do documento", e)
       document.close()
+
+  @staticmethod
+  def stripText(filetext):
+    return filetext.strip()
 
   def obterDoTexto(self, delimiterkey, filetext):
     try:
@@ -142,6 +151,16 @@ class Publicador:
     except Exception as e:
       messagebox.showerror("Erro ao remover primeira linha do conteúdo do documento", e)
 
+  def removerTermosConteudo(self, filetext):
+    try:
+      terms = self.termosremover["termos"].split(";")
+      for term in terms:
+        term = term.strip()
+        filetext = re.sub(term, '', filetext, flags=re.IGNORECASE)
+      return filetext
+    except Exception as e:
+      messagebox.showerror("Erro ao remover termos do conteúdo", e)
+
   def enviarParaPublicacao(self, numeroDocumento, filename):
     try:
       self.publicacao.insertLog("Enviando documento para publicação...", "n", numeroDocumento)
@@ -154,19 +173,19 @@ class Publicador:
         self.resultados["erro"].append(filename)
         mensagemErro = wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, xpaths["publicacao"]["mensagemErroPublicacao"])))
-        self.publicacao.insertResult(filename, mensagemErro.text, 'e', numeroDocumento)
-        return False
+        raise Exception(f"Falha ao enviar documento para publicação: {mensagemErro.text}")
       
       if (cebx.checkExistsByXpath(xpaths["publicacao"]["mensagemSucessoPublicacao"])):
         self.resultados["sucesso"].append(filename)
         mensagemSucesso = wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, xpaths["publicacao"]["mensagemSucessoPublicacao"])))
-        self.publicacao.insertResult(filename, mensagemSucesso.text, 's', numeroDocumento)
-        return True
+        return {"log": f"Sucesso: {mensagemSucesso.text}", "type": "s", "isFinalResult": True, "filename": filename}
 
     except Exception as e:
-      print(e)
-      return {"log": f"Falha ao enviar documento para publicação: {e}", "type": "e", "e": e}
+      return {"log": f"Falha ao publicar: {e}", "type": "e", "e": e, "isFinalResult": True, "filename": filename}
 
   def handleResult(self, result, docnumber = ""):
     self.publicacao.insertLog(result["log"], result["type"], docnumber)
+    if (("isFinalResult" in result) and result["isFinalResult"] == True):
+      self.publicacao.insertResult(result["filename"], result["log"], result["type"], docnumber)
+    

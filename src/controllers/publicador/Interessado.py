@@ -21,7 +21,10 @@ class Interessado:
       sigepe_campoMatricula.click()
       time.sleep(0.2)
       sigepe_campoMatricula.send_keys(data)
-      sigepe_campoMatricula.send_keys(Keys.ENTER)
+
+      sigepe_botaoPesquisarInteressado = wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, xpaths["publicacao"]["pesquisarInteressadoBotao"])))
+      sigepe_botaoPesquisarInteressado.click()
       wfl.waitForLoading()
 
       sigepe_checkboxSelecionarServidor = wait["regular"].until(EC.element_to_be_clickable(

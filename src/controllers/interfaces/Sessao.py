@@ -14,6 +14,7 @@ from controllers import Interfaces as i
 from controllers.interfaces import Habilitacao as h
 from controllers.interfaces import Delimitadores as d
 from controllers.interfaces import Pospublicacao as pp
+from controllers.interfaces import RemoverTermosConteudo as rtc
 from controllers.interfaces import Publicacao as p
 from copy import copy
 from controllers import UserConfig as uc
@@ -62,6 +63,7 @@ class Sessao(i.Interfaces):
     self.salvar_configuracoes()
     self.abrir_edicao_delimitadores()
     self.abrir_configuracoes_pospublicacao()
+    self.remover_termos_conteudo()
     self.arquivos()
     self.publicar()    
     self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
@@ -454,6 +456,18 @@ class Sessao(i.Interfaces):
       command=abrirJanela
       )
     configurarPosPublicacaoBtn.grid(column=3, row=0, padx=10, pady=5, sticky='w')
+
+  def remover_termos_conteudo(self):
+    def abrirJanela():
+      janelaRemoverTermos = rtc.RemoverTermosConteudo()
+    removerTermoConteudoBtn = Button(
+      self.botoesContainer,
+      text="Config. remoção de termos",
+      font=appConfig.fontes["botao"],
+      width=25,
+      command=abrirJanela
+      )
+    removerTermoConteudoBtn.grid(column=4, row=0, padx=10, pady=5, sticky='w')
 
   def arquivos(self):
     def getFiles():
