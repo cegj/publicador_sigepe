@@ -11,6 +11,7 @@ class Tema:
   @staticmethod
   def preencher(data):
     try:
+      temaSplitted = data.split('//')
       campoTema = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["temaSelect"])))
       campoTema.click()
@@ -18,17 +19,19 @@ class Tema:
 
       campoBuscarTema = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["buscarTemaInput"])))
-      campoBuscarTema.send_keys(data)
+      nav.execute_script("arguments[0].setAttribute('value',arguments[1])",campoBuscarTema, "")
+      time.sleep(0.3)
+      campoBuscarTema.send_keys(temaSplitted[0])
       time.sleep(1.5)
 
-      # if (temaAssunto['arrow_down'] > 0):
-      #     cont = 1
-      #     while cont <= temaAssunto['arrow_down']:
-      #         campoBuscarTema.send_keys(Keys.ARROW_DOWN)
-      #         cont = cont + 1
+      if (len(temaSplitted) == 2):
+        i = 1
+        while (i < int(temaSplitted[1])):
+          campoBuscarTema.send_keys(Keys.ARROW_DOWN)
+          time.sleep(0.3)
+          i += 1
 
       campoBuscarTema.send_keys(Keys.ENTER)
-
       wfl.waitForLoading()
 
       campoTemaPreenchido = wait["regular"].until(EC.element_to_be_clickable(

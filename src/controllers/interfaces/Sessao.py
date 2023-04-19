@@ -193,12 +193,21 @@ class Sessao(i.Interfaces):
 
   def obterAssunto(self, tema):
     try:
+      temaSplitted = tema.split('//')
       sigepe_temaSelect = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["temaSelect"])))
       sigepe_temaSelect.click()
       time.sleep(0.3)
       sigepe_buscarTemaInput = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["buscarTemaInput"])))
-      sigepe_buscarTemaInput.send_keys(tema)
+      nav.execute_script("arguments[0].setAttribute('value',arguments[1])",sigepe_buscarTemaInput, "")
+      time.sleep(0.3)
+      sigepe_buscarTemaInput.send_keys(temaSplitted[0])
       time.sleep(1.5)
+      if (len(temaSplitted) == 2):
+        i = 1
+        while (i < int(temaSplitted[1])):
+          sigepe_buscarTemaInput.send_keys(Keys.ARROW_DOWN)
+          time.sleep(0.3)
+          i += 1
       sigepe_buscarTemaInput.send_keys(Keys.ENTER)
       wfl.waitForLoading()
       time.sleep(0.3)
@@ -237,7 +246,12 @@ class Sessao(i.Interfaces):
     sigepe_temas = nav.find_elements(By.XPATH, xpaths['publicacao']['temas'])
     listaTemas = []
     for tema in sigepe_temas:
-      listaTemas.append(tema.get_attribute('innerText'))
+      tema = tema.get_attribute('innerText')
+      count = listaTemas.count(tema)
+      if (count > 0):
+        listaTemas.append(tema + f' //{count + 1}')
+      else:
+        listaTemas.append(tema)
 
     options = listaTemas
     seletorTema = ttk.Combobox(

@@ -87,9 +87,10 @@ class Publicacao:
 
   def insertResult(self, filename, logtext, tag = None, docNumber = ""):
     self.resultBox.configure(state='normal')
-    self.resultBox.insert(INSERT, f"{docNumber} - {filename}: {logtext}\n", tag)
+    self.resultBox.insert(INSERT, f"{docNumber} - [{filename}]: {logtext}\n", tag)
     self.resultBox.tag_config('s', background="#489c2f", foreground="white") #success
     self.resultBox.tag_config('e', background="#c23b3b", foreground="white") #error
     self.resultBox.tag_config('a', background="#e6e483") #alert
+    self.resultBox.insert(INSERT, "")
     self.resultBox.configure(state='disabled')
     self.resultBox.yview(END)

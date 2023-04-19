@@ -9,18 +9,19 @@ from threading import Thread
 import time
 from helpers import goTo as gt
 from helpers import checkExistsByXpath as cebx
-from controllers.publicador import EdicaoBoletim as eb
-from controllers.publicador import TipoAssinatura as ta
-from controllers.publicador import TipoNumero as tn
-from controllers.publicador import Tema as t
-from controllers.publicador import Assunto as a
-from controllers.publicador import Numero as n
-from controllers.publicador import DataAssinatura as da
-from controllers.publicador import DataPublicacao as dp
-from controllers.publicador import Especie as e
-from controllers.publicador import ConteudoDocumento as cd
-from controllers.publicador import OrgaoElaborador as oe
-from controllers.publicador import Interessado as i
+from controllers.publicador.campos import EdicaoBoletim as eb
+from controllers.publicador.campos import TipoAssinatura as ta
+from controllers.publicador.campos import TipoNumero as tn
+from controllers.publicador.campos import Tema as t
+from controllers.publicador.campos import Assunto as a
+from controllers.publicador.campos import Numero as n
+from controllers.publicador.campos import DataAssinatura as da
+from controllers.publicador.campos import DataPublicacao as dp
+from controllers.publicador.campos import Especie as e
+from controllers.publicador.campos import ConteudoDocumento as cd
+from controllers.publicador.campos import OrgaoElaborador as oe
+from controllers.publicador.campos import Interessado as i
+from controllers.publicador import Pospublicacao as pp
 import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -40,21 +41,25 @@ class Publicador:
     self.pospublicacao = v.Variaveis.atribuirValorVariaveis(uc.UserConfig.obterConfigPosPublicacaoSalvos())
     self.termosremover = v.Variaveis.atribuirValorVariaveis(uc.UserConfig.obterTermosConteudoRemover())
     self.resultados = {"sucesso": [], "erro": [], "indefinido": []}
+    self.currentFile = None
     t = Thread(target=self.publicar)
     t.start()
 
   def publicar(self):
     for file in self.files:
+      self.currentFile = file
       gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
 
+      if (file.closed): file.open()
       filename = os.path.basename(file.name)
       completeFiletext = self.obterTextoDocumento(file)
       textBeforeRemoveTerms = self.removerPrimeiraLinha(completeFiletext)
       filetext = self.removerTermosConteudo(textBeforeRemoveTerms)
       filetext = Publicador.stripText(filetext)
       self.publicacao.insertFileText(filetext)
+      file.close()
 
-      self.publicacao.insertLog("Iniciando publicação de documento", "a")
+      self.publicacao.insertLog(f"Iniciando publicação do documento {filename}", "a")
       numeroDocumento = self.obterDoTexto("numero_documento", completeFiletext)
       if (numeroDocumento != ""):
         self.publicacao.insertLog("Número do documento identificado", "", numeroDocumento)
@@ -68,42 +73,46 @@ class Publicador:
 
       edicaoBoletimResult = eb.EdicaoBoletim.preencher(self.config["valores_sigepe"]["edicao_bgp"])
       self.handleResult(edicaoBoletimResult, numeroDocumento)
+      if not self.checkResult(edicaoBoletimResult): continue
 
       tipoAssinaturaResult = ta.TipoAssinatura.preencher(self.config["valores_sigepe"]["tipo_assinatura"])
       self.handleResult(tipoAssinaturaResult, numeroDocumento)
+      if not self.checkResult(tipoAssinaturaResult): continue
 
       tipoNumeroResult = tn.TipoNumero.preencher(self.config["valores_sigepe"]["tipo_preenchimento"])
       self.handleResult(tipoNumeroResult, numeroDocumento)
+      if not self.checkResult(tipoNumeroResult): continue
 
       temaResult = t.Tema.preencher(self.config["valores_sigepe"]["tema"])
       self.handleResult(temaResult, numeroDocumento)
+      if not self.checkResult(temaResult): continue
 
       assuntoResult = a.Assunto.preencher()
       self.handleResult(assuntoResult, numeroDocumento)
+      if not self.checkResult(assuntoResult): continue
 
       if (self.config["valores_sigepe"]["tipo_preenchimento"] == "Manual"):
         numeroResult = n.Numero.preencher(numeroDocumento)
         self.handleResult(numeroResult, numeroDocumento)
-      else:
-        pass
+        if not self.checkResult(numeroResult): continue
 
       if (self.config["valores_sigepe"]["tipo_preenchimento"] == "Manual"):
         dataAssinaturaResult = da.DataAssinatura.preencher(self.config["valores_sigepe"]["data_assinatura"])
         self.handleResult(dataAssinaturaResult, numeroDocumento)
-      else:
-        pass
+        if not self.checkResult(dataAssinaturaResult): continue
 
       if (self.config["valores_sigepe"]["edicao_bgp"] == "Normal"):
         dataPublicacaoResult = dp.DataPublicacao.preencher(self.config["valores_sigepe"]["data_publicacao"])
         self.handleResult(dataPublicacaoResult, numeroDocumento)
-      else:
-        pass
+        if not self.checkResult(dataPublicacaoResult): continue
 
       especieResult = e.Especie.preencher(self.config["valores_sigepe"]["especie"])
       self.handleResult(especieResult, numeroDocumento)
+      if not self.checkResult(especieResult): continue
 
       textoDocumentoResult = cd.ConteudoDocumento.preencher(filetext)
       self.handleResult(textoDocumentoResult, numeroDocumento)
+      if not self.checkResult(textoDocumentoResult): continue
 
       self.publicacao.insertLog("Selecionando órgão elaborador...", "n", numeroDocumento)
       orgaoElaboradorResult = oe.OrgaoElaborador.preencher(
@@ -114,13 +123,20 @@ class Publicador:
         self.config["valores_sigepe"]["cargo_responsavel"]
       )
       self.handleResult(orgaoElaboradorResult, numeroDocumento)
+      if not self.checkResult(orgaoElaboradorResult): continue
 
       self.publicacao.insertLog("Selecionando interessado...", "n", numeroDocumento)
       interessadoResult = i.Interessado.preencher(matriculaSiape)
       self.handleResult(interessadoResult, numeroDocumento)
+      if not self.checkResult(interessadoResult): continue
 
       publicacaoResult = self.enviarParaPublicacao(numeroDocumento, filename)
       self.handleResult(publicacaoResult, numeroDocumento)
+      if not self.checkResult(publicacaoResult): continue
+
+      self.currentFile = None
+    
+    self.publicacao.insertLog("PUBLICAÇÃO ENCERRADA!", "n")
 
   def obterTextoDocumento(self, file):
     try:
@@ -179,13 +195,48 @@ class Publicador:
         self.resultados["sucesso"].append(filename)
         mensagemSucesso = wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, xpaths["publicacao"]["mensagemSucessoPublicacao"])))
-        return {"log": f"Sucesso: {mensagemSucesso.text}", "type": "s", "isFinalResult": True, "filename": filename}
+        return {"log": f"Sucesso: {mensagemSucesso.text}", "type": "s", "isFinalResult": True}
 
     except Exception as e:
-      return {"log": f"Falha ao publicar: {e}", "type": "e", "e": e, "isFinalResult": True, "filename": filename}
+      return {"log": f"Falha ao publicar: {e}", "type": "e", "e": e, "isFinalResult": True}
+
+  def checkResult(self, result):
+    if (result["type"] == "e"):
+      return False
+    else:
+      return True
 
   def handleResult(self, result, docnumber = ""):
+    currentFileName = os.path.basename(self.currentFile.name)
+    if (result["type"] == 's'):
+      self.resultados["sucesso"].append(currentFileName)
+    elif (result["type"] == 'e'):
+      self.resultados["erro"].append(currentFileName)
+
     self.publicacao.insertLog(result["log"], result["type"], docnumber)
+
+    if (not ("isFinalResult" in result) and result["type"] == 'e'):
+      self.publicacao.insertResult(currentFileName, result["log"], result["type"], docnumber)
+
     if (("isFinalResult" in result) and result["isFinalResult"] == True):
-      self.publicacao.insertResult(result["filename"], result["log"], result["type"], docnumber)
+      self.publicacao.insertResult(currentFileName, result["log"], result["type"], docnumber)
+
+      if (result["type"] == 's'):
+        newFilename = None
+        if (self.pospublicacao["adicionar_ao_nome_arquivo"] != ""):
+          renameResult = pp.Pospublicacao.renomearArquivo(self.currentFile, self.pospublicacao["adicionar_ao_nome_arquivo"])
+          if (renameResult[0] == True):
+            self.publicacao.insertLog(f"Arquivo renomeado para {renameResult[1]}", 'n', docnumber)
+          else:
+            self.publicacao.insertLog(f"Não foi possível renomear o arquivo. Erro: {renameResult[1]}", 'e', docnumber)
+        if (self.pospublicacao["copiar_ou_mover"] == "Mover para..." or self.pospublicacao["copiar_ou_mover"] == "Copiar para..."):
+          actionResult = pp.Pospublicacao.copiarMoverArquivo(self.currentFile, self.pospublicacao["copiar_ou_mover"], self.pospublicacao["destino"], newFilename)
+          if (actionResult[0] == True):
+            verb = "copiado" if "copiar" in self.pospublicacao["copiar_ou_mover"].lower() else "movido"
+            self.publicacao.insertLog(f"Arquivo {verb} para {actionResult[1]}", 'n', docnumber)
+          else:
+            verb = "copiar" if "copiar" in self.pospublicacao["copiar_ou_mover"].lower() else "mover"
+            self.publicacao.insertLog(f"Não foi possível {verb} o arquivo. Erro: {actionResult[1]}", 'e', docnumber)
+
+
     

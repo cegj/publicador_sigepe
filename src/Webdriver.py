@@ -17,3 +17,7 @@ try:
   nav.minimize_window()
 except Exception as e:
   messagebox.showerror("Erro ao abrir navegador", f"Atualize o navegador!\n{e}")
+  try:
+    nav.quit()
+  except:
+    pass
