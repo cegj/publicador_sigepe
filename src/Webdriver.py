@@ -16,7 +16,7 @@ try:
   wait = {'half': WebDriverWait(nav, 10), 'regular': WebDriverWait(nav, 20), 'long': WebDriverWait(nav, 40)}
   nav.minimize_window()
 except Exception as e:
-  messagebox.showerror("Erro ao abrir navegador", f"Atualize o navegador!\n{e}")
+  messagebox.showerror("Erro ao abrir navegador", e)
   try:
     nav.quit()
   except:

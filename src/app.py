@@ -1,5 +1,5 @@
 from tkinter import *
-from controllers.interfaces import Login as l
+from views import Login as l
 
 class Application:
     def __init__(self):

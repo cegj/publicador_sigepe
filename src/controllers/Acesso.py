@@ -4,12 +4,12 @@ from selenium.webdriver.common.by import By
 from helpers import checkExistsByXpath as cebx
 from helpers import getScreenshotByXpath as gebx
 from helpers import waitForLoading as wfl
-from controllers.interfaces import Sessao as s
+from views import Sessao as s
 from Webdriver import nav
 from Webdriver import wait
 from appXpaths import xpaths
-from controllers.interfaces import Login as l
-from controllers.interfaces import Habilitacao as h
+from views import Login as l
+from views import Habilitacao as h
 from controllers import UserConfig as uc
 import time
 from selenium.webdriver.common.by import By

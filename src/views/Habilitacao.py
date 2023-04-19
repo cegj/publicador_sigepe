@@ -6,11 +6,11 @@ from Webdriver import nav
 from appXpaths import xpaths
 from selenium.webdriver.common.by import By
 import time
-from controllers import Interfaces as i
-from controllers.interfaces import Habilitacao as h
-from controllers import Interfaces as i
+from views import Interfaces as i
+from views import Habilitacao as h
+from views import Interfaces as i
 from controllers import UserConfig as uc
-from controllers.interfaces import Sessao as s
+from views import Sessao as s
 from copy import copy
 from helpers import goTo as gt
 from helpers import checkExistsByXpath as cebx

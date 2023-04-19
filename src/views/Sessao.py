@@ -10,12 +10,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 import time
 from tkinter import filedialog
-from controllers import Interfaces as i
-from controllers.interfaces import Habilitacao as h
-from controllers.interfaces import Delimitadores as d
-from controllers.interfaces import Pospublicacao as pp
-from controllers.interfaces import RemoverTermosConteudo as rtc
-from controllers.interfaces import Publicacao as p
+from views import Interfaces as i
+from views import Habilitacao as h
+from views import Delimitadores as d
+from views import Pospublicacao as pp
+from views import RemoverTermosConteudo as rtc
+from views import Publicacao as p
 from copy import copy
 from controllers import UserConfig as uc
 from helpers import goTo as gt
@@ -23,6 +23,7 @@ from helpers import checkExistsByXpath as cebx
 from helpers import waitForLoading as wfl
 import os
 from threading import Thread
+from controllers import ObterDoSigepe as ods
 
 class Sessao(i.Interfaces):
   def __init__(self):
@@ -52,7 +53,6 @@ class Sessao(i.Interfaces):
     self.especie()
     self.tipo_preenchimento_numero()
     self.tema()
-    self.assunto()
     self.data_assinatura()
     self.data_publicacao()
     self.orgao()
@@ -190,46 +190,11 @@ class Sessao(i.Interfaces):
     seletorTipoPreenchimento.grid(column=2, row=0)
     seletorTipoPreenchimento.bind("<<ComboboxSelected>>", setSelected)
 
-
-  def obterAssunto(self, tema):
-    try:
-      temaSplitted = tema.split('//')
-      sigepe_temaSelect = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["temaSelect"])))
-      sigepe_temaSelect.click()
-      time.sleep(0.3)
-      sigepe_buscarTemaInput = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["buscarTemaInput"])))
-      nav.execute_script("arguments[0].setAttribute('value',arguments[1])",sigepe_buscarTemaInput, "")
-      time.sleep(0.3)
-      sigepe_buscarTemaInput.send_keys(temaSplitted[0])
-      time.sleep(1.5)
-      if (len(temaSplitted) == 2):
-        i = 1
-        while (i < int(temaSplitted[1])):
-          sigepe_buscarTemaInput.send_keys(Keys.ARROW_DOWN)
-          time.sleep(0.3)
-          i += 1
-      sigepe_buscarTemaInput.send_keys(Keys.ENTER)
-      wfl.waitForLoading()
-      time.sleep(0.3)
-      sigepe_buscarAssuntoBtn = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["buscarAssuntoBtn"])))
-      sigepe_buscarAssuntoBtn.click()
-      wfl.waitForLoading()
-      sigepe_assuntosBtns = wait["regular"].until(EC.visibility_of_all_elements_located((By.XPATH, xpaths["publicacao"]["assuntosBtns"])))
-      ultimoNivelAssunto = sigepe_assuntosBtns[-1]
-      ultimoNivelAssunto.click()
-      sigepe_selecionarAssuntoBtn = wait["regular"].until(EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["selecionarAssuntoBtn"])))
-      sigepe_selecionarAssuntoBtn.click()
-      return ultimoNivelAssunto.text
-    except Exception as e:
-      messagebox.showerror("Erro ao buscar assunto", e)
-      return None
-
   def tema(self):
     def setTemaAssunto(event = None):
       self.userConfig["valores_sigepe"]["tema"] = selected.get()
       if (hasattr(self, 'assuntoContainer')):
         self.assuntoContainer.destroy()
-      self.assuntoObtido = self.obterAssunto(selected.get())
       self.assunto()
 
     self.temaContainer = Frame(self.sessaoContainer)
@@ -239,25 +204,14 @@ class Sessao(i.Interfaces):
       text="Tema",
       font=appConfig.fontes["normal"]
       )
-
     temaLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
     selected = StringVar()
     selected.set(self.userConfig["valores_sigepe"]["tema"])    
-    sigepe_temas = nav.find_elements(By.XPATH, xpaths['publicacao']['temas'])
-    listaTemas = []
-    for tema in sigepe_temas:
-      tema = tema.get_attribute('innerText')
-      count = listaTemas.count(tema)
-      if (count > 0):
-        listaTemas.append(tema + f' //{count + 1}')
-      else:
-        listaTemas.append(tema)
-
-    options = listaTemas
+    listaTemas = ods.ObterDoSigepe.temas()
     seletorTema = ttk.Combobox(
       self.temaContainer,
       textvariable=selected,
-      values=options,
+      values=listaTemas,
       state="readonly",
       width=80,
       font=appConfig.fontes["normal"]
@@ -267,6 +221,8 @@ class Sessao(i.Interfaces):
     seletorTema.bind("<<ComboboxSelected>>", setTemaAssunto)
 
   def assunto(self):
+    def setAssunto(event = None):
+      self.userConfig["valores_sigepe"]["assunto"] = selected.get()
     self.assuntoContainer = Frame(self.sessaoContainer)
     self.assuntoContainer.grid(row=8, column=1, columnspan=2, sticky='w')
     assuntoLabel = Label(
@@ -275,13 +231,22 @@ class Sessao(i.Interfaces):
       font=appConfig.fontes["normal"]
       )
     assuntoLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    if (hasattr(self, "assuntoObtido")): 
-      assuntoSelecionado = Label(
-        self.assuntoContainer,
-        text= self.assuntoObtido if len(self.assuntoObtido) <= 70 else f"{self.assuntoObtido[1:70]}...",
-        anchor="w",
-        font=appConfig.fontes["normal"])
-      assuntoSelecionado.grid(column=1, row=0, padx=10, pady=5, sticky='w')
+    selected = StringVar()
+    listaAssuntos = ods.ObterDoSigepe.assuntos(self.userConfig["valores_sigepe"]["tema"])
+    if (not self.userConfig["valores_sigepe"]["assunto"] in listaAssuntos):
+      self.userConfig["valores_sigepe"]["assunto"] = ""
+    selected.set(self.userConfig["valores_sigepe"]["assunto"])    
+    seletorAssunto = ttk.Combobox(
+      self.assuntoContainer,
+      textvariable=selected,
+      values=listaAssuntos,
+      state="readonly",
+      width=80,
+      font=appConfig.fontes["normal"]
+      )
+    seletorAssunto.grid(column=2, row=0)
+    seletorAssunto.bind("<<ComboboxSelected>>", setAssunto)
+
 
   def data_assinatura(self):
     def setValue(a=None, b=None, c=None):
@@ -515,7 +480,7 @@ class Sessao(i.Interfaces):
   def publicar(self):
     def iniciarPublicacao():
       if (len(self.files) > 0):
-        publicacao = p.Publicacao(self.userConfig, self.files)
+        publicacao = p.Publicacao(self)
       else:
         messagebox.showerror("Erro", "Nenhum arquivo selecionado para publicação. Selecione os arquivos para continuar.")
 

@@ -7,9 +7,9 @@ from Webdriver import nav
 from appXpaths import xpaths
 from selenium.webdriver.common.by import By
 import time
-from controllers import Interfaces as i
-from controllers.interfaces import Habilitacao as h
-from controllers import Interfaces as i
+from views import Interfaces as i
+from views import Habilitacao as h
+from views import Interfaces as i
 from controllers import UserConfig as uc
 from copy import copy
 
@@ -80,7 +80,7 @@ class RemoverTermosConteudo:
       self.config["termos"] = self.termosInput.get("1.0", END)
     termosLabel = Label(
       self.termosContainer,
-      text="Termos para remover:",
+      text="Termos para remover do conteúdo:",
       font=appConfig.fontes["normal"]
       )
     termosLabel.pack()
@@ -92,6 +92,13 @@ class RemoverTermosConteudo:
       )
     self.termosInput.insert(END, self.config["termos"])
     self.termosInput.pack()
+    infoLabel = Label(
+      self.termosContainer,
+      text="Para informar diferentes termos, separe-os com ponto-e-vírgula",
+      font=appConfig.fontes["normal"]
+      )
+    infoLabel.pack()
+
 
   def salvar_configuracoes(self):
     def salvar():

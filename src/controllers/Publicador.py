@@ -47,6 +47,9 @@ class Publicador:
 
   def publicar(self):
     for file in self.files:
+      self.publicacao.insertOnPendingFiles(os.path.basename(file.name))
+
+    for file in self.files:
       self.currentFile = file
       gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
 
@@ -59,7 +62,7 @@ class Publicador:
       self.publicacao.insertFileText(filetext)
       file.close()
 
-      self.publicacao.insertLog(f"Iniciando publicação do documento {filename}", "a")
+      self.publicacao.insertLog(f"Iniciando publicação do documento {filename}", "em")
       numeroDocumento = self.obterDoTexto("numero_documento", completeFiletext)
       if (numeroDocumento != ""):
         self.publicacao.insertLog("Número do documento identificado", "", numeroDocumento)
@@ -87,7 +90,7 @@ class Publicador:
       self.handleResult(temaResult, numeroDocumento)
       if not self.checkResult(temaResult): continue
 
-      assuntoResult = a.Assunto.preencher()
+      assuntoResult = a.Assunto.preencher(self.config["valores_sigepe"]["assunto"])
       self.handleResult(assuntoResult, numeroDocumento)
       if not self.checkResult(assuntoResult): continue
 
@@ -135,8 +138,10 @@ class Publicador:
       if not self.checkResult(publicacaoResult): continue
 
       self.currentFile = None
+      self.publicacao.insertFileText("")
     
-    self.publicacao.insertLog("PUBLICAÇÃO ENCERRADA!", "n")
+    self.publicacao.insertLog("Publicação concluída!", "em")
+    self.publicacao.showBtns()
 
   def obterTextoDocumento(self, file):
     try:
@@ -198,7 +203,7 @@ class Publicador:
         return {"log": f"Sucesso: {mensagemSucesso.text}", "type": "s", "isFinalResult": True}
 
     except Exception as e:
-      return {"log": f"Falha ao publicar: {e}", "type": "e", "e": e, "isFinalResult": True}
+      return {"log": f"Falha: {e}", "type": "e", "e": e, "isFinalResult": True}
 
   def checkResult(self, result):
     if (result["type"] == "e"):
@@ -210,7 +215,9 @@ class Publicador:
     currentFileName = os.path.basename(self.currentFile.name)
     if (result["type"] == 's'):
       self.resultados["sucesso"].append(currentFileName)
+      self.publicacao.moveToSuccessFiles(currentFileName)
     elif (result["type"] == 'e'):
+      self.publicacao.moveToFailFiles(currentFileName)
       self.resultados["erro"].append(currentFileName)
 
     self.publicacao.insertLog(result["log"], result["type"], docnumber)
@@ -238,6 +245,3 @@ class Publicador:
           else:
             verb = "copiar" if "copiar" in self.pospublicacao["copiar_ou_mover"].lower() else "mover"
             self.publicacao.insertLog(f"Não foi possível {verb} o arquivo. Erro: {actionResult[1]}", 'a', docnumber)
-
-
-    

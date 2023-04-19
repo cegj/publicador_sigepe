@@ -1,4 +1,4 @@
-from controllers import Interfaces as i
+from views import Interfaces as i
 from controllers import Acesso as a
 from tkinter import *
 import appConfig

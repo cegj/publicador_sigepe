@@ -33,6 +33,7 @@
     "buscarAssuntoBtn": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnSelecionarClassificacaoAssunto']",
     "assuntosBtns": "//span[contains(@class, 'ui-treenode-label')]",
     "selecionarAssuntoBtn": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:btnSelecionar']/span",
+    "assuntoSelecionadoInput": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:txtClassificacao']",
     "numeroCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptNumeroAto']",
     "dataAssinaturaCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataAssinatura_input']",
     "dataPublicacaoCampo": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:iptDataParaPublicacao_input']",
