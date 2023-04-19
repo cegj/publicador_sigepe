@@ -20,41 +20,7 @@ class Delimitadores:
       self.delimitadoresContainer.pack()
       self.janelaDelimitadores()
 
-
-  # def handleMudarHabilitacao(self):
-  #   sigepe_novaHabilitacaoBotao = nav.find_element(By.XPATH, f"//*[contains(text(), '{self.seletorHabilitacoes.get()}')]")
-  #   sigepe_novaHabilitacaoBotao.click()
-  #   time.sleep(2)
-  #   self.master.destroy()
-  #   self.sessao_habilitacao.sessaoHabilitacaoContainer.destroy()
-  #   self.sessao_habilitacao.habilitacao()
-
-  # def handleFecharJanela(self):
-  #   sigepe_fecharHabilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['fecharHabilitacaoBotao'])
-  #   sigepe_fecharHabilitacaoBotao.click()
-  #   self.master.destroy()
-
   def janelaDelimitadores(self):
-    # tituloContainer = Frame(self.delimitadoresContainer)
-    # tituloContainer.grid(row=0, column=1, sticky='w')
-    # tituloInformacao = Label(
-    #   tituloContainer,
-    #   text="Informação:",
-    #   font=appConfig.fontes["normal"]
-    #   )
-    # tituloInformacao.grid(column=1, row=0, padx=10, pady=5, sticky='w')
-    # tituloAntes = Label(
-    #   tituloContainer,
-    #   text="Antes:",
-    #   font=appConfig.fontes["normal"]
-    #   )
-    # tituloAntes.grid(column=2, row=0, padx=10, pady=5, sticky='w')
-    # tituloDepois = Label(
-    #   tituloContainer,
-    #   text="Depois:",
-    #   font=appConfig.fontes["normal"]
-    #   )
-    # tituloDepois.grid(column=3, row=0, padx=10, pady=5, sticky='w')
     self.numero_documento()
     self.titulo_documento()
     self.matricula_siape()

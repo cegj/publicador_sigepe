@@ -20,21 +20,18 @@ class Pospublicacao:
   @staticmethod
   def copiarMoverArquivo(file, action, targetDirectory, newFilename = None):
     try:
-      originDirectory = os.path.dirname(file.name)
+      originDirectory = os.path.normcase(os.path.dirname(file.name))
+      targetDirectory = os.path.normcase(targetDirectory)
       filename = os.path.basename(file.name)
-      print(originDirectory)
-      print(targetDirectory)
       origin = os.path.join(originDirectory, newFilename if (newFilename != None) else filename)
       target = os.path.join(targetDirectory, newFilename if (newFilename != None) else filename)
-      print(origin)
-      print(target)
 
       if (action == "Mover para..."):
           shutil.move(origin, target)
-          return [True, target]
+          return [True, targetDirectory]
       elif (action == "Copiar para..."):
           shutil.copy(origin, target)
-          return [True, target]
+          return [True, targetDirectory]
       else:
           raise Exception("A ação para pós-publicação definida é inválida (diferente de copiar ou mover)")
 
