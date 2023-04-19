@@ -22,7 +22,6 @@ class Delimitadores:
 
   def janelaDelimitadores(self):
     self.numero_documento()
-    self.titulo_documento()
     self.matricula_siape()
     self.salvar_delimitadores()
 
@@ -59,44 +58,6 @@ class Delimitadores:
         font=appConfig.fontes["normal"]
         )
       afterValue.set(self.delimiters["numero_documento"][1])
-      afterInput.grid(column=3, row=0)
-    except Exception as e:
-      messagebox.showerror("Erro em Delimitadores", e)
-      self.master.destroy()
-
-  def titulo_documento(self):
-    try:
-      def setBeforeValue(a=None, b=None, c=None):
-        self.delimiters["titulo_documento"][0] = beforeValue.get()
-      def setAfterValue(a=None, b=None, c=None):
-        self.delimiters["titulo_documento"][1] = afterValue.get()
-      container = Frame(self.delimitadoresContainer)
-      container.grid(row=2, column=1, sticky='w')
-      label = Label(
-        container,
-        text="Título do documento:",
-        font=appConfig.fontes["normal"]
-        )
-      label.grid(column=1, row=0, padx=10, pady=5, sticky='w')
-      beforeValue = StringVar()
-      beforeValue.trace_add("write", setBeforeValue)
-      beforeInput = Entry(
-        container,
-        width=20,
-        textvariable=beforeValue,
-        font=appConfig.fontes["normal"]
-        )
-      beforeValue.set(self.delimiters["titulo_documento"][0])
-      beforeInput.grid(column=2, row=0)
-      afterValue = StringVar()
-      afterValue.trace_add("write", setAfterValue)
-      afterInput = Entry(
-        container,
-        width=20,
-        textvariable=afterValue,
-        font=appConfig.fontes["normal"]
-        )
-      afterValue.set(self.delimiters["titulo_documento"][1])
       afterInput.grid(column=3, row=0)
     except Exception as e:
       messagebox.showerror("Erro em Delimitadores", e)

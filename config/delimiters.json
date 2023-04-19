@@ -3,16 +3,8 @@
         "Nº ",
         ","
     ],
-    "titulo_documento":[
-        "",
-        "[hoje_ano]"
-    ],
     "matricula_siape":[
         "matrícula SIAPE nº ",
         ","
-    ],
-    "preliminar_portaria":[
-        "",
-        ":"
     ]
 }
