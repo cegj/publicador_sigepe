@@ -52,7 +52,8 @@ class Sessao(i.Interfaces):
     self.tipo_assinatura()
     self.especie()
     self.tipo_preenchimento_numero()
-    self.tema()
+    self.tipo_selecao_tema()
+    # self.tema()
     self.data_assinatura()
     self.data_publicacao()
     self.orgao()
@@ -190,12 +191,17 @@ class Sessao(i.Interfaces):
     seletorTipoPreenchimento.grid(column=2, row=0)
     seletorTipoPreenchimento.bind("<<ComboboxSelected>>", setSelected)
 
-  def tema(self):
-    def setTemaAssunto(event = None):
-      self.userConfig["valores_sigepe"]["tema"] = selected.get()
-      if (hasattr(self, 'assuntoContainer')):
-        self.assuntoContainer.destroy()
-      self.assunto()
+  def tipo_selecao_tema(self):
+    def setCopyMoveOption(event = None):
+      self.userConfig["tipo_tema_assunto"] = tipoTemaSelected.get()
+      if (tipoTemaSelected.get() == "Selecionar manualmente"):
+        if (hasattr(self, 'temaAutomaticoContainer')): self.temaAutomaticoContainer.destroy()
+        if (hasattr(self, 'assuntoContainer')): self.assuntoContainer.destroy()
+        self.temaManual()
+      elif (tipoTemaSelected.get() == "Buscar no conteúdo do documento"):
+        if (hasattr(self, 'temaManualContainer')): self.temaManualContainer.destroy()
+        if (hasattr(self, 'assuntoContainer')): self.assuntoContainer.destroy()
+        self.temaAutomaticoConfig()
 
     self.temaContainer = Frame(self.sessaoContainer)
     self.temaContainer.grid(row=7, column=1, columnspan=2, sticky='w')
@@ -204,19 +210,56 @@ class Sessao(i.Interfaces):
       text="Tema",
       font=appConfig.fontes["normal"]
       )
-    temaLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
+    temaLabel.grid(column=1, row=1, padx=10, pady=5, sticky='w')
+
+    tipoTemaOptionsList = ["Selecionar manualmente", "Buscar no conteúdo do documento"]
+    if self.userConfig["tipo_tema_assunto"] not in tipoTemaOptionsList:
+          self.userConfig["tipo_tema_assunto"] = "Selecionar manualmente"
+    tipoTemaOptionsList.remove(self.userConfig["tipo_tema_assunto"])
+    tipoTemaSelected = StringVar()
+    tipoTemaSelected.set(self.userConfig["tipo_tema_assunto"])
+    tipoTemaOptions = OptionMenu(
+      self.temaContainer,
+      tipoTemaSelected,
+      tipoTemaSelected.get(),
+      *tipoTemaOptionsList,
+      command=setCopyMoveOption
+    )
+    tipoTemaOptions.grid(column=2, row=1, padx=10, pady=5, sticky='w')
+    setCopyMoveOption()
+
+  def temaAutomaticoConfig(self):
+    self.temaAutomaticoContainer = Frame(self.temaContainer)
+    self.temaAutomaticoContainer.grid(row=1, column=3, columnspan=2, sticky='w')
+    self.botaoConfigTemaAutomatico = Button(
+      self.temaAutomaticoContainer,
+      text="Configurar busca de temas",
+      font=appConfig.fontes["botao"],
+      width=30,
+      # command=lambda: uc.UserConfig.salvarConfiguracoes(self.userConfig)
+      )
+    self.botaoConfigTemaAutomatico.grid(column=1, row=1, padx=10, pady=5, sticky='w')
+
+  def temaManual(self):
+    def setTemaAssunto(event = None):
+      self.userConfig["valores_sigepe"]["tema"] = selected.get()
+      if (hasattr(self, 'assuntoContainer')):
+        self.assuntoContainer.destroy()
+      self.assunto()
+    self.temaManualContainer = Frame(self.temaContainer)
+    self.temaManualContainer.grid(row=1, column=3, columnspan=2, sticky='w')
     selected = StringVar()
     selected.set(self.userConfig["valores_sigepe"]["tema"])    
     listaTemas = ods.ObterDoSigepe.temas()
     seletorTema = ttk.Combobox(
-      self.temaContainer,
+      self.temaManualContainer,
       textvariable=selected,
       values=listaTemas,
       state="readonly",
       width=80,
       font=appConfig.fontes["normal"]
       )
-    seletorTema.grid(column=2, row=0)
+    seletorTema.grid(column=2, row=1)
     setTemaAssunto()
     seletorTema.bind("<<ComboboxSelected>>", setTemaAssunto)
 
@@ -459,7 +502,7 @@ class Sessao(i.Interfaces):
     self.arquivosContainer.grid(row=0, column=3, rowspan=14, sticky='w')
     listbox = Listbox(
       self.arquivosContainer,
-      height = 20,
+      height = 15,
       width = 40,
       bg = "white",
       activestyle = 'dotbox',

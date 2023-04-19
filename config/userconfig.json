@@ -2,12 +2,13 @@
     "habilitacao":{
         "inicial":"GESTOR - ÓRGÃO:UFES"
     },
+    "tipo_tema_assunto":"Buscar no conteúdo do documento",
     "valores_sigepe":{
         "edicao_bgp":"Normal",
         "tipo_assinatura":"Manual",
         "especie":"Portaria",
-        "tema":"Ascensão e progressão funcional; ",
-        "assunto":"023.03 - REESTRUTURAÇÕES E ALTERAÇÕES SALARIAIS (inclusive Ascensão e Progressão Funcional; Avaliação de Desempenho; Enquadramento; Equiparação, Reajuste e Reposição Salarial; Promoções)",
+        "tema":"Constituição de bancas examinadoras, Editais, Exemplares únicos de provas, Gabaritos, Resultados e Recursos",
+        "assunto":"021.2a - EXAMES DE SELEÇÃO (Concurso Público: Provas e Títulos, Testes Psicotécnicos e Exames Médicos)",
         "tipo_preenchimento":"Manual",
         "data_assinatura":"[hoje/]",
         "data_publicacao":"[proximo_dia_util/]",

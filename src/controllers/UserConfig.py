@@ -45,7 +45,6 @@ class UserConfig:
     try:
       json_file = open('config/delimiters.json', 'w', encoding="utf-8")
       json.dump(newDelimiters, json_file, ensure_ascii=False, indent=4, separators=(',',':'))
-      messagebox.showinfo("Sucesso", "Configurações salvas com sucesso")
     except Exception as e:
         messagebox.showerror("Erro ao salvar delimitadores", e)
     finally:
@@ -67,7 +66,6 @@ class UserConfig:
     try:
       json_file = open('config/afterpublishingconfig.json', 'w', encoding="utf-8")
       json.dump(newConfig, json_file, ensure_ascii=False, indent=4, separators=(',',':'))
-      messagebox.showinfo("Sucesso", "Configurações de pós-publicação salvas com sucesso")
     except Exception as e:
         messagebox.showerror("Erro ao salvar configurações de pós-publicação", e)
     finally:
@@ -89,7 +87,27 @@ class UserConfig:
     try:
       json_file = open('config/removefromcontent.json', 'w', encoding="utf-8")
       json.dump(newConfig, json_file, ensure_ascii=False, indent=4, separators=(',',':'))
-      messagebox.showinfo("Sucesso", "Termos para remoção do conteúdo salvos com sucesso")
+    except Exception as e:
+        messagebox.showerror("Erro ao salvar termos para remoção do conteúdo", e)
+    finally:
+      json_file.close()
+
+  @staticmethod
+  def obterAutoTemasAssuntos():
+    try:
+      json_file = open('config/autotheme.json', 'r', encoding="utf-8")
+      afterPublishingConfig = json.load(json_file)
+      return afterPublishingConfig
+    except Exception as e:
+        messagebox.showerror("Erro ao carregar termos para remoção do conteúdo", e)
+    finally:
+      json_file.close()
+  
+  @staticmethod
+  def salvarAutoTemasAssuntos(newConfig):
+    try:
+      json_file = open('config/autotheme.json', 'w', encoding="utf-8")
+      json.dump(newConfig, json_file, ensure_ascii=False, indent=4, separators=(',',':'))
     except Exception as e:
         messagebox.showerror("Erro ao salvar termos para remoção do conteúdo", e)
     finally:
