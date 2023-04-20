@@ -16,6 +16,7 @@ from views import Delimitadores as d
 from views import Pospublicacao as pp
 from views import RemoverTermosConteudo as rtc
 from views import Publicacao as p
+from views import TemaAutomatico as ta
 from copy import copy
 from controllers import UserConfig as uc
 from helpers import goTo as gt
@@ -53,7 +54,6 @@ class Sessao(i.Interfaces):
     self.especie()
     self.tipo_preenchimento_numero()
     self.tipo_selecao_tema()
-    # self.tema()
     self.data_assinatura()
     self.data_publicacao()
     self.orgao()
@@ -195,10 +195,12 @@ class Sessao(i.Interfaces):
     def setCopyMoveOption(event = None):
       self.userConfig["tipo_tema_assunto"] = tipoTemaSelected.get()
       if (tipoTemaSelected.get() == "Selecionar manualmente"):
-        if (hasattr(self, 'temaAutomaticoContainer')): self.temaAutomaticoContainer.destroy()
+        if (hasattr(self, 'temaManualContainer')): self.temaManualContainer.destroy()
         if (hasattr(self, 'assuntoContainer')): self.assuntoContainer.destroy()
+        if (hasattr(self, 'temaAutomaticoContainer')): self.temaAutomaticoContainer.destroy()
         self.temaManual()
       elif (tipoTemaSelected.get() == "Buscar no conteúdo do documento"):
+        if (hasattr(self, 'temaAutomaticoContainer')): self.temaAutomaticoContainer.destroy()
         if (hasattr(self, 'temaManualContainer')): self.temaManualContainer.destroy()
         if (hasattr(self, 'assuntoContainer')): self.assuntoContainer.destroy()
         self.temaAutomaticoConfig()
@@ -229,6 +231,8 @@ class Sessao(i.Interfaces):
     setCopyMoveOption()
 
   def temaAutomaticoConfig(self):
+    def abrirJanela():
+      janela = ta.TemaAutomatico()
     self.temaAutomaticoContainer = Frame(self.temaContainer)
     self.temaAutomaticoContainer.grid(row=1, column=3, columnspan=2, sticky='w')
     self.botaoConfigTemaAutomatico = Button(
@@ -236,7 +240,7 @@ class Sessao(i.Interfaces):
       text="Configurar busca de temas",
       font=appConfig.fontes["botao"],
       width=30,
-      # command=lambda: uc.UserConfig.salvarConfiguracoes(self.userConfig)
+      command=abrirJanela
       )
     self.botaoConfigTemaAutomatico.grid(column=1, row=1, padx=10, pady=5, sticky='w')
 
