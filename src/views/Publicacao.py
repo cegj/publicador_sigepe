@@ -99,7 +99,7 @@ class Publicacao:
     logboxContainer.grid(row=2, column=1, pady=10, padx=10)
     logBoxLabel = Label(
       logboxContainer,
-      text="Logs da publicação",
+      text="Todos os logs",
       font=appConfig.fontes["normal"],
     )
     logBoxLabel.pack()
@@ -117,7 +117,7 @@ class Publicacao:
     resultBoxContainer.grid(row=2, column=2, pady=10, padx=10)
     fileContentLabel = Label(
       resultBoxContainer,
-      text="Logs de resultados",
+      text="Logs em destaque",
       font=appConfig.fontes["normal"]
     )
     fileContentLabel.pack()
@@ -179,7 +179,7 @@ class Publicacao:
     if (logFile): logFile.write(logs)
 
   def close(self):
-    answer = messagebox.askyesnocancel("Publicador Sigepe", "Deseja encerrar completamente o Publicador Sigepe? Caso selecione Não, somente a janela atual será fechada.")
+    answer = messagebox.askyesnocancel("Publicador Sigepe", "Deseja encerrar completamente o Publicador Sigepe? Caso selecione Não, somente a publicação atual será fechada.")
     if (answer == True):
       nav.quit()
       self.sessao.root.destroy()

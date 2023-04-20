@@ -36,47 +36,75 @@ class TemaAutomatico:
         self.autoThemes[newEditItemKey]["assunto"] = self.assuntoSelected.get()
         uc.UserConfig.salvarAutoTemasAssuntos(self.autoThemes)
       else:
-        self.autoThemes[self.termToFindValue.get()]["tema"] = self.temaSelected.get()
-        self.autoThemes[self.termToFindValue.get()]["assunto"] = self.assuntoSelected.get()
+        self.autoThemes[self.termToFindValue.get()] = {
+          "tema": self.temaSelected.get(),
+          "assunto": self.assuntoSelected.get()}
         uc.UserConfig.salvarAutoTemasAssuntos(self.autoThemes)
       self.editWindow.destroy()
       self.updateThemesList()
 
     def delete():
-      answer = messagebox.askyesno("Confirmar exclusão", f"Deseja realmente apagar o assunto {editItemKey}?")
+      answer = messagebox.askyesno("Confirmar exclusão", f"Deseja realmente apagar o termo {editItemKey}?")
       if (answer == True):
         del self.autoThemes[editItemKey]
         uc.UserConfig.salvarAutoTemasAssuntos(self.autoThemes)
         self.editWindow.destroy()
         self.updateThemesList()
 
-    def getAssuntos(Event = None):
-      self.sigepe_assuntos= ods.ObterDoSigepe.assuntos(self.temaSelected.get())
-      if (not self.editItem["assunto"] in self.sigepe_assuntos):
-        self.assuntoSelected.set("")
+    def assunto():
+      self.sigepe_assuntos = ods.ObterDoSigepe.assuntos(self.temaSelected.get())
+      self.assuntoContainer = Frame(self.editWindow)
+      self.assuntoContainer.grid(row=3, column=1)
+      assuntoLabel = Label(
+        self.assuntoContainer,
+        text="Assunto correspondente",
+        font=appConfig.fontes["normal"]
+        )
+      assuntoLabel.pack()
+      self.assuntoSelected = StringVar()
+      if (editItemKey):
+        if (not self.editItem["assunto"] in self.sigepe_assuntos): self.assuntoSelected.set("")
+        else: self.assuntoSelected.set(self.editItem["assunto"]) 
+      seletorAssunto = ttk.Combobox(
+        self.assuntoContainer,
+        textvariable=self.assuntoSelected,
+        values=self.sigepe_assuntos,
+        state="readonly",
+        width=40,
+        font=appConfig.fontes["normal"]
+        )
+      seletorAssunto.pack()
+
+    def buildAssunto(Event = None):
+      if (hasattr(self, 'assuntoContainer')): self.assuntoContainer.destroy()
+      assunto()
 
     self.editWindow = i.Interfaces.novaJanela()
 
     if (editItemKey): self.editItem = self.autoThemes[editItemKey]
   
-    termToFindLabel = Label(
-      self.editWindow,
+    self.termoContainer = Frame(self.editWindow)
+    self.termoContainer.grid(row=1, column=1)
+    termoLabel = Label(
+      self.termoContainer,
       text="Termo para busca no conteúdo",
       font=appConfig.fontes["normal"]
       )
-    termToFindLabel.pack()
+    termoLabel.pack()
     self.termToFindValue = StringVar()
-    termToFindInput = Entry(
-      self.editWindow,
+    termoInput = Entry(
+      self.termoContainer,
       width=42,
       textvariable=self.termToFindValue,
       font=appConfig.fontes["normal"]
       )
     if (editItemKey): self.termToFindValue.set(editItemKey)
-    termToFindInput.pack()
+    termoInput.pack()
 
+    self.temaContainer = Frame(self.editWindow)
+    self.temaContainer.grid(row=2, column=1)
     temaLabel = Label(
-      self.editWindow,
+      self.temaContainer,
       text="Tema correspondente",
       font=appConfig.fontes["normal"]
       )
@@ -84,7 +112,7 @@ class TemaAutomatico:
     self.temaSelected = StringVar()
     if (editItemKey): self.temaSelected.set(self.editItem["tema"])    
     seletorTema = ttk.Combobox(
-      self.editWindow,
+      self.temaContainer,
       textvariable=self.temaSelected,
       values=self.sigepe_temas,
       state="readonly",
@@ -92,32 +120,12 @@ class TemaAutomatico:
       font=appConfig.fontes["normal"]
       )
     seletorTema.pack()
-    seletorTema.bind("<<ComboboxSelected>>", getAssuntos)
+    seletorTema.bind("<<ComboboxSelected>>", buildAssunto)
 
-    assuntoLabel = Label(
-      self.editWindow,
-      text="Assunto correspondente",
-      font=appConfig.fontes["normal"]
-      )
-    assuntoLabel.pack()
-    self.assuntoSelected = StringVar()
-    if (editItemKey):
-      getAssuntos()
-      if (not self.editItem["assunto"] in self.sigepe_assuntos): self.assuntoSelected.set("")
-      else: self.assuntoSelected.set(self.editItem["assunto"]) 
-
-    seletorAssunto = ttk.Combobox(
-      self.editWindow,
-      textvariable=self.assuntoSelected,
-      values=self.sigepe_assuntos,
-      state="readonly",
-      width=40,
-      font=appConfig.fontes["normal"]
-      )
-    seletorAssunto.pack()
+    if (editItemKey): buildAssunto()
 
     botoesContainer = Frame(self.editWindow)
-    botoesContainer.pack()
+    botoesContainer.grid(row=4, column=1)
     if (editItemKey):
       botaoApagar = Button(
         botoesContainer,
@@ -136,118 +144,6 @@ class TemaAutomatico:
       command=save
       )
     botaoSalvar.grid(column=2, row=1, padx=10, pady=10)
-
-
-  def janelaCadastro(self, editItemKey = None):
-    def save():
-      newEditItemKey = self.termToFindValue.get() 
-      if (editItemKey):
-        if (newEditItemKey != editItemKey):
-          self.autoThemes[newEditItemKey] = self.autoThemes[editItemKey]
-          del self.autoThemes[editItemKey]
-        self.autoThemes[newEditItemKey]["tema"] = self.temaSelected.get()
-        self.autoThemes[newEditItemKey]["assunto"] = self.assuntoSelected.get()
-      else:
-        self.autoThemes[newEditItemKey]["tema"] = self.temaSelected.get()
-        self.autoThemes[newEditItemKey]["assunto"] = self.assuntoSelected.get()
-      uc.UserConfig.salvarAutoTemasAssuntos(self.autoThemes)
-      self.editWindow.destroy()
-      self.updateThemesList()
-
-    def delete():
-      answer = messagebox.askyesno("Confirmar exclusão", f"Deseja realmente apagar o assunto {editItemKey}?")
-      if (answer == True):
-        del self.autoThemes[editItemKey]
-        uc.UserConfig.salvarAutoTemasAssuntos(self.autoThemes)
-        self.editWindow.destroy()
-        self.updateThemesList()
-
-    def getAssuntos(Event = None):
-      self.sigepe_assuntos= ods.ObterDoSigepe.assuntos(self.temaSelected.get())
-      if (not self.editItem["assunto"] in self.sigepe_assuntos):
-        self.assuntoSelected.set("")
-
-    self.editWindow = i.Interfaces.novaJanela()
-    if (editItemKey): self.editItem = self.autoThemes[editItemKey]
-  
-    termToFindLabel = Label(
-      self.editWindow,
-      text="Termo para busca no conteúdo",
-      font=appConfig.fontes["normal"]
-      )
-    termToFindLabel.pack()
-    self.termToFindValue = StringVar()
-    termToFindInput = Entry(
-      self.editWindow,
-      width=42,
-      textvariable=self.termToFindValue,
-      font=appConfig.fontes["normal"]
-      )
-    self.termToFindValue.set(editItemKey)
-    termToFindInput.pack()
-
-    temaLabel = Label(
-      self.editWindow,
-      text="Tema correspondente",
-      font=appConfig.fontes["normal"]
-      )
-    temaLabel.pack()
-    self.temaSelected = StringVar()
-    if (editItemKey): self.temaSelected.set(self.editItem["tema"])    
-    seletorTema = ttk.Combobox(
-      self.editWindow,
-      textvariable=self.temaSelected,
-      values=self.sigepe_temas,
-      state="readonly",
-      width=40,
-      font=appConfig.fontes["normal"]
-      )
-    seletorTema.pack()
-    seletorTema.bind("<<ComboboxSelected>>", getAssuntos)
-
-    assuntoLabel = Label(
-      self.editWindow,
-      text="Assunto correspondente",
-      font=appConfig.fontes["normal"]
-      )
-    assuntoLabel.pack()
-    self.assuntoSelected = StringVar()
-    if (editItemKey):
-      getAssuntos()
-      if (not self.editItem["assunto"] in self.sigepe_assuntos): self.assuntoSelected.set("")
-      else: self.assuntoSelected.set(self.editItem["assunto"])
-    if (not editItemKey):
-      self.sigepe_assuntos = [""]    
-    seletorAssunto = ttk.Combobox(
-      self.editWindow,
-      textvariable=self.assuntoSelected,
-      values=self.sigepe_assuntos,
-      state="readonly",
-      width=40,
-      font=appConfig.fontes["normal"]
-      )
-    seletorAssunto.pack()
-
-    botoesContainer = Frame(self.editWindow)
-    botoesContainer.pack()
-    if (editItemKey):
-      botaoApagar = Button(
-        botoesContainer,
-        text="Apagar",
-        font=appConfig.fontes["botao"],
-        width=15,
-        command=delete
-        )
-      botaoApagar.grid(column=1, row=1, padx=10, pady=10)
-    botaoSalvar = Button(
-      botoesContainer,
-      text="Salvar",
-      font=appConfig.fontes["botao"],
-      width=15,
-      command=save
-      )
-    botaoSalvar.grid(column=2, row=1, padx=10, pady=10)
-
 
   def listaTemasCadastrados(self):
     def abrirEdicao(Event = None):

@@ -62,17 +62,34 @@ class Publicador:
       self.publicacao.insertFileText(filetext)
       file.close()
 
-      self.publicacao.insertLog(f"Iniciando publicação do documento {filename}", "em")
+      log = {"log": f"Iniciando publicação do documento {filename}", "type": "em"}
+      self.handleResult(log)
+
       numeroDocumento = self.obterDoTexto("numero_documento", completeFiletext)
       if (numeroDocumento != ""):
-        self.publicacao.insertLog("Número do documento identificado", "", numeroDocumento)
+        log = {"log": f"Número do documento identificado", "type": "n"}
+        self.handleResult(log, numeroDocumento)
       else:
-        self.publicacao.insertLog("Não foi localizado um número no texto do documento", "a", numeroDocumento)
+        log = {"log": f"Não foi localizado um número no texto do documento", "type": "a"}
+        self.handleResult(log)
+
       matriculaSiape = self.obterDoTexto("matricula_siape", completeFiletext)
       if (matriculaSiape != ""):
-        self.publicacao.insertLog(f"Matrícula SIAPE identificada: {matriculaSiape}", "n", numeroDocumento)
+        log = {"log": f"Matrícula SIAPE identificada: {matriculaSiape}", "type": "n"}
+        self.handleResult(log, numeroDocumento)
       else:
-        self.publicacao.insertLog("Não foi localizada uma matrícula SIAPE no texto do documento", "a")
+        log = {"log": f"Não foi localizada uma matrícula SIAPE no texto do documento", "type": "a"}
+        self.handleResult(log, numeroDocumento)
+
+      if(self.config["tipo_tema_assunto"] == "Buscar no conteúdo do documento"):
+        autoTemaResult = t.Tema.buscar(filetext)
+        self.handleResult(autoTemaResult, numeroDocumento)
+        if not self.checkResult(autoTemaResult): continue
+        self.config["valores_sigepe"]["tema"] = autoTemaResult["return"]
+        autoAssuntoResult = a.Assunto.buscar(filetext)
+        self.handleResult(autoAssuntoResult, numeroDocumento)
+        if not self.checkResult(autoAssuntoResult): continue
+        self.config["valores_sigepe"]["assunto"] = autoAssuntoResult["return"]
 
       edicaoBoletimResult = eb.EdicaoBoletim.preencher(self.config["valores_sigepe"]["edicao_bgp"])
       self.handleResult(edicaoBoletimResult, numeroDocumento)
@@ -117,7 +134,8 @@ class Publicador:
       self.handleResult(textoDocumentoResult, numeroDocumento)
       if not self.checkResult(textoDocumentoResult): continue
 
-      self.publicacao.insertLog("Selecionando órgão elaborador...", "n", numeroDocumento)
+      log = {"log": f"Selecionando órgão elaborador...", "type": "n"}
+      self.handleResult(log, numeroDocumento)
       orgaoElaboradorResult = oe.OrgaoElaborador.preencher(
         self.config["valores_sigepe"]["orgao"],
         self.config["valores_sigepe"]["upag"],
@@ -128,7 +146,8 @@ class Publicador:
       self.handleResult(orgaoElaboradorResult, numeroDocumento)
       if not self.checkResult(orgaoElaboradorResult): continue
 
-      self.publicacao.insertLog("Selecionando interessado...", "n", numeroDocumento)
+      log = {"log": f"Selecionando interessado...", "type": "n"}
+      self.handleResult(log, numeroDocumento)
       interessadoResult = i.Interessado.preencher(matriculaSiape)
       self.handleResult(interessadoResult, numeroDocumento)
       if not self.checkResult(interessadoResult): continue
@@ -140,7 +159,8 @@ class Publicador:
       self.currentFile = None
       self.publicacao.insertFileText("")
     
-    self.publicacao.insertLog("Publicação concluída!", "em")
+    log = {"log": f"Publicação concluída!", "type": "em"}
+    self.handleResult(log)
     self.publicacao.showBtns()
 
   def obterTextoDocumento(self, file):
@@ -213,6 +233,7 @@ class Publicador:
 
   def handleResult(self, result, docnumber = ""):
     currentFileName = os.path.basename(self.currentFile.name)
+
     if (result["type"] == 's'):
       self.resultados["sucesso"].append(currentFileName)
       self.publicacao.moveToSuccessFiles(currentFileName)
@@ -222,11 +243,11 @@ class Publicador:
 
     self.publicacao.insertLog(result["log"], result["type"], docnumber)
 
-    if (not ("isFinalResult" in result) and result["type"] == 'e'):
+    if (result["type"] != 'n'):
       self.publicacao.insertResult(currentFileName, result["log"], result["type"], docnumber)
 
-    if (("isFinalResult" in result) and result["isFinalResult"] == True):
-      self.publicacao.insertResult(currentFileName, result["log"], result["type"], docnumber)
+    # if (("isFinalResult" in result) and result["isFinalResult"] == True):
+    #   self.publicacao.insertResult(currentFileName, result["log"], result["type"], docnumber)
 
       if (result["type"] == 's'):
         newFilename = None

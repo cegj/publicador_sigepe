@@ -6,6 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
 import time
 from selenium.webdriver.common.keys import Keys
+from controllers import UserConfig as uc
+from controllers import Variaveis as v
 
 class Tema:
   @staticmethod
@@ -41,3 +43,14 @@ class Tema:
 
     except Exception as e:
       return {"log": f"Falha ao selecionar tema: {e}", "type": "e", "e": e}
+
+  @staticmethod
+  def buscar(filetext):
+    try:
+      termos = v.Variaveis.atribuirValorVariaveis(uc.UserConfig.obterAutoTemasAssuntos())
+      for termo, obj in termos.items():
+        if termo.lower() in filetext.lower():
+          return {"log": f"Tema identificado: {obj['tema']}", "type": "n", "return": obj["tema"]}
+      raise Exception("não foi localizado um termo correspondente a um tema no conteúdo do documento.")
+    except Exception as e:
+      return {"log": f"Falha ao selecionar tema: {e}", "type": "e", "e": e, "return": False}
