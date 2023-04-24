@@ -233,13 +233,12 @@ class Publicador:
 
   def handleResult(self, result, docnumber = ""):
     if (self.currentFile): currentFileName = os.path.basename(self.currentFile.name)
+    else currentFileName = ""
 
     if (result["type"] == 's'):
-      self.resultados["sucesso"].append(currentFileName)
       self.publicacao.moveToSuccessFiles(currentFileName)
     elif (result["type"] == 'e'):
       self.publicacao.moveToFailFiles(currentFileName)
-      self.resultados["erro"].append(currentFileName)
 
     self.publicacao.insertLog(result["log"], result["type"], docnumber)
 
