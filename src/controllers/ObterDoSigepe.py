@@ -67,3 +67,12 @@ class ObterDoSigepe():
     except Exception as e:
       messagebox.showerror("Erro ao buscar assunto", e)
       return None
+
+  @staticmethod
+  def botaoHabilitacao():
+    try:
+      btn = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
+      return btn
+    except Exception as e:
+      messagebox.showerror("Erro ao obter botão de habilitação no Sigepe", e)
+      return None

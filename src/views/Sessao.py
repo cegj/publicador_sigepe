@@ -17,6 +17,24 @@ from views import Pospublicacao as pp
 from views import RemoverTermosConteudo as rtc
 from views import Publicacao as p
 from views import TemaAutomatico as ta
+from views.sessao import Habilitacao as s_h
+from views.sessao import EdicaoBoletim as s_eb
+from views.sessao import TipoAssinatura as s_ta
+from views.sessao import Especie as s_e
+from views.sessao import TipoNumero as s_tn
+from views.sessao import TemaAssunto as s_tas
+from views.sessao import DataAssinatura as s_da
+from views.sessao import DataPublicacao as s_dp
+from views.sessao import Orgao as s_or
+from views.sessao import Upag as s_up
+from views.sessao import Uorg as s_uo
+from views.sessao import ResponsavelAssinatura as s_ra
+from views.sessao import CargoResponsavel as s_cr
+from views.sessao import ManterDadosBtn as s_mdb
+from views.sessao import AbrirDelimitadoresBtn as s_adb
+from views.sessao import AbrirPospublicacaoBtn as s_apb
+from views.sessao import AbrirRemocaoTermosBtn as s_art
+from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
 from controllers import UserConfig as uc
 from helpers import goTo as gt
@@ -42,502 +60,66 @@ class Sessao(i.Interfaces):
     gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
     self.sessaoContainer = Frame(self.root)
     self.sessaoContainer.grid()
-    sessaoContainerTitulo = Label(self.sessaoContainer, text="Publicar documentos")
-    sessaoContainerTitulo.configure(anchor="center")
-    sessaoContainerTitulo["font"] = appConfig.fontes["titulo"]
-    sessaoContainerTitulo.grid(column=1, row=0, columnspan=2)
-    self.botoesContainer = Frame(self.sessaoContainer)
-    self.botoesContainer.grid(row=13, column=1, sticky='w')
-    self.habilitacao()
-    self.edicao_bgp()
-    self.tipo_assinatura()
-    self.especie()
-    self.tipo_preenchimento_numero()
-    self.tipo_selecao_tema()
-    self.data_assinatura()
-    self.data_publicacao()
-    self.orgao()
-    self.upag()
-    self.uorg()
-    self.responsavel_assinatura()
-    self.cargo_responsavel()
-    self.salvar_configuracoes()
-    self.abrir_edicao_delimitadores()
-    self.abrir_configuracoes_pospublicacao()
-    self.remover_termos_conteudo()
-    self.arquivos()
-    self.publicar()    
+
+    self.coluna1 = Frame(self.sessaoContainer)
+    self.coluna1.grid(row=1, column=1, sticky="w")
+    self.coluna2 = Frame(self.sessaoContainer)
+    self.coluna2.grid(row=1, column=2, sticky="w")
+
+    self.linha1c1 = Frame(self.coluna1)
+    self.linha1c1.pack(pady=7)
+    self.linha2c1 = Frame(self.coluna1)
+    self.linha2c1.pack(anchor=W, pady=7)
+    self.linha3c1 = Frame(self.coluna1)
+    self.linha3c1.pack(anchor=W, pady=7)
+    self.linha4c1 = Frame(self.coluna1)
+    self.linha4c1.pack(anchor=W, pady=7)
+    self.linha5c1 = Frame(self.coluna1)
+    self.linha5c1.pack(anchor=W, pady=7)
+    self.linha6c1 = Frame(self.coluna1)
+    self.linha6c1.pack(anchor=W, pady=7)
+    self.linha7c1 = Frame(self.coluna1)
+    self.linha7c1.pack(anchor=W, pady=7)
+    self.linha8c1 = Frame(self.coluna1)
+    self.linha8c1.pack(anchor=W, pady=7)
+    self.linha1c2 = Frame(self.coluna2)
+    self.linha1c2.pack(pady=7)
+    self.linha2c2 = Frame(self.coluna2)
+    self.linha2c2.pack(anchor=W, pady=7)
+
+    tituloDadosPublicacao = Label(
+      self.linha1c1,
+      text="Dados da publicação",
+      font=appConfig.fontes["titulo"],
+      anchor=CENTER
+    )
+    tituloDadosPublicacao.pack()
+
+    s_h.Habilitacao(self, self.linha2c1)
+    s_eb.EdicaoBoletim(self, self.linha3c1)
+    s_ta.TipoAssinatura(self, self.linha3c1)
+    s_tn.TipoNumero(self, self.linha3c1)
+    s_e.Especie(self, self.linha4c1)
+    s_da.DataAssinatura(self, self.linha4c1)
+    s_dp.DataPublicacao(self, self.linha4c1)
+    s_tas.TemaAssunto(self, self.linha5c1)
+    s_or.Orgao(self, self.linha6c1)
+    s_up.Upag(self, self.linha6c1)
+    s_uo.Uorg(self, self.linha6c1)
+    s_ra.ResponsavelAssinatura(self, self.linha7c1)
+    s_cr.CargoResponsavel(self, self.linha7c1)
+    s_mdb.ManterDadosBtn(self, self.linha8c1)
+    s_adb.AbrirDelimitadoresBtn(self, self.linha8c1)
+    s_apb.AbrirPospublicacaoBtn(self, self.linha8c1)
+    s_art.AbrirRemocaoTermosBtn(self, self.linha8c1)
+
+    tituloArquivos = Label(
+      self.linha1c2,
+      text="Arquivos",
+      font=appConfig.fontes["titulo"],
+      anchor=CENTER
+    )
+    tituloArquivos.pack()
+    s_ap.ArquivosPublicar(self, self.linha2c2)
     self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
     self.root.mainloop()
-
-  def habilitacao(self):
-    def abrirJanelaHabilitacao():
-      self.root.destroy()
-      janelaHabilitacao = h.Habilitacao()
-    self.sessaoHabilitacaoContainer = Frame(self.sessaoContainer)
-    self.sessaoHabilitacaoContainer.grid(row=3, column=1, columnspan=2, sticky='w')
-    sigepe_habilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
-    habilitacaoAtual = Label(
-      self.sessaoHabilitacaoContainer,
-      text=f"Habilitação atual: {sigepe_habilitacaoBotao.text}",
-      anchor="w",
-      font=appConfig.fontes["normal"])
-    habilitacaoAtual.grid(column=0, row=1, columnspan=2, padx=10, pady=5, sticky='w')
-    self.userConfig["habilitacao"]["inicial"] = sigepe_habilitacaoBotao.text
-    botaoAlterarHabilitacao = Button(self.sessaoHabilitacaoContainer)
-    botaoAlterarHabilitacao["text"] = "Alterar habilitação"
-    botaoAlterarHabilitacao["font"] = appConfig.fontes["botao"]
-    botaoAlterarHabilitacao["width"] = 20
-    botaoAlterarHabilitacao["command"] = abrirJanelaHabilitacao
-    botaoAlterarHabilitacao.grid(column=3, row=1, padx=10, pady=5, sticky='w')
-
-  def edicao_bgp(self):
-    def setSelected(event):
-      self.userConfig["valores_sigepe"]["edicao_bgp"] = selected.get()
-    self.edicaoBgpContainer = Frame(self.sessaoContainer)
-    self.edicaoBgpContainer.grid(row=4, column=1, sticky='w')
-    edicaoBgpLabel = Label(
-      self.edicaoBgpContainer,
-      text="Edição do boletim",
-      font=appConfig.fontes["normal"]
-      )
-    edicaoBgpLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    selected = StringVar()
-    selected.set(self.userConfig["valores_sigepe"]["edicao_bgp"])
-    options = ["Normal", "Extraordinária"]
-    seletorEdicaoBgp = ttk.Combobox(
-      self.edicaoBgpContainer,
-      textvariable=selected,
-      values=options,
-      state="readonly",
-      width=20,
-      font=appConfig.fontes["normal"]
-      )
-    seletorEdicaoBgp.grid(column=2, row=0)
-    seletorEdicaoBgp.bind("<<ComboboxSelected>>", setSelected)
-
-  def tipo_assinatura(self):
-    def setSelected(event):
-      self.userConfig["valores_sigepe"]["tipo_assinatura"] = selected.get()
-    self.tipoAssinaturaContainer = Frame(self.sessaoContainer)
-    self.tipoAssinaturaContainer.grid(row=4, column=2, sticky='w')
-    tipoAssinaturaLabel = Label(
-      self.tipoAssinaturaContainer,
-      text="Tipo de assinatura",
-      font=appConfig.fontes["normal"]
-      )
-    tipoAssinaturaLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    selected = StringVar()
-    selected.set(self.userConfig["valores_sigepe"]["tipo_assinatura"])
-    options = ["Digital", "Manual"]
-    seletorTipoAssinatura = ttk.Combobox(
-      self.tipoAssinaturaContainer,
-      textvariable=selected,
-      values=options,
-      state="readonly",
-      width=20,
-      font=appConfig.fontes["normal"]
-      )
-    seletorTipoAssinatura.grid(column=2, row=0)
-    seletorTipoAssinatura.bind("<<ComboboxSelected>>", setSelected)
-
-  def especie(self):
-    def setSelected(event):
-      self.userConfig["valores_sigepe"]["especie"] = selected.get()
-    self.especieContainer = Frame(self.sessaoContainer)
-    self.especieContainer.grid(row=6, column=1, sticky='w')
-    especieLabel = Label(
-      self.especieContainer,
-      text="Espécie",
-      font=appConfig.fontes["normal"]
-      )
-    especieLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    selected = StringVar()
-    selected.set(self.userConfig["valores_sigepe"]["especie"])
-    options = ["Acordo Coletivo", "Apostila", "Ata", "Despacho", "Diretriz", "Edital", "Instrução Normativa", "Orientação Normativa", "Portaria", "Recomendação", "Resolução"]
-    seletorEspecie = ttk.Combobox(
-      self.especieContainer,
-      textvariable=selected,
-      values=options,
-      state="readonly",
-      width=20,
-      font=appConfig.fontes["normal"]
-      )
-    seletorEspecie.grid(column=2, row=0)
-    seletorEspecie.bind("<<ComboboxSelected>>", setSelected)
-
-  def tipo_preenchimento_numero(self):
-    def setSelected(event):
-      self.userConfig["valores_sigepe"]["tipo_preenchimento"] = selected.get()
-    self.tipoPreenchimentoContainer = Frame(self.sessaoContainer)
-    self.tipoPreenchimentoContainer.grid(row=6, column=2, sticky='w')
-    tipoPreenchimentoLabel = Label(
-      self.tipoPreenchimentoContainer,
-      text="Tipo de número",
-      font=appConfig.fontes["normal"]
-      )
-    tipoPreenchimentoLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    selected = StringVar()
-    selected.set(self.userConfig["valores_sigepe"]["tipo_preenchimento"])
-    options = ["Automático", "Manual", "Sem Número"]
-    seletorTipoPreenchimento = ttk.Combobox(
-      self.tipoPreenchimentoContainer,
-      textvariable=selected,
-      values=options,
-      state="readonly",
-      width=10,
-      font=appConfig.fontes["normal"]
-      )
-    seletorTipoPreenchimento.grid(column=2, row=0)
-    seletorTipoPreenchimento.bind("<<ComboboxSelected>>", setSelected)
-
-  def tipo_selecao_tema(self):
-    def setCopyMoveOption(event = None):
-      self.userConfig["tipo_tema_assunto"] = tipoTemaSelected.get()
-      if (tipoTemaSelected.get() == "Selecionar manualmente"):
-        if (hasattr(self, 'temaManualContainer')): self.temaManualContainer.destroy()
-        if (hasattr(self, 'assuntoContainer')): self.assuntoContainer.destroy()
-        if (hasattr(self, 'temaAutomaticoContainer')): self.temaAutomaticoContainer.destroy()
-        self.temaManual()
-      elif (tipoTemaSelected.get() == "Buscar no conteúdo do documento"):
-        if (hasattr(self, 'temaAutomaticoContainer')): self.temaAutomaticoContainer.destroy()
-        if (hasattr(self, 'temaManualContainer')): self.temaManualContainer.destroy()
-        if (hasattr(self, 'assuntoContainer')): self.assuntoContainer.destroy()
-        self.temaAutomaticoConfig()
-
-    self.temaContainer = Frame(self.sessaoContainer)
-    self.temaContainer.grid(row=7, column=1, columnspan=2, sticky='w')
-    temaLabel = Label(
-      self.temaContainer,
-      text="Tema",
-      font=appConfig.fontes["normal"]
-      )
-    temaLabel.grid(column=1, row=1, padx=10, pady=5, sticky='w')
-
-    tipoTemaOptionsList = ["Selecionar manualmente", "Buscar no conteúdo do documento"]
-    if self.userConfig["tipo_tema_assunto"] not in tipoTemaOptionsList:
-          self.userConfig["tipo_tema_assunto"] = "Selecionar manualmente"
-    tipoTemaOptionsList.remove(self.userConfig["tipo_tema_assunto"])
-    tipoTemaSelected = StringVar()
-    tipoTemaSelected.set(self.userConfig["tipo_tema_assunto"])
-    tipoTemaOptions = OptionMenu(
-      self.temaContainer,
-      tipoTemaSelected,
-      tipoTemaSelected.get(),
-      *tipoTemaOptionsList,
-      command=setCopyMoveOption
-    )
-    tipoTemaOptions.grid(column=2, row=1, padx=10, pady=5, sticky='w')
-    setCopyMoveOption()
-
-  def temaAutomaticoConfig(self):
-    def abrirJanela():
-      janela = ta.TemaAutomatico()
-    self.temaAutomaticoContainer = Frame(self.temaContainer)
-    self.temaAutomaticoContainer.grid(row=1, column=3, columnspan=2, sticky='w')
-    self.botaoConfigTemaAutomatico = Button(
-      self.temaAutomaticoContainer,
-      text="Configurar busca de temas",
-      font=appConfig.fontes["botao"],
-      width=30,
-      command=abrirJanela
-      )
-    self.botaoConfigTemaAutomatico.grid(column=1, row=1, padx=10, pady=5, sticky='w')
-
-  def temaManual(self):
-    def setTemaAssunto(event = None):
-      self.userConfig["valores_sigepe"]["tema"] = selected.get()
-      if (hasattr(self, 'assuntoContainer')):
-        self.assuntoContainer.destroy()
-      self.assunto()
-    self.temaManualContainer = Frame(self.temaContainer)
-    self.temaManualContainer.grid(row=1, column=3, columnspan=2, sticky='w')
-    selected = StringVar()
-    selected.set(self.userConfig["valores_sigepe"]["tema"])    
-    listaTemas = ods.ObterDoSigepe.temas()
-    seletorTema = ttk.Combobox(
-      self.temaManualContainer,
-      textvariable=selected,
-      values=listaTemas,
-      state="readonly",
-      width=80,
-      font=appConfig.fontes["normal"]
-      )
-    seletorTema.grid(column=2, row=1)
-    setTemaAssunto()
-    seletorTema.bind("<<ComboboxSelected>>", setTemaAssunto)
-
-  def assunto(self):
-    def setAssunto(event = None):
-      self.userConfig["valores_sigepe"]["assunto"] = selected.get()
-    self.assuntoContainer = Frame(self.sessaoContainer)
-    self.assuntoContainer.grid(row=8, column=1, columnspan=2, sticky='w')
-    assuntoLabel = Label(
-      self.assuntoContainer,
-      text="Assunto",
-      font=appConfig.fontes["normal"]
-      )
-    assuntoLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    selected = StringVar()
-    listaAssuntos = ods.ObterDoSigepe.assuntos(self.userConfig["valores_sigepe"]["tema"])
-    if (not self.userConfig["valores_sigepe"]["assunto"] in listaAssuntos):
-      self.userConfig["valores_sigepe"]["assunto"] = ""
-    selected.set(self.userConfig["valores_sigepe"]["assunto"])    
-    seletorAssunto = ttk.Combobox(
-      self.assuntoContainer,
-      textvariable=selected,
-      values=listaAssuntos,
-      state="readonly",
-      width=80,
-      font=appConfig.fontes["normal"]
-      )
-    seletorAssunto.grid(column=2, row=0)
-    seletorAssunto.bind("<<ComboboxSelected>>", setAssunto)
-
-
-  def data_assinatura(self):
-    def setValue(a=None, b=None, c=None):
-      self.userConfig["valores_sigepe"]["data_assinatura"] = value.get()
-    self.dataAssinaturaContainer = Frame(self.sessaoContainer)
-    self.dataAssinaturaContainer.grid(row=9, column=1, sticky='w')
-    dataAssinaturaLabel = Label(
-      self.dataAssinaturaContainer,
-      text="Data de assinatura",
-      font=appConfig.fontes["normal"]
-      )
-    dataAssinaturaLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    value = StringVar()
-    value.trace_add("write", setValue)
-    dataAssinaturaInput = Entry(
-      self.dataAssinaturaContainer,
-      width=20,
-      textvariable=value,
-      font=appConfig.fontes["normal"]
-      )
-    value.set(self.userConfig["valores_sigepe"]["data_assinatura"])
-    dataAssinaturaInput.grid(column=2, row=0)
-
-  def data_publicacao(self):
-    def setValue(a=None, b=None, c=None):
-      self.userConfig["valores_sigepe"]["data_publicacao"] = value.get()
-    self.dataPublicacaoContainer = Frame(self.sessaoContainer)
-    self.dataPublicacaoContainer.grid(row=9, column=2, sticky='w')
-    dataPublicacaoLabel = Label(
-      self.dataPublicacaoContainer,
-      text="Data de publicação",
-      font=appConfig.fontes["normal"]
-      )
-    dataPublicacaoLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    value = StringVar()
-    value.trace_add("write", setValue)
-    dataPublicacaoInput = Entry(
-      self.dataPublicacaoContainer,
-      width=20,
-      textvariable=value,
-      font=appConfig.fontes["normal"]
-      )
-    value.set(self.userConfig["valores_sigepe"]["data_publicacao"])
-    dataPublicacaoInput.grid(column=2, row=0)
-
-  def orgao(self):
-    def setValue(a=None, b=None, c=None):
-      self.userConfig["valores_sigepe"]["orgao"] = value.get()
-    self.orgaoContainer = Frame(self.sessaoContainer)
-    self.orgaoContainer.grid(row=10, column=1, columnspan=2, sticky='w')
-    orgaoLabel = Label(
-      self.orgaoContainer,
-      text="Órgão",
-      font=appConfig.fontes["normal"]
-      )
-    orgaoLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    value = StringVar()
-    value.trace_add("write", setValue)
-    orgaoInput = Entry(
-      self.orgaoContainer,
-      width=50,
-      textvariable=value,
-      font=appConfig.fontes["normal"]
-      )
-    value.set(self.userConfig["valores_sigepe"]["orgao"])
-    orgaoInput.grid(column=2, row=0)
-
-  def upag(self):
-    def setValue(a=None, b=None, c=None):
-      self.userConfig["valores_sigepe"]["upag"] = value.get()
-    self.upagContainer = Frame(self.sessaoContainer)
-    self.upagContainer.grid(row=11, column=1, sticky='w')
-    upagLabel = Label(
-      self.upagContainer,
-      text="UPAG",
-      font=appConfig.fontes["normal"]
-      )
-    upagLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    value = StringVar()
-    value.trace_add("write", setValue)
-    upagInput = Entry(
-      self.upagContainer,
-      width=20,
-      textvariable=value,
-      font=appConfig.fontes["normal"]
-      )
-    value.set(self.userConfig["valores_sigepe"]["upag"])
-    upagInput.grid(column=2, row=0)
-
-  def uorg(self):
-    def setValue(a=None, b=None, c=None):
-      self.userConfig["valores_sigepe"]["uorg"] = value.get()
-    self.uorgContainer = Frame(self.sessaoContainer)
-    self.uorgContainer.grid(row=11, column=2, sticky='w')
-    uorgLabel = Label(
-      self.uorgContainer,
-      text="UORG",
-      font=appConfig.fontes["normal"]
-      )
-    uorgLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    value = StringVar()
-    value.trace_add("write", setValue)
-    uorgInput = Entry(
-      self.uorgContainer,
-      width=20,
-      textvariable=value,
-      font=appConfig.fontes["normal"]
-      )
-    value.set(self.userConfig["valores_sigepe"]["uorg"])
-    uorgInput.grid(column=2, row=0)
-
-  def responsavel_assinatura(self):
-    def setValue(a=None, b=None, c=None):
-      self.userConfig["valores_sigepe"]["responsavel_assinatura"] = value.get()
-    self.responsavelAssinaturaContainer = Frame(self.sessaoContainer)
-    self.responsavelAssinaturaContainer.grid(row=12, column=1, sticky='w')
-    responsavelAssinaturaLabel = Label(
-      self.responsavelAssinaturaContainer,
-      text="Responsável pela assinatura",
-      font=appConfig.fontes["normal"]
-      )
-    responsavelAssinaturaLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    value = StringVar()
-    value.trace_add("write", setValue)
-    responsavelAssinaturaInput = Entry(
-      self.responsavelAssinaturaContainer,
-      width=20,
-      textvariable=value,
-      font=appConfig.fontes["normal"]
-      )
-    value.set(self.userConfig["valores_sigepe"]["responsavel_assinatura"])
-    responsavelAssinaturaInput.grid(column=2, row=0)
-
-  def cargo_responsavel(self):
-    def setValue(a=None, b=None, c=None):
-      self.userConfig["valores_sigepe"]["cargo_responsavel"] = value.get()
-    self.cargoResponsavelContainer = Frame(self.sessaoContainer)
-    self.cargoResponsavelContainer.grid(row=12, column=2, sticky='w')
-    cargoResponsavelLabel = Label(
-      self.cargoResponsavelContainer,
-      text="Cargo do responsável",
-      font=appConfig.fontes["normal"]
-      )
-    cargoResponsavelLabel.grid(column=0, row=0, padx=10, pady=5, sticky='w')
-    value = StringVar()
-    value.trace_add("write", setValue)
-    cargoResponsavelInput = Entry(
-      self.cargoResponsavelContainer,
-      width=20,
-      textvariable=value,
-      font=appConfig.fontes["normal"]
-      )
-    value.set(self.userConfig["valores_sigepe"]["cargo_responsavel"])
-    cargoResponsavelInput.grid(column=2, row=0)
-
-  def salvar_configuracoes(self):
-    botaoSalvarConfiguracoes = Button(
-      self.botoesContainer,
-      text="Manter configurações",
-      font=appConfig.fontes["botao"],
-      width=20,
-      command=lambda: uc.UserConfig.salvarConfiguracoes(self.userConfig)
-      )
-    botaoSalvarConfiguracoes.grid(column=1, row=0, padx=10, pady=5, sticky='w')
-
-  def abrir_edicao_delimitadores(self):
-    def abrirJanelaEdicao():
-      janelaEdicao = d.Delimitadores()
-    editarDeliminatoresBtn = Button(
-      self.botoesContainer,
-      text="Editar delimitadores",
-      font=appConfig.fontes["botao"],
-      width=20,
-      command=abrirJanelaEdicao
-      )
-    editarDeliminatoresBtn.grid(column=2, row=0, padx=10, pady=5, sticky='w')
-
-  def abrir_configuracoes_pospublicacao(self):
-    def abrirJanela():
-      janelaEdicao = pp.Pospublicacao()
-    configurarPosPublicacaoBtn = Button(
-      self.botoesContainer,
-      text="Configurar pós-publicação",
-      font=appConfig.fontes["botao"],
-      width=25,
-      command=abrirJanela
-      )
-    configurarPosPublicacaoBtn.grid(column=3, row=0, padx=10, pady=5, sticky='w')
-
-  def remover_termos_conteudo(self):
-    def abrirJanela():
-      janelaRemoverTermos = rtc.RemoverTermosConteudo()
-    removerTermoConteudoBtn = Button(
-      self.botoesContainer,
-      text="Config. remoção de termos",
-      font=appConfig.fontes["botao"],
-      width=25,
-      command=abrirJanela
-      )
-    removerTermoConteudoBtn.grid(column=4, row=0, padx=10, pady=5, sticky='w')
-
-  def arquivos(self):
-    def getFiles():
-      listbox.delete(0, 'end')
-      self.files = filedialog.askopenfiles(mode='r', title="Selecionar arquivos para publicação", filetypes=[("Documentos RTF (Rich Text Format)", ".rtf")])
-      for index, file in enumerate(self.files):
-        listbox.insert(index, os.path.basename(file.name))
-
-    self.arquivosContainer = Frame(self.sessaoContainer)
-    self.arquivosContainer.grid(row=0, column=3, rowspan=14, sticky='w')
-    listbox = Listbox(
-      self.arquivosContainer,
-      height = 15,
-      width = 40,
-      bg = "white",
-      activestyle = 'dotbox',
-      font = "Helvetica",
-      fg = "gray"
-    )
-    listbox.grid(column=1, columnspan=2, row=1, padx=10, pady=5, sticky='')
-
-    botaoDiretorioOrigem = Button(
-      self.arquivosContainer,
-      text="Selecionar arquivos",
-      font=appConfig.fontes["botao"],
-      width=20,
-      command=getFiles
-      )
-    botaoDiretorioOrigem.grid(column=1, row=2, padx=10, pady=5, sticky='')
-
-  def publicar(self):
-    def iniciarPublicacao():
-      if (len(self.files) > 0):
-        publicacao = p.Publicacao(self)
-      else:
-        messagebox.showerror("Erro", "Nenhum arquivo selecionado para publicação. Selecione os arquivos para continuar.")
-
-    self.botaoPublicar = Button(
-      self.arquivosContainer,
-      text="Publicar",
-      font=appConfig.fontes["botao"],
-      width=20,
-      bg="#429321",
-      fg="white",
-      command=iniciarPublicacao
-      )
-    self.botaoPublicar.grid(column=2, row=2, padx=10, pady=5, sticky='')

@@ -7,6 +7,7 @@ class Interfaces:
     self.root.title(appConfig.appTitulo)
     self.root["padx"] = appConfig.pad["x"]
     self.root["pady"] = appConfig.pad["y"]
+    self.root.resizable(False, False)
 
   @staticmethod
   def novaJanela():
@@ -15,6 +16,7 @@ class Interfaces:
     master.title(appConfig.appTitulo)
     master["padx"] = appConfig.pad["x"]
     master["pady"] = appConfig.pad["y"]
+    master.resizable(False, False)
     return master
 
 
