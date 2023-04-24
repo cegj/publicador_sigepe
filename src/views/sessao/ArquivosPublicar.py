@@ -33,8 +33,9 @@ class ArquivosPublicar:
     self.publicarBtn()
 
   def getFiles(self, event = None):
-    self.sessao.files = filedialog.askopenfiles(mode='r', title="Selecionar arquivos para publicação", filetypes=[("Documentos RTF (Rich Text Format)", ".rtf")])
-    for file in self.sessao.files:
+    selectedFiles = filedialog.askopenfiles(mode='r', title="Selecionar arquivos para publicação", filetypes=[("Documentos RTF (Rich Text Format)", ".rtf")])
+    for file in selectedFiles:
+      self.sessao.files.append(file)
       self.listbox.insert(END, os.path.basename(file.name))
 
   def deleteFiles(self, event = None):

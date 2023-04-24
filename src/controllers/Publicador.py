@@ -232,7 +232,7 @@ class Publicador:
       return True
 
   def handleResult(self, result, docnumber = ""):
-    currentFileName = os.path.basename(self.currentFile.name)
+    if (self.currentFile): currentFileName = os.path.basename(self.currentFile.name)
 
     if (result["type"] == 's'):
       self.resultados["sucesso"].append(currentFileName)
