@@ -233,7 +233,7 @@ class Publicador:
 
   def handleResult(self, result, docnumber = ""):
     if (self.currentFile): currentFileName = os.path.basename(self.currentFile.name)
-    else currentFileName = ""
+    else: currentFileName = ""
 
     if (result["type"] == 's'):
       self.publicacao.moveToSuccessFiles(currentFileName)
