@@ -81,7 +81,7 @@ class Variaveis:
   @staticmethod
   def atribuirValorVariaveis(jsondata):
     try:
-      variaveis = Variaveis.obterValorVariaveis(jsondata)
+      variaveis = Variaveis.obterValorVariaveis()
       jsonAsStr = json.dumps(jsondata, ensure_ascii=False)
       jsonAsStr = jsonAsStr.replace("[hoje.]", variaveis["hoje."])
       jsonAsStr = jsonAsStr.replace("[hoje/]", variaveis["hoje/"])
