@@ -261,4 +261,6 @@ class Publicador:
             self.publicacao.insertLog(f"Arquivo {verb} para {actionResult[1]}", 'n', docnumber)
           else:
             verb = "copiar" if "copiar" in self.pospublicacao["copiar_ou_mover"].lower() else "mover"
-            self.publicacao.insertLog(f"Não foi possível {verb} o arquivo. Erro: {actionResult[1]}", 'a', docnumber)
+            log = {"log": f"Não foi possível {verb} o arquivo. Erro: {actionResult[1]}", "type": "a"}
+            self.publicacao.insertLog(log["log"], log["type"], docnumber)
+            self.publicacao.insertResult(currentFileName, log["log"], log["type"], docnumber)
