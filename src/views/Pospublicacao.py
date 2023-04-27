@@ -36,8 +36,12 @@ class Pospublicacao:
         destinoInput["state"]=NORMAL
         botaoDiretorioDestino["state"]=NORMAL
     def getTargetPath():
-      targetPath.set(filedialog.askdirectory())
+      path = filedialog.askdirectory()
+      targetPath.set(path)
+      # self.afterpublishingconfig["destino"] = targetPath.get()
+    def setPathOnChange(a=None, b=None, c=None):
       self.afterpublishingconfig["destino"] = targetPath.get()
+
     copyMoveLabel = Label(
       self.posPublicacaoContainer,
       text="Após publicar",
@@ -59,6 +63,7 @@ class Pospublicacao:
     )
     copyMoveOptions.grid(column=2, row=1, padx=10, pady=5, sticky='w')
     targetPath = StringVar()
+    targetPath.trace_add("write", setPathOnChange)
     targetPath.set(self.afterpublishingconfig["destino"])
     destinoInput = Entry(
       self.posPublicacaoContainer,

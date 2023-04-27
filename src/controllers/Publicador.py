@@ -245,9 +245,6 @@ class Publicador:
     if (result["type"] != 'n'):
       self.publicacao.insertResult(currentFileName, result["log"], result["type"], docnumber)
 
-    # if (("isFinalResult" in result) and result["isFinalResult"] == True):
-    #   self.publicacao.insertResult(currentFileName, result["log"], result["type"], docnumber)
-
       if (result["type"] == 's'):
         newFilename = None
         if (self.pospublicacao["adicionar_ao_nome_arquivo"] != ""):
