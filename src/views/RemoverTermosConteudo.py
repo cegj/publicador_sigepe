@@ -25,56 +25,6 @@ class RemoverTermosConteudo:
     self.termos()
     self.salvar_configuracoes()
 
-  # def copiar_mover(self):
-  #   def setCopyMoveOption(event = None):
-  #     self.config["copiar_ou_mover"] = copyMoveSelected.get()
-  #     if (copyMoveSelected.get() == "Não copiar nem mover"):
-  #       destinoInput["state"]=DISABLED
-  #       botaoDiretorioDestino["state"]=DISABLED
-  #     else:
-  #       destinoInput["state"]=NORMAL
-  #       botaoDiretorioDestino["state"]=NORMAL
-  #   def getTargetPath():
-  #     targetPath.set(filedialog.askdirectory())
-  #     self.config["destino"] = targetPath.get()
-  #   copyMoveLabel = Label(
-  #     self.termosContainer,
-  #     text="Após publicar",
-  #     font=appConfig.fontes["normal"]
-  #     )
-  #   copyMoveLabel.grid(column=1, row=1, padx=10, pady=5, sticky='w')
-  #   copyMoveOptionsList = ["Copiar para...", "Mover para...", "Não copiar nem mover"]
-  #   if self.config["copiar_ou_mover"] not in copyMoveOptionsList:
-  #         self.config["copiar_ou_mover"] = "Não copiar nem mover"
-  #   copyMoveOptionsList.remove(self.config["copiar_ou_mover"])
-  #   copyMoveSelected = StringVar()
-  #   copyMoveSelected.set(self.config["copiar_ou_mover"])
-  #   copyMoveOptions = OptionMenu(
-  #     self.termosContainer,
-  #     copyMoveSelected,
-  #     copyMoveSelected.get(),
-  #     *copyMoveOptionsList,
-  #     command=setCopyMoveOption
-  #   )
-  #   copyMoveOptions.grid(column=2, row=1, padx=10, pady=5, sticky='w')
-  #   targetPath = StringVar()
-  #   targetPath.set(self.config["destino"])
-  #   destinoInput = Entry(
-  #     self.termosContainer,
-  #     textvariable=targetPath,
-  #     width=50,
-  #     font=appConfig.fontes["normal"],
-  #     )
-  #   destinoInput.grid(column=3, row=1)
-  #   botaoDiretorioDestino = Button(
-  #     self.termosContainer,
-  #     text="Alterar destino",
-  #     font=appConfig.fontes["botao"],
-  #     width=20,
-  #     command=getTargetPath
-  #     )
-  #   botaoDiretorioDestino.grid(column=4, row=1, padx=10, pady=5, sticky='w')
-
   def termos(self):
     def setValue(a=None, b=None, c=None):
       self.config["termos"] = self.termosInput.get("1.0", END)

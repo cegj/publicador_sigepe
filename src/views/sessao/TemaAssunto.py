@@ -101,7 +101,8 @@ class TemaAssunto:
       )
     assuntoLabel.pack(side=LEFT)
     self.assuntoSelected = StringVar()
-    listaAssuntos = ods.ObterDoSigepe.assuntos(self.sessao.userConfig["valores_sigepe"]["tema"])
+    if (self.sessao.userConfig["valores_sigepe"]["tema"]): listaAssuntos = ods.ObterDoSigepe.assuntos(self.sessao.userConfig["valores_sigepe"]["tema"])
+    else: listaAssuntos = []
     if (not self.sessao.userConfig["valores_sigepe"]["assunto"] in listaAssuntos):
       self.sessao.userConfig["valores_sigepe"]["assunto"] = ""
     self.assuntoSelected.set(self.sessao.userConfig["valores_sigepe"]["assunto"])    

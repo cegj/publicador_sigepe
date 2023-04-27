@@ -8,7 +8,7 @@ import ast
 
 class Variaveis:
   @staticmethod
-  def obterValorVariaveis(config):
+  def obterValorVariaveis():
     variaveis = {}
 
     today = datetime.date.today()  # Hoje no formato ANSI AAAA-MM-DD

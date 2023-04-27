@@ -34,6 +34,7 @@ from views.sessao import ManterDadosBtn as s_mdb
 from views.sessao import AbrirDelimitadoresBtn as s_adb
 from views.sessao import AbrirPospublicacaoBtn as s_apb
 from views.sessao import AbrirRemocaoTermosBtn as s_art
+from views.sessao import AbrirVerVariaveisBtn as s_avv
 from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
 from controllers import UserConfig as uc
@@ -112,6 +113,7 @@ class Sessao(i.Interfaces):
     s_adb.AbrirDelimitadoresBtn(self, self.linha8c1)
     s_apb.AbrirPospublicacaoBtn(self, self.linha8c1)
     s_art.AbrirRemocaoTermosBtn(self, self.linha8c1)
+    s_avv.AbrirVerVariaveisBtn(self, self.linha8c1)
 
     tituloArquivos = Label(
       self.linha1c2,
