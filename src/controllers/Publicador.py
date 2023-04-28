@@ -253,7 +253,9 @@ class Publicador:
             newFilename = renameResult[1]
             self.publicacao.insertLog(f"Arquivo renomeado para {renameResult[1]}", 'n', docnumber)
           else:
-            self.publicacao.insertLog(f"Não foi possível renomear o arquivo. Erro: {renameResult[1]}", 'a', docnumber)
+            log = {"log": f"Não foi possível renomear o arquivo. Erro: {renameResult[1]}", "type": "a"}
+            self.publicacao.insertLog(log["log"], log["type"], docnumber)
+            self.publicacao.insertResult(currentFileName, log["log"], log["type"], docnumber)
         if (self.pospublicacao["copiar_ou_mover"] == "Mover para..." or self.pospublicacao["copiar_ou_mover"] == "Copiar para..."):
           actionResult = pp.Pospublicacao.copiarMoverArquivo(self.currentFile, self.pospublicacao["copiar_ou_mover"], self.pospublicacao["destino"], newFilename)
           if (actionResult[0] == True):
