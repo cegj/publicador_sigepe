@@ -162,6 +162,7 @@ class Publicador:
     log = {"log": f"Publicação concluída!", "type": "em"}
     self.handleResult(log)
     self.publicacao.showBtns()
+    self.publicacao.showConcludeMessage()
 
   def obterTextoDocumento(self, file):
     try:

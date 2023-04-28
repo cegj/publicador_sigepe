@@ -238,3 +238,6 @@ class Publicacao:
 
   def showBtns(self):
     self.btns()
+
+  def showConcludeMessage(self):
+    messagebox.showinfo("Publicador Sigepe", "Publicação concluída!")
