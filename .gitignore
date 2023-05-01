@@ -5,7 +5,9 @@ teste.py
 /__pycache__
 
 /build
+/src/build
 
 /dist
+/src/dist
 
 *.spec

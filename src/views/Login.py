@@ -101,4 +101,9 @@ class Login(i.Interfaces):
       handleEntrar()
 
     self.root.bind('<Return>', handleEnter)
+    self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
     self.root.mainloop()
+
+  def handleFecharJanela(self):
+    nav.quit()
+    self.root.destroy()

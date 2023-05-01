@@ -4,7 +4,7 @@ import appConfig
 class Interfaces:
   def __init__(self):
     self.root = Tk()
-    self.root.title(appConfig.appTitulo)
+    self.root.title(appConfig.appTitulo + ' ' + appConfig.appVersao)
     self.root["padx"] = appConfig.pad["x"]
     self.root["pady"] = appConfig.pad["y"]
     self.root.resizable(False, False)
