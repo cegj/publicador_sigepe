@@ -49,3 +49,7 @@ Em breve.
 3. Execute o arquivo **Publicador Sigepe.exe" para iniciar a aplicação.
 
 4. Dica: caso queira, crie um atalho na área de trabalho para facilitar o acesso. *Clique com o botão direito > Enviar para... > Área de trabalho (Criar atalho)*.
+
+## Aviso
+
+⚠️ É necessário inserir seus dados de acesso ao Sigepe (CPF e senha) para utilizar o Publicador Sigepe, uma vez que o software precisa acessar a sua conta para realizar as publicações. **Estes dados não são armazenados (nem mesmo no seu computador), não são enviados para terceiros ou nem utilizados para qualquer outra finalidade.** O código-fonte do Publicador Sigepe é aberto e pode ser auditado por qualquer pessoa.
