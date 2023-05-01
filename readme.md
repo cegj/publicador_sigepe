@@ -27,9 +27,10 @@ Publicador Sigepe é um software para publicação *em lote* de documentos (port
 
 ### Limitações
 
-1. Somente são publicados arquivos no formato RTF (Rich Text Format);
-2. O conteúdo é publicado sem formatação (ou seja, negritos, itálicos e demais formatações são ignorados).
-3. Atualmente disponível somente para 🪟 Windows.
+1. Somente são publicados arquivos no formato **RTF (Rich Text Format)** — outros formatos, como .docx, .odt ou .txt não são suportados;
+2. O conteúdo é publicado sem formatação (ou seja, negritos, itálicos e demais formatações são ignorados);
+3. Atualmente disponível somente para 🪟 Windows;
+4. Necessita que o Google Chrome esteja instalado e atualizado.
 
 ## Imagens
 <!-- <a href="https://imgur.com/OmRMs5Y"><img src="https://i.imgur.com/OmRMs5Y.png" title="Entrada (login)" /></a> -->
@@ -42,11 +43,13 @@ Em breve.
 
 ## Instalação
 
+Requisito prévio: para utilizar o Publicador Sigepe, é necessário ter o [Google Chrome](https://www.google.com/intl/pt-BR/chrome/) instalado em seu computador na versão mais recente.
+
 1. [⬇️ Faça o download da versão mais recente clicando aqui](https://github.com/cegj/publicador_sigepe/releases)
 
 2. Extraia o arquivo compactado (.zip) para uma pasta de sua preferência;
 
-3. Execute o arquivo **Publicador Sigepe.exe" para iniciar a aplicação.
+3. Execute o arquivo **Publicador Sigepe.exe** para iniciar a aplicação.
 
 4. Dica: caso queira, crie um atalho na área de trabalho para facilitar o acesso. *Clique com o botão direito > Enviar para... > Área de trabalho (Criar atalho)*.
 
