@@ -43,9 +43,9 @@ Em breve.
 
 ## Instalação
 
-Requisito prévio: para utilizar o Publicador Sigepe, é necessário ter o [Google Chrome](https://www.google.com/intl/pt-BR/chrome/) instalado em seu computador na versão mais recente.
+Requisito prévio: para utilizar o Publicador Sigepe, é necessário ter o [Google Chrome (download aqui)](https://www.google.com/intl/pt-BR/chrome/) instalado em seu computador na versão mais recente.
 
-1. [⬇️ Faça o download da versão mais recente clicando aqui](https://github.com/cegj/publicador_sigepe/releases)
+1. [⬇️ Faça o download da versão mais recente do Publicador Sigepe clicando aqui](https://github.com/cegj/publicador_sigepe/releases)
 
 2. Extraia o arquivo compactado (.zip) para uma pasta de sua preferência;
 
