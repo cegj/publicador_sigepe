@@ -8,6 +8,7 @@ from helpers import goTo as gt
 from PIL import ImageTk, Image
 import os
 from appXpaths import xpaths
+from Webdriver import nav
 
 class Login(i.Interfaces):
   def __init__(self):
