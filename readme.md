@@ -33,8 +33,6 @@ Publicador Sigepe é um software para publicação *em lote* de documentos (port
 4. Necessita que o Google Chrome esteja instalado e atualizado.
 
 ## Imagens
-Tela de entrada (login)<br>
-<img src="https://i.imgur.com/7JpOy65.png" title="Entrada (login)" />
 
 Tela principal (definições da publicação)<br>
 <img src="https://i.imgur.com/Lvh8sN0.png" title="Tela principal (definições da publicação)" />
