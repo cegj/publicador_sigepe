@@ -41,19 +41,17 @@ Em breve.
 
 Em breve.
 
-## Instalação
+## Requisitos prévios
 
-Requisitos prévios: 
-- Para utilizar o Publicador Sigepe, é necessário ter o [Google Chrome (download aqui)](https://www.google.com/intl/pt-BR/chrome/) instalado em seu computador na versão mais recente.
-- Para utilizar o Publicador Sigepe, é necessário ter uma conta no Sigepe com uma habilitação que tenha acesso ao Módulo Publicação.
+Para utilizar o Publicador Sigepe, é necessário:
+-  Ter o [Google Chrome (download aqui)](https://www.google.com/intl/pt-BR/chrome/) instalado em seu computador na versão mais recente.
+-  Ter uma conta no Sigepe com uma habilitação que tenha acesso ao Módulo Publicação.
+
+## Instalação
 
 1. [⬇️ Faça o download da versão mais recente do Publicador Sigepe clicando aqui](https://github.com/cegj/publicador_sigepe/releases)
 
-2. Extraia o arquivo compactado (.zip) para uma pasta de sua preferência;
-
-3. Execute o arquivo **Publicador Sigepe.exe** para iniciar a aplicação.
-
-4. Dica: caso queira, crie um atalho na área de trabalho para facilitar o acesso. *Clique com o botão direito > Enviar para... > Área de trabalho (Criar atalho)*.
+2. Execute o instalador *(setup_publicador-sigepe.exe)*
 
 ## Aviso
 

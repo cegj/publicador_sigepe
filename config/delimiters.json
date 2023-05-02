@@ -1,10 +1,10 @@
 {
     "numero_documento":[
-        "Nº ",
-        ","
+        "",
+        ""
     ],
     "matricula_siape":[
-        "matrícula SIAPE nº ",
-        ","
+        "",
+        ""
     ]
 }
