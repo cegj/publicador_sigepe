@@ -34,12 +34,16 @@ Publicador Sigepe é um software para publicação *em lote* de documentos (port
 
 ## Imagens
 <img src="https://i.imgur.com/7JpOy65.png" title="Entrada (login)" />
+Tela de entrada (login)
 
 <img src="https://i.imgur.com/Lvh8sN0.png" title="Tela principal (definições da publicação)" />
+Tela principal (definições da publicação)
 
 <img src="https://i.imgur.com/K0fBfzq.png" title="Tela de publicação em lote" />
+Tela de publicação
 
 <img src="https://i.imgur.com/7nM8uQL.gif" title="Publicação em execução (exemplo)" />
+Tela de publicação em execução (exemplo)
 
 ## Documentação de ajuda
 
