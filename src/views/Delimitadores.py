@@ -1,13 +1,6 @@
 from tkinter import *
-from tkinter import ttk
 from tkinter import messagebox
 import appConfig
-from Webdriver import nav
-from appXpaths import xpaths
-from selenium.webdriver.common.by import By
-import time
-from views import Interfaces as i
-from views import Habilitacao as h
 from views import Interfaces as i
 from controllers import UserConfig as uc
 from copy import copy

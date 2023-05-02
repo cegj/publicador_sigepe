@@ -7,11 +7,7 @@ from appXpaths import xpaths
 from selenium.webdriver.common.by import By
 import time
 from views import Interfaces as i
-from views import Habilitacao as h
-from views import Interfaces as i
-from controllers import UserConfig as uc
 from views import Sessao as s
-from copy import copy
 from helpers import goTo as gt
 from helpers import checkExistsByXpath as cebx
 

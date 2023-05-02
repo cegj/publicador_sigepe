@@ -6,7 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
 import time
 from selenium.webdriver.common.keys import Keys
-from helpers import checkExistsByXpath as cebx
 
 class OrgaoElaborador:
   @staticmethod

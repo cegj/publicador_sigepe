@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter import ttk
 import appConfig
 from views import Delimitadores as d
 

@@ -1,10 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from Webdriver import nav
-from selenium.webdriver.common.by import By
-from controllers import ObterDoSigepe as ods
 import appConfig
-from views import Habilitacao as h
 
 class TipoNumero:
   def __init__(self, sessao, container):

@@ -3,8 +3,6 @@ from tkinter import messagebox
 import datetime
 from datetime import timedelta
 from helpers import dateToBrFormat as dtbf
-from copy import copy
-import ast
 
 class Variaveis:
   @staticmethod

@@ -1,9 +1,7 @@
 from tkinter import *
-from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 import appConfig
-from views import Habilitacao as h
 from views import Publicacao as p
 import os
 

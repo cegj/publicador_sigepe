@@ -1,5 +1,6 @@
 import os
 import shutil
+
 class Pospublicacao:
   @staticmethod
   def renomearArquivo(file, term):

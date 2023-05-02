@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 from selenium.webdriver.common.by import By
 from helpers import checkExistsByXpath as cebx
-from helpers import getScreenshotByXpath as gebx
 from helpers import waitForLoading as wfl
 from views import Sessao as s
 from Webdriver import nav
@@ -12,9 +11,7 @@ from views import Login as l
 from views import Habilitacao as h
 from controllers import UserConfig as uc
 import time
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 
 class Acesso:
     def __init__(self):

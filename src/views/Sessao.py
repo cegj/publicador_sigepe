@@ -1,22 +1,8 @@
 from tkinter import *
-from tkinter import ttk
 from tkinter import messagebox
 import appConfig
 from Webdriver import nav
-from Webdriver import wait
-from appXpaths import xpaths
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-import time
-from tkinter import filedialog
 from views import Interfaces as i
-from views import Habilitacao as h
-from views import Delimitadores as d
-from views import Pospublicacao as pp
-from views import RemoverTermosConteudo as rtc
-from views import Publicacao as p
-from views import TemaAutomatico as ta
 from views.sessao import Habilitacao as s_h
 from views.sessao import EdicaoBoletim as s_eb
 from views.sessao import TipoAssinatura as s_ta
@@ -39,11 +25,6 @@ from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
 from controllers import UserConfig as uc
 from helpers import goTo as gt
-from helpers import checkExistsByXpath as cebx
-from helpers import waitForLoading as wfl
-import os
-from threading import Thread
-from controllers import ObterDoSigepe as ods
 
 class Sessao(i.Interfaces):
   def __init__(self):

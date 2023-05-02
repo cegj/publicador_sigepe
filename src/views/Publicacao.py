@@ -2,11 +2,9 @@ from views import Interfaces as i
 from controllers import UserConfig as uc
 from controllers import Publicador as p
 from tkinter import *
-from tkinter import ttk
 import tkinter.scrolledtext as st
 import appConfig
 from copy import copy
-from threading import Thread
 from tkinter import filedialog
 from tkinter import messagebox
 from datetime import datetime

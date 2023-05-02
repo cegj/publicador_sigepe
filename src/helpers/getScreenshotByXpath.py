@@ -1,6 +1,4 @@
 from selenium.webdriver.common.by import By
-import cv2
-import os
 from Webdriver import nav
 
 def getScreenshotByXpath(xpath, filename):

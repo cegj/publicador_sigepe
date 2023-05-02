@@ -1,11 +1,8 @@
 from appXpaths import xpaths
-from Webdriver import nav
 from Webdriver import wait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
-import time
-from selenium.webdriver.common.keys import Keys
 
 class DataAssinatura:
   @staticmethod

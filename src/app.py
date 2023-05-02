@@ -1,4 +1,3 @@
-from tkinter import *
 from views import Login as l
 
 class Application:

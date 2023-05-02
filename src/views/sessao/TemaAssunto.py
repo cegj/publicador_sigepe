@@ -1,10 +1,7 @@
 from tkinter import *
 from tkinter import ttk
-from Webdriver import nav
-from selenium.webdriver.common.by import By
 from controllers import ObterDoSigepe as ods
 import appConfig
-from views import Habilitacao as h
 from views import TemaAutomatico as ta
 
 class TemaAssunto:

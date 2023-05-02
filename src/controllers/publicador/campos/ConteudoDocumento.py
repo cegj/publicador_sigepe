@@ -6,9 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
 import time
 from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-
 
 class ConteudoDocumento:
   @staticmethod

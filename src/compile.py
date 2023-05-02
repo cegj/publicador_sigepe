@@ -4,10 +4,7 @@ PyInstaller.__main__.run([
     'app.py',
     '--onefile',
     '--noconsole',
-    '--windowed',
-    # '--add-data',
-    # '../config;config',
     '--clean',
-    '--icon=ico.ico',
+    '--icon=../static/ico.ico',
     '--name=Publicador Sigepe',
 ])

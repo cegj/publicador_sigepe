@@ -6,7 +6,6 @@ from striprtf.striprtf import rtf_to_text
 from tkinter import messagebox
 import os
 from threading import Thread
-import time
 from helpers import goTo as gt
 from helpers import checkExistsByXpath as cebx
 from controllers.publicador.campos import EdicaoBoletim as eb
@@ -22,11 +21,8 @@ from controllers.publicador.campos import ConteudoDocumento as cd
 from controllers.publicador.campos import OrgaoElaborador as oe
 from controllers.publicador.campos import Interessado as i
 from controllers.publicador import Pospublicacao as pp
-import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-import time
 from Webdriver import wait
 from appXpaths import xpaths
 from helpers import waitForLoading as wfl

@@ -1,6 +1,4 @@
 import json
-import shutil
-import tempfile
 from tkinter import messagebox
 
 class UserConfig:
