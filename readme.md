@@ -39,9 +39,6 @@ Tela de entrada (login)<br>
 Tela principal (definições da publicação)<br>
 <img src="https://i.imgur.com/Lvh8sN0.png" title="Tela principal (definições da publicação)" />
 
-Tela de publicação<br>
-<img src="https://i.imgur.com/K0fBfzq.png" title="Tela de publicação em lote" />
-
 Tela de publicação em execução (exemplo)<br>
 <img src="https://i.imgur.com/7nM8uQL.gif" title="Publicação em execução (exemplo)" />
 
