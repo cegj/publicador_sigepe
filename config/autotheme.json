@@ -1,2 +1,38 @@
-{  
+{
+    "Progressão":{
+        "tema":"Ascensão e progressão funcional",
+        "assunto":"023.03 - REESTRUTURAÇÕES E ALTERAÇÕES SALARIAIS (inclusive Ascensão e Progressão Funcional; Avaliação de Desempenho; Enquadramento; Equiparação, Reajuste e Reposição Salarial; Promoções)"
+    },
+    "Incentivo à qualificação":{
+        "tema":"Incentivos funcionais",
+        "assunto":"029.3 - INCENTIVOS FUNCIONAIS"
+    },
+    "Promoção":{
+        "tema":"Ascensão e progressão funcional; ",
+        "assunto":"023.03 - REESTRUTURAÇÕES E ALTERAÇÕES SALARIAIS (inclusive Ascensão e Progressão Funcional; Avaliação de Desempenho; Enquadramento; Equiparação, Reajuste e Reposição Salarial; Promoções)"
+    },
+    "Estágio probatório":{
+        "tema":"Admissão //2",
+        "assunto":"023.11 - ADMISSÃO. APROVEITAMENTO. CONTRATAÇÃO. NOMEAÇÃO. READMISSÃO. READAPTAÇÃO. RECONDUÇÃO. REINTEGRAÇÃO. REVERSÃO"
+    },
+    "Retribuição por titulação":{
+        "tema":"Incentivos funcionais",
+        "assunto":"029.3 - INCENTIVOS FUNCIONAIS"
+    },
+    "Afastamento":{
+        "tema":"Afastamento para estudos ou Missão no País ou Exterior",
+        "assunto":"024.4 - AFASTAMENTOS (Para Depor; Para Exercer Mandato Eletivo; Para Servir ao Tribunal Regional Eleitoral - TRE; Para Servir como Jurado; Suspensão de Contrato de Trabalho - CLT)"
+    },
+    "Horário especial":{
+        "tema":"Horário especial para servidor estudante",
+        "assunto":"024.91 - CONCESSÕES (Doação de Sangue; Alistamento Eleitoral; Casamento - Gala; Falecimento de Familiares - Nojo; Horário Especial para Servidor Estudante; Horário Especial para Servidor Portador de Deficiência)"
+    },
+    "Concessão de carga horária":{
+        "tema":"Horário especial para servidor estudante",
+        "assunto":"024.91 - CONCESSÕES (Doação de Sangue; Alistamento Eleitoral; Casamento - Gala; Falecimento de Familiares - Nojo; Horário Especial para Servidor Estudante; Horário Especial para Servidor Portador de Deficiência)"
+    },
+    "Licença para capacitação":{
+        "tema":"Licença capacitação ",
+        "assunto":"024.3 - LICENÇAS (Doença em Pessoa da Família; Afastamento do Cônjuge; Serviço Militar; Atividade Política; Capacitação; Prêmio; Interesses Particulares; Mandato Classista; Gestante; Adotante; Paternidade; Tratamento da Própria Saúde; Acidente em Serviço)"
+    }
 }

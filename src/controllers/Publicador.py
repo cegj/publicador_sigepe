@@ -19,6 +19,7 @@ from controllers.publicador.campos import DataPublicacao as dp
 from controllers.publicador.campos import Especie as e
 from controllers.publicador.campos import ConteudoDocumento as cd
 from controllers.publicador.campos import OrgaoElaborador as oe
+from controllers.publicador.campos import Correlacao as c
 from controllers.publicador.campos import Interessado as i
 from controllers.publicador import Pospublicacao as pp
 from selenium.webdriver.common.by import By
@@ -56,6 +57,7 @@ class Publicador:
       filetext = self.removerTermosConteudo(textBeforeRemoveTerms)
       filetext = Publicador.stripText(filetext)
       self.publicacao.insertFileText(filetext)
+      correlacao = self.verificarCorrelacao(file)   
       file.close()
 
       log = {"log": f"Iniciando publicação do documento {filename}", "type": "em"}
@@ -86,6 +88,10 @@ class Publicador:
         self.handleResult(autoAssuntoResult, numeroDocumento)
         if not self.checkResult(autoAssuntoResult): continue
         self.config["valores_sigepe"]["assunto"] = autoAssuntoResult["return"]
+
+      if (correlacao[0]):
+        log = {"log": f"Foram localizados dados de correlação para o documento ({correlacao[1]['acao'].lower()} {correlacao[1]['numero']}/{correlacao[1]['ano']})", "type": "em"}
+        self.handleResult(log, numeroDocumento)
 
       edicaoBoletimResult = eb.EdicaoBoletim.preencher(self.config["valores_sigepe"]["edicao_bgp"])
       self.handleResult(edicaoBoletimResult, numeroDocumento)
@@ -142,6 +148,13 @@ class Publicador:
       self.handleResult(orgaoElaboradorResult, numeroDocumento)
       if not self.checkResult(orgaoElaboradorResult): continue
 
+      if (correlacao[0]):
+        log = {"log": f"Selecionando ato correlacionado...", "type": "n"}
+        self.handleResult(log, numeroDocumento)
+        correlacaoResult = c.Correlacao.preencher(correlacao[1])
+        self.handleResult(correlacaoResult, numeroDocumento)
+        if not self.checkResult(correlacaoResult): continue
+
       if (matriculaSiape != ""):
         log = {"log": f"Selecionando interessado...", "type": "n"}
         self.handleResult(log, numeroDocumento)
@@ -192,6 +205,24 @@ class Publicador:
       return result
     except Exception as e:
       messagebox.showerror("Erro ao remover primeira linha do conteúdo do documento", e)
+
+  def verificarCorrelacao(self, file):
+    try:
+      path = os.path.dirname(file.name)
+      filename = os.path.basename(file.name).split('.', 1)[0]
+      corrFilename = str(filename + '.txt')
+      corrPath = os.path.join(path, corrFilename)
+      corrFile = open(corrPath, 'r', encoding="utf-8")
+      contentArr = corrFile.read().replace('\n', '').strip().split('#')
+      del contentArr[0]
+      corrFile.close()
+      contentObj = {}
+      for value in contentArr:
+        keyValue = value.split("=")
+        contentObj[keyValue[0].lower()] = keyValue[1]
+      return [True, contentObj]
+    except Exception as e:
+      return [False, e]
 
   def removerTermosConteudo(self, filetext):
     try:

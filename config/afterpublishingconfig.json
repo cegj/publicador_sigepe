@@ -1,5 +1,5 @@
 {
-    "copiar_ou_mover":"",
-    "destino":"",
-    "adicionar_ao_nome_arquivo":""
+    "copiar_ou_mover":"Copiar para...",
+    "destino":"//arq-progep1/boufes/BOUFES [hoje_ano]/PROGEP/[hoje_mes0] - [hoje_mes_extenso]/[hoje.]",
+    "adicionar_ao_nome_arquivo":"ok"
 }
