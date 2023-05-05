@@ -142,11 +142,15 @@ class Publicador:
       self.handleResult(orgaoElaboradorResult, numeroDocumento)
       if not self.checkResult(orgaoElaboradorResult): continue
 
-      log = {"log": f"Selecionando interessado...", "type": "n"}
-      self.handleResult(log, numeroDocumento)
-      interessadoResult = i.Interessado.preencher(matriculaSiape)
-      self.handleResult(interessadoResult, numeroDocumento)
-      if not self.checkResult(interessadoResult): continue
+      if (matriculaSiape != ""):
+        log = {"log": f"Selecionando interessado...", "type": "n"}
+        self.handleResult(log, numeroDocumento)
+        interessadoResult = i.Interessado.preencher(matriculaSiape)
+        self.handleResult(interessadoResult, numeroDocumento)
+        if not self.checkResult(interessadoResult): continue
+      else:
+        log = {"log": f"Não foi selecionado um interessado, uma vez que não foi localizada a matrícula SIAPE no conteúdo do documento", "type": "a"}
+        self.handleResult(log, numeroDocumento)
 
       publicacaoResult = self.enviarParaPublicacao(numeroDocumento, filename)
       self.handleResult(publicacaoResult, numeroDocumento)
