@@ -11,6 +11,7 @@ class ArquivosPublicar:
     self.sessao = sessao
     self.container = container
     self.construirContainer()
+    self.sessao.files = []
 
   def construirContainer(self):
     self.subcontainer = Frame(self.container)
@@ -34,9 +35,22 @@ class ArquivosPublicar:
 
   def getFiles(self, event = None):
     selectedFiles = filedialog.askopenfiles(mode='r', title="Selecionar arquivos para publicação", filetypes=[("Documentos RTF (Rich Text Format)", ".rtf")])
+    fails = []
     for file in selectedFiles:
-      self.sessao.files.append(file)
-      self.listbox.insert(END, os.path.basename(file.name))
+      filename = os.path.basename(file.name)
+      if (filename in self.listbox.get(0, END)):
+        fails.append(filename)
+        continue
+      else:
+        self.sessao.files.append(file)
+        self.listbox.insert(END, filename)
+    if (len(fails) > 0):
+        message = "Os seguintes arquivos não foram adicionados pois existem arquivos com o mesmo nome na lista:\n\n"
+        for fail in fails:
+          message += f"{fail}\n"
+
+        messagebox.showerror("Arquivos não adicionados", message)
+
 
   def deleteFiles(self, event = None):
     if (event.keysym == "Delete"):
