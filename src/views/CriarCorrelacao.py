@@ -242,7 +242,7 @@ class CriarCorrelacao:
         n = txtfile.write(fileContent)
         txtfile.close()
         self.master.destroy()
-        messagebox.showinfo("Sucesso", "A correlação para o arquivo {self.filename} foi criada com sucesso")
+        messagebox.showinfo("Sucesso", f"A correlação para o arquivo {self.filename} foi criada com sucesso")
       except Exception as e:
         messagebox.showerror("Erro ao criar correlação", e)
 

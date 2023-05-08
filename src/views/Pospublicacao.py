@@ -31,7 +31,6 @@ class Pospublicacao:
     def getTargetPath():
       path = filedialog.askdirectory()
       targetPath.set(path)
-      # self.afterpublishingconfig["destino"] = targetPath.get()
     def setPathOnChange(a=None, b=None, c=None):
       self.afterpublishingconfig["destino"] = targetPath.get()
 

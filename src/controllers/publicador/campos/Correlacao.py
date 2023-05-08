@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
 from selenium.webdriver.common.keys import Keys
 import time
+import os
 
 class Correlacao:
   @staticmethod
@@ -131,5 +132,12 @@ class Correlacao:
 
     except Exception as e:
       print(e)
-      return {"log": f"Falha ao selecionar ato correlacionado: {e}", "type": "e", "e": e}
+      return {"log": f"Falha ao selecionar correlação: {e}", "type": "e", "e": e}
 
+  @staticmethod
+  def apagarArquivo(file):
+    path = os.path.dirname(file.name)
+    filename = os.path.basename(file.name)
+    correlationFilename = filename.split('.')[0] + ".txt"
+    correlationFullpath = os.path.join(path, correlationFilename)
+    os.remove(correlationFullpath)

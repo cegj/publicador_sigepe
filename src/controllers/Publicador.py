@@ -153,6 +153,7 @@ class Publicador:
         self.handleResult(log, numeroDocumento)
         correlacaoResult = c.Correlacao.preencher(correlacao[1])
         self.handleResult(correlacaoResult, numeroDocumento)
+        c.Correlacao.apagarArquivo(file)
         if not self.checkResult(correlacaoResult): continue
 
       if (matriculaSiape != ""):
@@ -297,4 +298,4 @@ class Publicador:
             verb = "copiar" if "copiar" in self.pospublicacao["copiar_ou_mover"].lower() else "mover"
             log = {"log": f"Não foi possível {verb} o arquivo. Erro: {actionResult[1]}", "type": "a"}
             self.publicacao.insertLog(log["log"], log["type"], docnumber)
-            self.publicacao.insertResult(currentFileName, log["log"], log["type"], docnumber)
+            self.publicacao.insertResult(currentFileName, log["log"], log["type"], docnumber)        
