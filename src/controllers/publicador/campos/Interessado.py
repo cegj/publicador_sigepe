@@ -29,7 +29,6 @@ class Interessado:
       sigepe_checkboxSelecionarServidor = wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, xpaths["publicacao"]["selecionarInteressadoCheckbox"])))
       sigepe_checkboxSelecionarServidor.click()
-
       time.sleep(0.3)
 
       sigepe_botaoIncluirNaLista = wait["regular"].until(EC.element_to_be_clickable(
@@ -37,9 +36,9 @@ class Interessado:
       nav.execute_script("arguments[0].click();", sigepe_botaoIncluirNaLista);
       wfl.waitForLoading()
 
-      sigepe_botaoSelecionarServidor = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_botaoSelecionarAto = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["selecionarServidorBotao"])))
-      nav.execute_script("arguments[0].click();", sigepe_botaoSelecionarServidor);
+      nav.execute_script("arguments[0].click();", sigepe_botaoSelecionarAto);
       wfl.waitForLoading()
 
       interessadoSelecionado = wait["regular"].until(EC.presence_of_element_located(

@@ -11,6 +11,9 @@ class Correlacao:
   @staticmethod
   def preencher(data):
     try:
+      command1 = "for (const li of document.querySelectorAll('li')) { if (li.textContent.includes('"
+      command2 = "')) { li.click() } }"
+
       sigepe_botaoIncluirCorrelacao = wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, xpaths["publicacao"]["incluirCorrelacaoBotao"])))
       sigepe_botaoIncluirCorrelacao.click()
@@ -39,19 +42,7 @@ class Correlacao:
       sigepe_campoOrigem.click()
       time.sleep(0.5)
       wfl.waitForLoading()
-
-      # sigepe_origemOption = wait["regular"].until(EC.element_to_be_clickable(
-      #   (By.XPATH, f"//*[text()='{data['origem']}']")))
-      # time.sleep(1)
-      
-      command1 = "for (const li of document.querySelectorAll('li')) { if (li.textContent.includes('"
-      command2 = "')) { li.click() } }"
-
       nav.execute_script("".join([command1, data['origem'], command2]))
-
-      # time.sleep(5)
-
-      # nav.execute_script("arguments[0].click();", sigepe_origemOption);
       wfl.waitForLoading()
 
       sigepe_campoOrgaoResponsavel = wait["regular"].until(EC.element_to_be_clickable(
@@ -61,9 +52,7 @@ class Correlacao:
 
       sigepe_buscarOrgaoResponsavel = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["buscarOrgaoResponsavelInput"])))
-      sigepe_buscarOrgaoResponsavel.send_keys(data['orgao'])
-      time.sleep(1.5)
-      sigepe_buscarOrgaoResponsavel.send_keys(Keys.ENTER)
+      nav.execute_script("".join([command1, data['orgao'], command2]))
       wfl.waitForLoading()
 
       sigepe_campoUpagResponsavel = wait["regular"].until(EC.element_to_be_clickable(
@@ -73,10 +62,9 @@ class Correlacao:
 
       sigepe_buscarUpagResponsavel = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["buscarUpagResponsavelInput"])))
-      sigepe_buscarUpagResponsavel.send_keys(data['upag'])
-      time.sleep(1.5)
-      sigepe_buscarUpagResponsavel.send_keys(Keys.ENTER)
+      nav.execute_script("".join([command1, data['upag'], command2]))
       wfl.waitForLoading()
+      time.sleep(1.3)
 
       sigepe_campoUorgResponsavel = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["uorgResponsavelAtoCorrelacaoSelect"])))
@@ -85,9 +73,7 @@ class Correlacao:
 
       sigepe_buscarUorgResponsavel = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["buscarUorgResponsavelInput"])))
-      sigepe_buscarUorgResponsavel.send_keys(data['uorg'])
-      time.sleep(1.5)
-      sigepe_buscarUorgResponsavel.send_keys(Keys.ENTER)
+      nav.execute_script("".join([command1, data['uorg'], command2]))
       wfl.waitForLoading()
 
       sigepe_campoNumeroAtoCorrelacionado = wait["regular"].until(EC.element_to_be_clickable(
@@ -118,17 +104,30 @@ class Correlacao:
       sigepe_radioSelecionarAto.click()
       time.sleep(0.3)
 
-      sigepe_botaoGravarAto = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["gravarAtoCorrelacaoBotao"])))
-      sigepe_botaoGravarAto.click()
+      sigepe_botaoSelecionarAto = wait["regular"].until(EC.element_to_be_clickable(
+        (By.XPATH, xpaths["publicacao"]["selecionarAtoCorrelacaoBotao"])))
+      # sigepe_botaoGravarAto.click()
+      nav.execute_script("arguments[0].click();", sigepe_botaoSelecionarAto);
       wfl.waitForLoading()
 
-      sigepe_atoCorrelacaoSelecionado = wait["regular"].until(EC.presence_of_element_located(
-        (By.XPATH, xpaths["publicacao"]["sigepe_atoCorrelacaoSelecionado"])))
+      sigepe_botaoGravarAto = wait["regular"].until(EC.element_to_be_clickable(
+        (By.XPATH, xpaths["publicacao"]["gravarAtoCorrelacaoBotao"])))
+      # sigepe_botaoGravarAto.click()
+      nav.execute_script("arguments[0].click();", sigepe_botaoGravarAto);
+      wfl.waitForLoading()
 
-      sigepe_atoCorrelacaoSelecionado = nav.execute_script("return arguments[0].innerText.replaceAll('\n',"").replaceAll('\t'," ").trim();", atoCorrelacaoSelecionado);
+      sigepe_acaoSelecionada = wait["regular"].until(EC.presence_of_element_located(
+        (By.XPATH, xpaths["publicacao"]["atoCorrelacaoAcaoSelecionada"])))
 
-      return {"log": f"Correlação selecionada: {sigepe_atoCorrelacaoSelecionado}", "type": "n"}
+      sigepe_especieSelecionada = wait["regular"].until(EC.presence_of_element_located(
+        (By.XPATH, xpaths["publicacao"]["atoCorrelacaoEspecieSelecionada"])))
+
+      sigepe_numeroSelecionado = wait["regular"].until(EC.presence_of_element_located(
+        (By.XPATH, xpaths["publicacao"]["atoCorrelacaoNumeroSelecionado"])))
+
+      selecionado = f"{sigepe_acaoSelecionada.text} {sigepe_especieSelecionada.text} {sigepe_numeroSelecionado.text}"
+
+      return {"log": f"Correlação selecionada: {selecionado}", "type": "n"}
 
     except Exception as e:
       print(e)

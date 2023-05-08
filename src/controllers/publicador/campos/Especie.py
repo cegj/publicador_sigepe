@@ -10,6 +10,7 @@ class Especie:
   @staticmethod
   def preencher(data):
     try:
+      time.sleep(1)
       sigepe_campoEspecie = wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpaths["publicacao"]["especieSelect"])))
 
