@@ -76,3 +76,19 @@ class ObterDoSigepe():
     except Exception as e:
       messagebox.showerror("Erro ao obter botão de habilitação no Sigepe", e)
       return None
+
+  @staticmethod
+  def orgaosAtoCorrelacionado():
+    url = "https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf"
+    if (nav.current_url != url):
+      gt.goTo(url)
+    sigepe_orgaosAtoCorrelacionado = nav.find_elements(By.XPATH, xpaths['publicacao']['orgaosAtoCorrelacionado'])
+    lista = []
+    for orgao in sigepe_orgaosAtoCorrelacionado:
+      orgao = orgao.get_attribute('innerText')
+      count = lista.count(orgao)
+      if (count > 0):
+        lista.append(orgao + f' //{count + 1}')
+      else:
+        listaTemas.append(orgao)
+    return lista

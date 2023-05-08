@@ -1,0 +1,7 @@
+#ACAO=$Anula o
+#ORIGEM=Executivo Federal
+#ORGAO=26234
+#UPAG=1202
+#UORG=743
+#NUMERO=1000
+#ANO=1000

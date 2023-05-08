@@ -33,7 +33,7 @@ class Sessao(i.Interfaces):
     self.files = []
 
   def handleFecharJanela(self):
-    confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar? Caso confirme, a aplicação será encerrada.")
+    confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar?\n\nCaso confirme, a aplicação será encerrada.")
     if (confirmarFechar == 'yes'):
       nav.quit()
       self.root.destroy()

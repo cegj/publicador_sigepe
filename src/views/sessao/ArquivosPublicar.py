@@ -3,6 +3,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 import appConfig
 from views import Publicacao as p
+from views import CriarCorrelacao as cc
 import os
 
 class ArquivosPublicar:
@@ -27,6 +28,7 @@ class ArquivosPublicar:
     )
     self.listbox.pack(anchor=CENTER, pady=10)
     self.listbox.bind("<Key>", self.deleteFiles)
+    self.listbox.bind("<Double-Button-1>", self.createCorrelation)
     self.selecionarArquivosBtn()
     self.publicarBtn()
 
@@ -49,6 +51,13 @@ class ArquivosPublicar:
         self.listbox.delete(ANCHOR)
       except Exception as e:
         messagebox.showerror("Erro ao excluir arquivo", e)
+
+  def createCorrelation(self, event = None):
+    try:
+      filename = self.listbox.get(ANCHOR)
+      cc.CriarCorrelacao(self.sessao, filename)
+    except Exception as e:
+      messagebox.showerror("Erro ao abrir Criar correlação", e)
 
   def selecionarArquivosBtn(self):
     btn = Button(

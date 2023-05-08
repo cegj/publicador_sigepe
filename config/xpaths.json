@@ -57,6 +57,7 @@
     "selecionarResponsavelRadio_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt565:dataTableResultado_data']/tr/td[1]/div/div/div[2]",
     "selecionarResponsavelBotao_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorResponsavel:j_idt625']/span",
     "responsavelSelecionado_t2": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:tblResponsaveis_data']/tr/td[6]/div",
+    "orgaosAtoCorrelacionado": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorDeAto:selOrgaoResponsavelConsulta_panel']/div[2]/ul/li",
     "incluirCorrelacaoBotao": "//*[text()='Incluir correlação']",
     "acaoCorrelacaoSelect": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selAcao_label']",
     "buscarAcaoCorrelacaoInput": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:selAcao_filter']",

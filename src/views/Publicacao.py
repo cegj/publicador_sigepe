@@ -177,7 +177,7 @@ class Publicacao:
     if (logFile): logFile.write(logs)
 
   def close(self):
-    answer = messagebox.askyesnocancel("Publicador Sigepe", "Deseja encerrar completamente o Publicador Sigepe? Caso selecione Não, somente a publicação atual será fechada.")
+    answer = messagebox.askyesnocancel("Publicador Sigepe", "Deseja encerrar completamente o Publicador Sigepe?\n\nCaso selecione Não, somente a publicação atual será fechada.")
     if (answer == True):
       nav.quit()
       self.sessao.root.destroy()
