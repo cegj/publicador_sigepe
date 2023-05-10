@@ -8,12 +8,14 @@ from appXpaths import xpaths
 import os
 
 class CriarCorrelacao:
-  def __init__(self, sessao, filename):
+  def __init__(self, sessao, listbox, filename):
     self.sessao = sessao
+    self.filesListbox = listbox
     self.filename = filename
-    self.master = i.Interfaces.novaJanela()
-    self.container = Frame(self.master)
-    self.container.pack()
+    for file in self.sessao.files:
+      if (os.path.basename(file.name) == self.filename):
+        self.filepath = os.path.dirname(file.name)
+        break
     self.values = {
       "acao": "",
       "origem": "",
@@ -23,6 +25,12 @@ class CriarCorrelacao:
       "numero": "",
       "ano": ""
     }
+    self.corrFilename = self.filename.split('.')[0] + ".txt"
+    self.corrFilepath = os.path.join(self.filepath, self.corrFilename)
+    self.dadosEdicao = self.verificarSeExiste()
+    self.master = i.Interfaces.novaJanela()
+    self.container = Frame(self.master)
+    self.container.pack()
     self.janelaCriarCorrelacao()
 
   def janelaCriarCorrelacao(self):
@@ -40,10 +48,11 @@ class CriarCorrelacao:
     self.numero()
     self.ano_publicacao()
     self.botaoCriar()
+    if (self.dadosEdicao): self.botaoApagar()
 
   def acao(self):
     def setSelected(event = None):
-      self.values["acao"] = self.acaoSelected.get()
+      self.values["acao"] = selected.get()
     subcontainer = Frame(self.container)
     subcontainer.pack(padx=10, pady=7, anchor=W)
     label = Label(
@@ -52,7 +61,7 @@ class CriarCorrelacao:
       font=appConfig.fontes["normal"]
       )
     label.grid(row=1, column=1, sticky="w")
-    self.acaoSelected = StringVar()
+    selected = StringVar()
     options = [
       "Adita o",
       "Altera o",
@@ -61,7 +70,7 @@ class CriarCorrelacao:
       "Rejeita o",
       "Retifica o",
       "Revigora o",
-      "Revoga Parcialmente o"
+      "Revoga Parcialmente o",
       "Revoga o",
       "Suspende a eficácia do",
       "Torna insubsistente o",
@@ -69,9 +78,12 @@ class CriarCorrelacao:
       "Torna sem efeito o",
       "Vide"
     ]
+    if (self.dadosEdicao): selected.set(self.dadosEdicao["acao"])
+    else: selected.set("")
+    setSelected()
     seletor = ttk.Combobox(
       subcontainer,
-      textvariable=self.acaoSelected,
+      textvariable=selected,
       values=options,
       state="readonly",
       width=20,
@@ -102,7 +114,8 @@ class CriarCorrelacao:
       "Legislativo Federal",
       "Legislativo Municipal"
     ]
-    selected.set("Executivo Federal")
+    if (self.dadosEdicao): selected.set(self.dadosEdicao["origem"])
+    else: selected.set("Executivo Federal")
     setSelected()
     seletor = ttk.Combobox(
       container,
@@ -128,13 +141,14 @@ class CriarCorrelacao:
     label.pack(side=LEFT)
     value = StringVar()
     value.trace_add("write", setValue)
+    if (self.dadosEdicao): value.set(self.dadosEdicao["orgao"])
+    else: value.set(self.sessao.userConfig["valores_sigepe"]["orgao"])
     entry = Entry(
       subcontainer,
       width=27,
       textvariable=value,
       font=appConfig.fontes["normal"]
       )
-    value.set(self.sessao.userConfig["valores_sigepe"]["orgao"])
     entry.pack(side=LEFT)
 
   def upag(self):
@@ -150,13 +164,14 @@ class CriarCorrelacao:
     label.pack(side=LEFT)
     value = StringVar()
     value.trace_add("write", setValue)
+    if (self.dadosEdicao): value.set(self.dadosEdicao["upag"])
+    else: value.set(self.sessao.userConfig["valores_sigepe"]["upag"])
     entry = Entry(
       subcontainer,
       width=27,
       textvariable=value,
       font=appConfig.fontes["normal"]
       )
-    value.set(self.sessao.userConfig["valores_sigepe"]["upag"])
     entry.pack(side=LEFT)
 
   def uorg(self):
@@ -172,13 +187,14 @@ class CriarCorrelacao:
     label.pack(side=LEFT)
     value = StringVar()
     value.trace_add("write", setValue)
+    if (self.dadosEdicao): value.set(self.dadosEdicao["uorg"])
+    else: value.set(self.sessao.userConfig["valores_sigepe"]["uorg"])
     entry = Entry(
       subcontainer,
       width=27,
       textvariable=value,
       font=appConfig.fontes["normal"]
       )
-    value.set(self.sessao.userConfig["valores_sigepe"]["uorg"])
     entry.pack(side=LEFT)
 
   def numero(self):
@@ -194,9 +210,10 @@ class CriarCorrelacao:
     label.pack(side=LEFT)
     value = StringVar()
     value.trace_add("write", setValue)
+    if (self.dadosEdicao): value.set(self.dadosEdicao["numero"])
     entry = Entry(
       subcontainer,
-      width=23,
+      width=20,
       textvariable=value,
       font=appConfig.fontes["normal"]
       )
@@ -215,44 +232,73 @@ class CriarCorrelacao:
     label.pack(side=LEFT)
     value = StringVar()
     value.trace_add("write", setValue)
+    if (self.dadosEdicao): value.set(self.dadosEdicao["ano"])
     entry = Entry(
       subcontainer,
-      width=23,
+      width=18,
       textvariable=value,
       font=appConfig.fontes["normal"]
       )
     entry.pack(side=LEFT)
 
   def botaoCriar(self):
-    def criar():
-      try:
-        emptyFields = []
-        for key, value in self.values.items():
-          if (value == "" or value == None): emptyFields.append(key)
-        if (len(emptyFields) > 0): raise Exception("Para criar uma correlação, todos os campos devem ser preenchidos.")
-
-        fileContent = f"#ACAO={self.values['acao']}\n#ORIGEM={self.values['origem']}\n#ORGAO={self.values['orgao']}\n#UPAG={self.values['upag']}\n#UORG={self.values['uorg']}\n#NUMERO={self.values['numero']}\n#ANO={self.values['ano']}"
-        for file in self.sessao.files:
-          if (os.path.basename(file.name) == self.filename):
-            path = os.path.dirname(file.name)
-            break
-        correlationFilename = self.filename.split(".")[0] + ".txt"
-        fullpath = os.path.join(path, correlationFilename)
-        txtfile = open(fullpath, "w", encoding="utf-8")
-        n = txtfile.write(fileContent)
-        txtfile.close()
-        self.master.destroy()
-        messagebox.showinfo("Sucesso", f"A correlação para o arquivo {self.filename} foi criada com sucesso")
-      except Exception as e:
-        messagebox.showerror("Erro ao criar correlação", e)
-
+    if (self.dadosEdicao): text = "Salvar mudanças"
+    else: text = "Criar correlação"
     subcontainer = Frame(self.container)
     subcontainer.pack(padx=10, pady=7)
     botao = Button(
       subcontainer,
-      text="Criar correlação",
+      text=text,
       font=appConfig.fontes["botao"],
       width=20,
-      command=criar
+      command=self.criar
     )
     botao.pack()
+
+  def botaoApagar(self):
+    subcontainer = Frame(self.container)
+    subcontainer.pack(padx=10, pady=7)
+    botao = Button(
+      subcontainer,
+      text="Apagar correlação",
+      font=appConfig.fontes["botao"],
+      width=20,
+      command=self.apagar
+    )
+    botao.pack()
+
+  def criar(self):
+    try:
+      emptyFields = []
+      for key, value in self.values.items():
+        if (value == "" or value == None): raise Exception("Para criar uma correlação, todos os campos devem ser preenchidos.")
+      fileContent = f"#ACAO={self.values['acao']}\n#ORIGEM={self.values['origem']}\n#ORGAO={self.values['orgao']}\n#UPAG={self.values['upag']}\n#UORG={self.values['uorg']}\n#NUMERO={self.values['numero']}\n#ANO={self.values['ano']}"
+      txtfile = open(self.corrFilepath, "w", encoding="utf-8")
+      txtfile.write(fileContent)
+      txtfile.close()
+      self.filesListbox.itemconfig(ANCHOR, foreground="#64006b", selectbackground="#64006b")
+      self.master.destroy()
+    except Exception as e:
+      messagebox.showerror("Erro ao criar correlação", e)
+
+  def apagar(self):
+    try:
+      os.remove(self.corrFilepath)
+      self.filesListbox.itemconfig(ANCHOR, foreground="gray", selectbackground="")
+      self.master.destroy()
+    except Exception as e:
+      messagebox.showerror("Erro apagar correlação", e)
+
+  def verificarSeExiste(self):
+    try:
+      corrFile = open(self.corrFilepath, 'r', encoding="utf-8")
+      contentArr = corrFile.read().replace('\n', '').strip().split('#')
+      del contentArr[0]
+      corrFile.close()
+      contentObj = {}
+      for value in contentArr:
+        keyValue = value.split("=")
+        contentObj[keyValue[0].lower()] = keyValue[1]
+      return contentObj
+    except Exception as e:
+      return False

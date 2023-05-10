@@ -154,9 +154,9 @@ class TemaAutomatico:
       height = 15,
       width = 30,
       bg = "white",
-      activestyle = 'dotbox',
       font = "Helvetica",
-      fg = "gray"
+      fg = "gray",
+      activestyle="none"
     )
     self.themesList.pack()
     self.themesList.bind('<Double-Button>', abrirEdicao)

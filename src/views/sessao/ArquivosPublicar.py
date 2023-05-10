@@ -23,9 +23,9 @@ class ArquivosPublicar:
       height = 12,
       width = 40,
       bg = "white",
-      activestyle = 'dotbox',
       font = "Helvetica",
-      fg = "gray"
+      fg = "gray",
+      activestyle="none"
     )
     self.listbox.pack(anchor=CENTER, pady=10)
     self.listbox.bind("<Key>", self.deleteFiles)
@@ -44,6 +44,8 @@ class ArquivosPublicar:
       else:
         self.sessao.files.append(file)
         self.listbox.insert(END, filename)
+        corrFilepath = os.path.join(os.path.dirname(file.name), os.path.basename(file.name).split('.')[0] + ".txt")
+        if (os.path.exists(corrFilepath)): self.listbox.itemconfig(END, foreground="#64006b", selectbackground="#64006b")
     if (len(fails) > 0):
         message = "Os seguintes arquivos não foram adicionados pois existem arquivos com o mesmo nome na lista:\n\n"
         for fail in fails:
@@ -59,6 +61,8 @@ class ArquivosPublicar:
           for file in self.sessao.files:
             if (os.path.basename(file.name) == filename):
               self.sessao.files.remove(file)
+              corrFilepath = os.path.join(os.path.dirname(file.name), os.path.basename(file.name).split('.')[0] + ".txt")
+              if (os.path.exists(corrFilepath)): os.remove(corrFilepath)
               break
         filenameToDelete = self.listbox.get(ANCHOR)
         deleteFromFiles(filenameToDelete)
@@ -69,7 +73,7 @@ class ArquivosPublicar:
   def createCorrelation(self, event = None):
     try:
       filename = self.listbox.get(ANCHOR)
-      cc.CriarCorrelacao(self.sessao, filename)
+      cc.CriarCorrelacao(self.sessao, self.listbox, filename)
     except Exception as e:
       messagebox.showerror("Erro ao abrir Criar correlação", e)
 

@@ -90,7 +90,7 @@ class Publicador:
         self.config["valores_sigepe"]["assunto"] = autoAssuntoResult["return"]
 
       if (correlacao[0]):
-        log = {"log": f"Foram localizados dados de correlação para o documento ({correlacao[1]['acao']} {correlacao[1]['numero']} publicado em {correlacao[1]['ano']})", "type": "em"}
+        log = {"log": f"Foram localizados dados de correlação para o documento ({correlacao[1]['acao']} documento {correlacao[1]['numero']} publicado em {correlacao[1]['ano']})", "type": "em"}
         self.handleResult(log, numeroDocumento)
 
       edicaoBoletimResult = eb.EdicaoBoletim.preencher(self.config["valores_sigepe"]["edicao_bgp"])

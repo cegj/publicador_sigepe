@@ -46,9 +46,9 @@ class Publicacao:
       height = 10,
       width = 40,
       bg = "white",
-      activestyle = 'dotbox',
       font = "Helvetica",
-      fg = "gray"
+      fg = "gray",
+      activestyle="none"
     )
     self.pendingFilesList.pack()
 
@@ -66,9 +66,9 @@ class Publicacao:
       height = 10,
       width = 40,
       bg = "white",
-      activestyle = 'dotbox',
       font = "Helvetica",
-      fg = "green"
+      fg = "green",
+      activestyle="none"
     )
     self.successFilesList.pack()
 
@@ -86,9 +86,9 @@ class Publicacao:
       height = 10,
       width = 40,
       bg = "white",
-      activestyle = 'dotbox',
       font = "Helvetica",
-      fg = "red"
+      fg = "red",
+      activestyle="none"
     )
     self.failFilesList.pack()
 
