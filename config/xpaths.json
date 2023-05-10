@@ -10,6 +10,7 @@
     "senhaInput": "//*[@id='password']",
     "captchaInput": "//*[@id='j_captcha_response']",
     "captchaImg": "//*[@id='captchaImg']",
+    "recaptcha": "//*[@id='tblLogin']/tbody/tr[4]/td/table/tbody/tr/td/div",
     "acessarBnt": "//*[@id='botaoCredenciais']",
     "loginError": "//*[@id='msg_alerta']",
     "novoUsuarioPageTitle": "//*[@id='content-title']/span"

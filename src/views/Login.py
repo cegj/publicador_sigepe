@@ -1,6 +1,7 @@
 from views import Interfaces as i
 from controllers import Acesso as a
 from tkinter import *
+from tkinter import messagebox
 import appConfig
 from helpers import checkExistsByXpath as cebx
 from helpers import getScreenshotByXpath as gebx
@@ -17,11 +18,6 @@ class Login(i.Interfaces):
 
   def login(self):
     def handleEntrar():
-      aguardeLabel = Label(
-        senhaContainer,
-        text="Aguarde...",
-        font=appConfig.fontes["normal"])
-      aguardeLabel.pack()
       a.Acesso.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
 
     loginContainer = Frame(self.root)
@@ -63,6 +59,10 @@ class Login(i.Interfaces):
       font=appConfig.fontes["normal"],
       show="*")
     senhaInput.pack()
+
+    if(cebx.checkExistsByXpath(xpaths['login']['recaptcha'])):
+      messagebox.showerror("Erro fatal", "Não foi possível acessar o Sigepe devido a tentativas sucessivas com erro. Para evitar o bloqueio da sua conta, o Publicador Sigepe será encerrado. Inicie novamente.")
+      self.handleFecharJanela()
 
     captchaInput = None
     if(cebx.checkExistsByXpath(xpaths['login']['captchaImg'])):
