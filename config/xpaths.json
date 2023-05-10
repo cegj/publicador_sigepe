@@ -87,7 +87,10 @@
     "incluirInteressadoNaListaBotao": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[3]/div/span/span/div[2]/div[2]/span/span/span[2]/div[1]/button[1]",
     "selecionarServidorBotao": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[3]/div/span/span/div[2]/div[2]/span/span/div[3]/button[1]",
     "interessadoSelecionado": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[3]/div/span/span/span/div/table/tbody/tr/td[3]/div/span",
-    "enviarParaPublicacaoBotao": "//*[text()='Enviar para publicação']",
+    "enviarParaAnaliseBotao": "//*[text()='Enviar para análise']",
+    "enviarParaPublicacaoBotao": "//*[text()='Enviar para assinatura']",
+    "enviarParaAssinaturaBotao": "//*[text()='Enviar para publicação']",
+    "gravarRascunhoBotao": "//*[text()='Gravar Rascunho']",
     "mensagemErroPublicacao": "//*[@id='msgCadastrarAto']/div[2]/ul/li/span[2]",
     "mensagemSucessoPublicacao": "//*[@id='idFormMsg:idMensagem']/div/ul/li/span[2]"
   }

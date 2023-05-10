@@ -237,17 +237,25 @@ class Publicador:
 
   def enviarParaPublicacao(self, numeroDocumento, filename):
     try:
-      self.publicacao.insertLog("Enviando documento para publicação...", "n", numeroDocumento)
-      sigepe_botaoEnviarPublicacao = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["enviarParaPublicacaoBotao"])))
-      sigepe_botaoEnviarPublicacao.click()
+
+      if (self.config["acao"].lower() == "enviar para assinatura / publicação"):
+        if(self.config["valores_sigepe"]["tipo_assinatura"].lower() == "digital"): xpath = xpaths["publicacao"]["enviarParaAssinaturaBotao"]
+        elif(self.config["valores_sigepe"]["tipo_assinatura"].lower() == "manual"): xpath = xpaths["publicacao"]["enviarParaPublicacaoBotao"]
+      elif (self.config["acao"].lower() == "enviar para análise"): xpath = xpaths["publicacao"]["enviarParaAnaliseBotao"]
+      elif (self.config["acao"].lower() == "gravar rascunho"): xpath = xpaths["publicacao"]["gravarRascunhoBotao"]
+
+      self.publicacao.insertLog(f"Executando a ação {self.config['acao'].lower()}", "n", numeroDocumento)
+
+      sigepe_botaoAcao = wait["regular"].until(EC.element_to_be_clickable(
+        (By.XPATH, xpath)))
+      sigepe_botaoAcao.click()
       wfl.waitForLoading()
 
       if (cebx.checkExistsByXpath(xpaths["publicacao"]["mensagemErroPublicacao"])):
         self.resultados["erro"].append(filename)
         mensagemErro = wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, xpaths["publicacao"]["mensagemErroPublicacao"])))
-        raise Exception(f"Falha ao enviar documento para publicação: {mensagemErro.text}")
+        raise Exception(f"Falha ao cadastrar documento: {mensagemErro.text}")
       
       if (cebx.checkExistsByXpath(xpaths["publicacao"]["mensagemSucessoPublicacao"])):
         self.resultados["sucesso"].append(filename)

@@ -18,7 +18,17 @@ try:
   wait = {'half': WebDriverWait(nav, 10), 'regular': WebDriverWait(nav, 20), 'long': WebDriverWait(nav, 40)}
   nav.minimize_window()
 except Exception as e:
-  messagebox.showerror("Erro ao abrir navegador", e)
+  error = str(e)
+  errors = {
+    "chromeNotFound": "cannot find chrome binary",
+    "outdatedChrome": "this version of chromedriver only supports Chrome version"
+  }
+  if errors["chromeNotFound"] in str(e).lower():
+    error = "O Google Chrome não está instalado em seu computador. Instale este navegador para executar o Publicador Sigepe."
+  if errors["outdatedChrome"] in str(e).lower():
+    error = "Seu navegador está desatualizado. Atualize o Google Chrome para executar o Publicador Sigepe."
+
+  messagebox.showerror("Erro ao abrir navegador", error)
   try:
     nav.quit()
   except:

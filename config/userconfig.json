@@ -3,6 +3,7 @@
         "inicial":"GESTOR - ÓRGÃO:UFES"
     },
     "tipo_tema_assunto":"Buscar no conteúdo do documento",
+    "acao":"Enviar para análise",
     "valores_sigepe":{
         "edicao_bgp":"Normal",
         "tipo_assinatura":"Manual",
@@ -11,7 +12,7 @@
         "assunto":"024.4 - AFASTAMENTOS (Para Depor; Para Exercer Mandato Eletivo; Para Servir ao Tribunal Regional Eleitoral - TRE; Para Servir como Jurado; Suspensão de Contrato de Trabalho - CLT)",
         "tipo_preenchimento":"Manual",
         "data_assinatura":"[hoje/]",
-        "data_publicacao":"[proximo_dia_util/]",
+        "data_publicacao":"14/05/2023",
         "orgao":"26234",
         "upag":"1202",
         "uorg":"743",

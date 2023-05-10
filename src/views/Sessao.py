@@ -4,6 +4,7 @@ import appConfig
 from Webdriver import nav
 from views import Interfaces as i
 from views.sessao import Habilitacao as s_h
+from views.sessao import Acao as s_a
 from views.sessao import EdicaoBoletim as s_eb
 from views.sessao import TipoAssinatura as s_ta
 from views.sessao import Especie as s_e
@@ -78,6 +79,7 @@ class Sessao(i.Interfaces):
     tituloDadosPublicacao.pack()
 
     s_h.Habilitacao(self, self.linha2c1)
+    s_a.Acao(self, self.linha2c1)
     s_eb.EdicaoBoletim(self, self.linha3c1)
     s_ta.TipoAssinatura(self, self.linha3c1)
     s_tn.TipoNumero(self, self.linha3c1)
