@@ -2,7 +2,6 @@ from controllers import AppConfig as ac
 from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
 import time
 from selenium.webdriver.common.keys import Keys
 
@@ -20,7 +19,7 @@ class ConteudoDocumento:
         sigepe_campoTextoPortaria.send_keys(Keys.ENTER)
       time.sleep(0.3)
       wd.Webdriver.nav.switch_to.default_content()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       return {"log": f"Conteúdo do documento preenchido", "type": "n"}
 
     except Exception as e:

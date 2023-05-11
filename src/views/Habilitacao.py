@@ -7,8 +7,6 @@ from selenium.webdriver.common.by import By
 import time
 from views import Interfaces as i
 from views import Sessao as s
-from helpers import goTo as gt
-from helpers import checkExistsByXpath as cebx
 
 class Habilitacao(i.Interfaces):
   def __init__(self):
@@ -22,9 +20,9 @@ class Habilitacao(i.Interfaces):
   @staticmethod
   def checarAcessoHabilitacao():
     try:
-      gt.goTo(ac.AppConfig.urls["cadastrarAtoPublicacao"])
-      if(cebx.checkExistsByXpath(ac.AppConfig.xpaths["habilitacao"]["acessoNegadoHeader"])):
-        gt.goTo(ac.AppConfig.urls["areaDeTrabalho"])
+      wd.Webdriver.go(ac.AppConfig.urls["cadastrarAtoPublicacao"])
+      if(wd.Webdriver.checkExistsByXpath(ac.AppConfig.xpaths["habilitacao"]["acessoNegadoHeader"])):
+        wd.Webdriver.go(ac.AppConfig.urls["areaDeTrabalho"])
         return False
       else:
         return True
@@ -55,7 +53,7 @@ class Habilitacao(i.Interfaces):
 
   def janelaHabilitacao(self):
     try:
-      gt.goTo(ac.AppConfig.urls["areaDeTrabalho"])
+      wd.Webdriver.go(ac.AppConfig.urls["areaDeTrabalho"])
       self.sigepe_habilitacaoBotao = wd.Webdriver.nav.find_element(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacaoBotao'])
       self.sigepe_habilitacaoBotao.click()
       sigepe_HabilitacoesLinks = wd.Webdriver.nav.find_elements(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacoesLinks'])

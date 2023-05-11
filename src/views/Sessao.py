@@ -25,7 +25,6 @@ from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
 from controllers import UserConfig as uc
 from controllers import AppConfig as ac
-from helpers import goTo as gt
 
 class Sessao(i.Interfaces):
   def __init__(self):
@@ -40,7 +39,7 @@ class Sessao(i.Interfaces):
       self.root.destroy()
 
   def sessao(self):
-    gt.goTo(ac.AppConfig.urls["cadastrarAtoPublicacao"])
+    wd.Webdriver.go(ac.AppConfig.urls["cadastrarAtoPublicacao"])
     self.sessaoContainer = Frame(self.root)
     self.sessaoContainer.grid()
 

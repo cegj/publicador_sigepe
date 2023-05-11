@@ -2,7 +2,6 @@ from controllers import AppConfig as ac
 from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
 import time
 from selenium.webdriver.common.keys import Keys
 
@@ -19,7 +18,7 @@ class TipoNumero:
       campoBuscarTipoNumero.send_keys(data)
       time.sleep(1.5)
       campoBuscarTipoNumero.send_keys(Keys.ENTER)
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       return {"log": f"Tipo de preenchimento do número selecionado: {data}", "type": "n"}
 
     except Exception as e:

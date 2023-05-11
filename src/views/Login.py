@@ -2,9 +2,6 @@ from views import Interfaces as i
 from controllers import Acesso as a
 from tkinter import *
 from tkinter import messagebox
-from helpers import checkExistsByXpath as cebx
-from helpers import getScreenshotByXpath as gebx
-from helpers import goTo as gt
 from PIL import ImageTk, Image
 import os
 from controllers import AppConfig as ac
@@ -26,7 +23,7 @@ class Login(i.Interfaces):
       font=ac.AppConfig.fontes["titulo"])
     loginContainerTitulo.pack()
 
-    gt.goTo(ac.AppConfig.urls["areaDeTrabalho"])
+    wd.Webdriver.go(ac.AppConfig.urls["areaDeTrabalho"])
     
     cpfContainer = Frame(
       loginContainer,
@@ -59,12 +56,12 @@ class Login(i.Interfaces):
       show="*")
     senhaInput.pack()
 
-    if(cebx.checkExistsByXpath(ac.AppConfig.xpaths['login']['recaptcha'])):
+    if(wd.Webdriver.checkExistsByXpath(ac.AppConfig.xpaths['login']['recaptcha'])):
       messagebox.showerror("Erro fatal", "Não foi possível acessar o Sigepe devido a tentativas sucessivas com erro. Para evitar o bloqueio da sua conta, o Publicador Sigepe será encerrado. Inicie novamente.")
       self.handleFecharJanela()
 
     captchaInput = None
-    if(cebx.checkExistsByXpath(ac.AppConfig.xpaths['login']['captchaImg'])):
+    if(wd.Webdriver.checkExistsByXpath(ac.AppConfig.xpaths['login']['captchaImg'])):
         captchaContainer = Frame(
           loginContainer,
           pady=5)
@@ -74,7 +71,7 @@ class Login(i.Interfaces):
           text="Confirme o código",
           font=ac.AppConfig.fontes["normal"])
         captchaLabel.pack()
-        imgFileName = gebx.getScreenshotByXpath(ac.AppConfig.xpaths['login']['captchaImg'], 'captcha')
+        imgFileName = wd.Webdriver.getScreenshotByXpath(ac.AppConfig.xpaths['login']['captchaImg'], 'captcha')
         imgFile = Image.open(imgFileName)
         captchaImg = ImageTk.PhotoImage(imgFile)
         captchaImgLabel = Label(

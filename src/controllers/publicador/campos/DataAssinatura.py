@@ -1,7 +1,7 @@
 from controllers import AppConfig as ac
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
+from controllers import Webdriver as wd
 
 class DataAssinatura:
   @staticmethod
@@ -14,7 +14,7 @@ class DataAssinatura:
 
       sigepe_campoDataAssinatura.send_keys(data)
 
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       return {"log": f"Data de assinatura preenchida: {data}", "type": "n"}
 

@@ -6,8 +6,6 @@ from striprtf.striprtf import rtf_to_text
 from tkinter import messagebox
 import os
 from threading import Thread
-from helpers import goTo as gt
-from helpers import checkExistsByXpath as cebx
 from controllers.publicador.campos import EdicaoBoletim as eb
 from controllers.publicador.campos import TipoAssinatura as ta
 from controllers.publicador.campos import TipoNumero as tn
@@ -24,7 +22,7 @@ from controllers.publicador.campos import Interessado as i
 from controllers.publicador import Pospublicacao as pp
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
+from controllers import Webdriver as wd
 import re
 
 class Publicador:
@@ -46,7 +44,7 @@ class Publicador:
 
     for file in self.files:
       self.currentFile = file
-      gt.goTo(ac.AppConfig.urls["cadastrarAtoPublicacao"])
+      wd.Webdriver.go(ac.AppConfig.urls["cadastrarAtoPublicacao"])
 
       if (file.closed): file.open()
       filename = os.path.basename(file.name)
@@ -247,15 +245,15 @@ class Publicador:
       sigepe_botaoAcao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpath)))
       sigepe_botaoAcao.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
-      if (cebx.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemErroPublicacao"])):
+      if (wd.Webdriver.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemErroPublicacao"])):
         self.resultados["erro"].append(filename)
         mensagemErro = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["mensagemErroPublicacao"])))
         raise Exception(f"Falha ao cadastrar documento: {mensagemErro.text}")
       
-      if (cebx.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemSucessoPublicacao"])):
+      if (wd.Webdriver.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemSucessoPublicacao"])):
         self.resultados["sucesso"].append(filename)
         mensagemSucesso = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["mensagemSucessoPublicacao"])))

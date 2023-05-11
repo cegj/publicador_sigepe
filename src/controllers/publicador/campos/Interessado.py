@@ -2,7 +2,6 @@ from controllers import AppConfig as ac
 from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
 import time
 
 class Interessado:
@@ -12,7 +11,7 @@ class Interessado:
       sigepe_botaoIncluirInteressado = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["incluirInteressadoBotao"])))
       sigepe_botaoIncluirInteressado.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_campoMatricula = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["matriculaInteressadoInput"])))
@@ -23,7 +22,7 @@ class Interessado:
       sigepe_botaoPesquisarInteressado = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["pesquisarInteressadoBotao"])))
       sigepe_botaoPesquisarInteressado.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_checkboxSelecionarServidor = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["selecionarInteressadoCheckbox"])))
@@ -33,12 +32,12 @@ class Interessado:
       sigepe_botaoIncluirNaLista = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["incluirInteressadoNaListaBotao"])))
       wd.Webdriver.nav.execute_script("arguments[0].click();", sigepe_botaoIncluirNaLista);
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_botaoSelecionarAto = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["selecionarServidorBotao"])))
       wd.Webdriver.nav.execute_script("arguments[0].click();", sigepe_botaoSelecionarAto);
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       interessadoSelecionado = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["interessadoSelecionado"])))

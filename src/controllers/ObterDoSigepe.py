@@ -1,6 +1,5 @@
 from controllers import Webdriver as wd
 from controllers import AppConfig as ac
-from helpers import waitForLoading as wfl 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
@@ -26,7 +25,7 @@ class ObterDoSigepe():
     try:
       url = ac.AppConfig.urls["cadastrarAtoPublicacao"]
       if (wd.Webdriver.nav.current_url != url):
-        gt.goTo(url)
+        wd.Webdriver.go(url)
       temaSplitted = tema.split('//')
       sigepe_temaSelect = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable((By.XPATH, ac.AppConfig.xpaths["publicacao"]["temaSelect"])))
       sigepe_temaSelect.click()
@@ -44,11 +43,11 @@ class ObterDoSigepe():
           time.sleep(0.3)
           i += 1
       sigepe_buscarTemaInput.send_keys(Keys.ENTER)
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       time.sleep(0.3)
       sigepe_buscarAssuntoBtn = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable((By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarAssuntoBtn"])))
       sigepe_buscarAssuntoBtn.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       sigepe_assuntos = wd.Webdriver.wait["regular"].until(EC.visibility_of_all_elements_located((By.XPATH, ac.AppConfig.xpaths["publicacao"]["assuntosBtns"])))
       listaAssuntos = []
       for assunto in sigepe_assuntos:
@@ -80,7 +79,7 @@ class ObterDoSigepe():
   def orgaosAtoCorrelacionado():
     url = ac.AppConfig.urls["cadastrarAtoPublicacao"]
     if (wd.Webdriver.nav.current_url != url):
-      gt.goTo(url)
+      wd.Webdriver.go(url)
     sigepe_orgaosAtoCorrelacionado = wd.Webdriver.nav.find_elements(By.XPATH, ac.AppConfig.xpaths['publicacao']['orgaosAtoCorrelacionado'])
     lista = []
     for orgao in sigepe_orgaosAtoCorrelacionado:

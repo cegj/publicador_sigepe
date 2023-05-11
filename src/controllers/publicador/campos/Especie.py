@@ -2,7 +2,6 @@ from controllers import AppConfig as ac
 from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
 import time
 from selenium.webdriver.common.keys import Keys
 
@@ -14,7 +13,7 @@ class Especie:
       sigepe_campoEspecie = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["especieSelect"])))
 
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_campoEspecie.click()
 
@@ -29,7 +28,7 @@ class Especie:
 
       sigepe_campoBuscarEspecie.send_keys(Keys.ENTER)
 
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       return {"log": f"Espécie selecionada: {data}", "type": "n"}
 

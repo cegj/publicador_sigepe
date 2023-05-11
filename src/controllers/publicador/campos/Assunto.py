@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
+from controllers import Webdriver as wd
 import time
 from controllers import UserConfig as uc
 from controllers import AppConfig as ac
@@ -12,12 +12,12 @@ class Assunto:
     try:
       sigepe_buscarAssuntoBtn = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable((By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarAssuntoBtn"])))
       sigepe_buscarAssuntoBtn.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       assuntoBtn = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable((By.XPATH, f"//*[text()='{data}']")))
       assuntoBtn.click()
       sigepe_selecionarAssuntoBtn = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable((By.XPATH, ac.AppConfig.xpaths["publicacao"]["selecionarAssuntoBtn"])))
       sigepe_selecionarAssuntoBtn.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       time.sleep(0.3)
       sigepe_assuntoSelecionadoInput = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located((By.XPATH, ac.AppConfig.xpaths["publicacao"]["assuntoSelecionadoInput"])))
       assuntoSelecionado = sigepe_assuntoSelecionadoInput.get_attribute('value')

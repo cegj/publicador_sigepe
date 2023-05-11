@@ -2,7 +2,6 @@ from controllers import AppConfig as ac
 from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
 
 class EdicaoBoletim:
   @staticmethod
@@ -18,7 +17,7 @@ class EdicaoBoletim:
       elif (data == "Extraordinária"):
           edicaoExtraordinaria.click()
 
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       return {"log": f"Edição do boletim selecionada: {data}", "type": "n"}
 
     except Exception as e:

@@ -2,7 +2,6 @@ from controllers import AppConfig as ac
 from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from helpers import waitForLoading as wfl
 from selenium.webdriver.common.keys import Keys
 import time
 import os
@@ -17,7 +16,7 @@ class Correlacao:
       sigepe_botaoIncluirCorrelacao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["incluirCorrelacaoBotao"])))
       sigepe_botaoIncluirCorrelacao.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
 
       sigepe_campoAcao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
@@ -30,20 +29,20 @@ class Correlacao:
       sigepe_buscarAcao.send_keys(data['acao'])
       time.sleep(1.5)
       sigepe_buscarAcao.send_keys(Keys.ENTER)
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_buscarAtoBotao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarAtoCorrelacaoBotao"])))
       sigepe_buscarAtoBotao.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_campoOrigem = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["origemAtoCorrelacaoSelect"])))
       sigepe_campoOrigem.click()
       time.sleep(0.5)
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       wd.Webdriver.nav.execute_script("".join([command1, data['origem'], command2]))
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_campoOrgaoResponsavel = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["orgaoResponsavelAtoCorrelacaoSelect"])))
@@ -53,7 +52,7 @@ class Correlacao:
       sigepe_buscarOrgaoResponsavel = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarOrgaoResponsavelInput"])))
       wd.Webdriver.nav.execute_script("".join([command1, data['orgao'], command2]))
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_campoUpagResponsavel = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["upagResponsavelAtoCorrelacaoSelect"])))
@@ -63,7 +62,7 @@ class Correlacao:
       sigepe_buscarUpagResponsavel = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarUpagResponsavelInput"])))
       wd.Webdriver.nav.execute_script("".join([command1, data['upag'], command2]))
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
       time.sleep(1.3)
 
       sigepe_campoUorgResponsavel = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
@@ -74,7 +73,7 @@ class Correlacao:
       sigepe_buscarUorgResponsavel = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarUorgResponsavelInput"])))
       wd.Webdriver.nav.execute_script("".join([command1, data['uorg'], command2]))
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_campoNumeroAtoCorrelacionado = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["numeroAtoCorrelacaoInput"])))
@@ -97,7 +96,7 @@ class Correlacao:
       sigepe_botaoPesquisarAto = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["pesquisarAtoCorrelacaoBotao"])))
       sigepe_botaoPesquisarAto.click()
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_radioSelecionarAto = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoRadio"])))
@@ -108,13 +107,13 @@ class Correlacao:
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["selecionarAtoCorrelacaoBotao"])))
       # sigepe_botaoGravarAto.click()
       wd.Webdriver.nav.execute_script("arguments[0].click();", sigepe_botaoSelecionarAto);
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_botaoGravarAto = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["gravarAtoCorrelacaoBotao"])))
       # sigepe_botaoGravarAto.click()
       wd.Webdriver.nav.execute_script("arguments[0].click();", sigepe_botaoGravarAto);
-      wfl.waitForLoading()
+      wd.Webdriver.waitLoadingModal()
 
       sigepe_acaoSelecionada = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoAcaoSelecionada"])))

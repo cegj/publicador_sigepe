@@ -6,6 +6,10 @@ from selenium import webdriver
 from tkinter import *
 from tkinter import messagebox
 from subprocess import CREATE_NO_WINDOW # This flag will only be available in windows
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from controllers import AppConfig as ac
 
 class Webdriver:
   @staticmethod
@@ -35,5 +39,44 @@ class Webdriver:
       except:
         pass
 
+  @staticmethod
+  def checkExistsByXpath(xpath):
+    try:
+      Webdriver.nav.find_element(By.XPATH, xpath)
+    except NoSuchElementException:
+      return False
+    return True
+  
+  @staticmethod
+  def getScreenshotByXpath(xpath, filename):
+    try:
+      loc = Webdriver.nav.find_element(
+      By.XPATH, xpath).screenshot(f'{filename}.png')
+      Webdriver.nav.minimize_window()
+      return f'{filename}.png'
+    except Exception as e:
+      messagebox.showerror("Erro ao obter screenshot", e)
+      return False
+
+  @staticmethod
+  def waitLoadingModal():
+    loadingMoral = WebDriverWait(Webdriver.nav, 300).until(EC.invisibility_of_element_located(
+        (By.XPATH, ac.AppConfig.xpaths['general']['loadingModal'])))
+    return None
+  
+  @staticmethod
+  def go(url):
+    try:
+      Webdriver.nav.get(url)
+      if(Webdriver.checkExistsByXpath('//*[@id="details-button"]')): #If Chrome SSL Error
+        detailsBtn = Webdriver.nav.find_element(
+            By.XPATH, '//*[@id="details-button"]')
+        detailsBtn.click()
+        proceedLink = Webdriver.nav.find_element(
+            By.XPATH, '//*[@id="proceed-link"]')
+        proceedLink.click()
+    except Exception as e:
+      messagebox.showerror("Erro ao acessar página", e)
+  
   nav = start.__func__()
   wait = {'half': WebDriverWait(nav, 10), 'regular': WebDriverWait(nav, 20), 'long': WebDriverWait(nav, 40)}
