@@ -25,7 +25,7 @@ class ObterDoSigepe():
   @staticmethod
   def assuntos(tema):
     try:
-      url = "https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf"
+      url = ac.AppConfig.urls["cadastrarAtoPublicacao"]
       if (nav.current_url != url):
         gt.goTo(url)
       temaSplitted = tema.split('//')
@@ -79,7 +79,7 @@ class ObterDoSigepe():
 
   @staticmethod
   def orgaosAtoCorrelacionado():
-    url = "https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf"
+    url = ac.AppConfig.urls["cadastrarAtoPublicacao"]
     if (nav.current_url != url):
       gt.goTo(url)
     sigepe_orgaosAtoCorrelacionado = nav.find_elements(By.XPATH, ac.AppConfig.xpaths['publicacao']['orgaosAtoCorrelacionado'])

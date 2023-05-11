@@ -16,7 +16,7 @@ class AppConfig:
   @staticmethod
   def obterUrls():
     try:
-      json_file = open('config/app/xpaths.json', 'r', encoding="utf-8")
+      json_file = open('config/app/urls.json', 'r', encoding="utf-8")
       content = json.load(json_file)
       return content
     except Exception as e:

@@ -47,7 +47,7 @@ class Publicador:
 
     for file in self.files:
       self.currentFile = file
-      gt.goTo("https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
+      gt.goTo(ac.AppConfig.urls["cadastrarAtoPublicacao"])
 
       if (file.closed): file.open()
       filename = os.path.basename(file.name)

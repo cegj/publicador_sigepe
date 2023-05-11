@@ -22,9 +22,9 @@ class Habilitacao(i.Interfaces):
   @staticmethod
   def checarAcessoHabilitacao():
     try:
-      gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
+      gt.goTo(ac.AppConfig.urls["cadastrarAtoPublicacao"])
       if(cebx.checkExistsByXpath(ac.AppConfig.xpaths["habilitacao"]["acessoNegadoHeader"])):
-        gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
+        gt.goTo(ac.AppConfig.urls["areaDeTrabalho"])
         return False
       else:
         return True
@@ -55,7 +55,7 @@ class Habilitacao(i.Interfaces):
 
   def janelaHabilitacao(self):
     try:
-      gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
+      gt.goTo(ac.AppConfig.urls["areaDeTrabalho"])
       self.sigepe_habilitacaoBotao = nav.find_element(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacaoBotao'])
       self.sigepe_habilitacaoBotao.click()
       sigepe_HabilitacoesLinks = nav.find_elements(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacoesLinks'])

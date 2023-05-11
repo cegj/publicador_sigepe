@@ -40,7 +40,7 @@ class Sessao(i.Interfaces):
       self.root.destroy()
 
   def sessao(self):
-    gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
+    gt.goTo(ac.AppConfig.urls["cadastrarAtoPublicacao"])
     self.sessaoContainer = Frame(self.root)
     self.sessaoContainer.grid()
 

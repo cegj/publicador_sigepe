@@ -26,7 +26,7 @@ class Login(i.Interfaces):
       font=ac.AppConfig.fontes["titulo"])
     loginContainerTitulo.pack()
 
-    gt.goTo("https://admsistema.sigepe.planejamento.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
+    gt.goTo(ac.AppConfig.urls["areaDeTrabalho"])
     
     cpfContainer = Frame(
       loginContainer,
