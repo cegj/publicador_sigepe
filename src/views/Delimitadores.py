@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
-import appConfig
 from views import Interfaces as i
 from controllers import UserConfig as uc
+from controllers import AppConfig as ac
 from copy import copy
 
 class Delimitadores:
@@ -29,7 +29,7 @@ class Delimitadores:
       label = Label(
         container,
         text="Número do documento:",
-        font=appConfig.fontes["normal"]
+        font=ac.AppConfig.fontes["normal"]
         )
       label.grid(column=1, row=0, padx=10, pady=5, sticky='w')
       beforeValue = StringVar()
@@ -38,7 +38,7 @@ class Delimitadores:
         container,
         width=20,
         textvariable=beforeValue,
-        font=appConfig.fontes["normal"]
+        font=ac.AppConfig.fontes["normal"]
         )
       beforeValue.set(self.delimiters["numero_documento"][0])
       beforeInput.grid(column=2, row=0)
@@ -48,7 +48,7 @@ class Delimitadores:
         container,
         width=20,
         textvariable=afterValue,
-        font=appConfig.fontes["normal"]
+        font=ac.AppConfig.fontes["normal"]
         )
       afterValue.set(self.delimiters["numero_documento"][1])
       afterInput.grid(column=3, row=0)
@@ -67,7 +67,7 @@ class Delimitadores:
       label = Label(
         container,
         text="Matrícula SIAPE:",
-        font=appConfig.fontes["normal"]
+        font=ac.AppConfig.fontes["normal"]
         )
       label.grid(column=1, row=0, padx=10, pady=5, sticky='w')
       beforeValue = StringVar()
@@ -76,7 +76,7 @@ class Delimitadores:
         container,
         width=20,
         textvariable=beforeValue,
-        font=appConfig.fontes["normal"]
+        font=ac.AppConfig.fontes["normal"]
         )
       beforeValue.set(self.delimiters["matricula_siape"][0])
       beforeInput.grid(column=2, row=0)
@@ -86,7 +86,7 @@ class Delimitadores:
         container,
         width=20,
         textvariable=afterValue,
-        font=appConfig.fontes["normal"]
+        font=ac.AppConfig.fontes["normal"]
         )
       afterValue.set(self.delimiters["matricula_siape"][1])
       afterInput.grid(column=3, row=0)
@@ -109,7 +109,7 @@ class Delimitadores:
     salvarDelimitadoresBtn = Button(
       container,
       text="Salvar",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=salvar
     )

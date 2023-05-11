@@ -1,4 +1,4 @@
-import appConfig
+from controllers import AppConfig as ac
 from controllers import UserConfig as uc
 from views import Interfaces as i
 from tkinter import *
@@ -58,7 +58,7 @@ class TemaAutomatico:
       assuntoLabel = Label(
         self.assuntoContainer,
         text="Assunto correspondente",
-        font=appConfig.fontes["normal"]
+        font=ac.AppConfig.fontes["normal"]
         )
       assuntoLabel.pack()
       self.assuntoSelected = StringVar()
@@ -71,7 +71,7 @@ class TemaAutomatico:
         values=self.sigepe_assuntos,
         state="readonly",
         width=40,
-        font=appConfig.fontes["normal"]
+        font=ac.AppConfig.fontes["normal"]
         )
       seletorAssunto.pack()
 
@@ -88,7 +88,7 @@ class TemaAutomatico:
     termoLabel = Label(
       self.termoContainer,
       text="Termo para busca no conteúdo",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     termoLabel.pack()
     self.termToFindValue = StringVar()
@@ -96,7 +96,7 @@ class TemaAutomatico:
       self.termoContainer,
       width=42,
       textvariable=self.termToFindValue,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     if (editItemKey): self.termToFindValue.set(editItemKey)
     termoInput.pack()
@@ -106,7 +106,7 @@ class TemaAutomatico:
     temaLabel = Label(
       self.temaContainer,
       text="Tema correspondente",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     temaLabel.pack()
     self.temaSelected = StringVar()
@@ -117,7 +117,7 @@ class TemaAutomatico:
       values=self.sigepe_temas,
       state="readonly",
       width=40,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     seletorTema.pack()
     seletorTema.bind("<<ComboboxSelected>>", buildAssunto)
@@ -130,7 +130,7 @@ class TemaAutomatico:
       botaoApagar = Button(
         botoesContainer,
         text="Apagar",
-        font=appConfig.fontes["botao"],
+        font=ac.AppConfig.fontes["botao"],
         width=15,
         command=delete
         )
@@ -139,7 +139,7 @@ class TemaAutomatico:
     botaoSalvar = Button(
       botoesContainer,
       text="Salvar",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=15,
       command=save
       )
@@ -168,7 +168,7 @@ class TemaAutomatico:
     self.botaoCadastrarNovo = Button(
       self.botoesContainer,
       text="Cadastrar novo tema",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=30,
       command=self.janelaCadastroEdicao
       )

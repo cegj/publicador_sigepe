@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 from views import Interfaces as i
 from controllers import Variaveis as v
 
@@ -18,14 +18,14 @@ class VerVariaveis:
     label = Label(
       self.container,
       text="Valores das variáveis disponíveis",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack()
     self.textbox = Text(
       self.container,
       width=30,
       height=13,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     for key, value in self.variaveis.items():
       self.textbox.insert(END, f"[{key}]: {value}\n")

@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 from views import Delimitadores as d
 
 class AbrirDelimitadoresBtn:
@@ -12,7 +12,7 @@ class AbrirDelimitadoresBtn:
     btn = Button(
       self.container,
       text="Editar delimitadores",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=self.abrirJanela
       )

@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 from views import Pospublicacao as pp
 
 class AbrirPospublicacaoBtn:
@@ -12,7 +12,7 @@ class AbrirPospublicacaoBtn:
     btn = Button(
       self.container,
       text="Configurar pós-publicação",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=25,
       command=self.abrirJanela
       )

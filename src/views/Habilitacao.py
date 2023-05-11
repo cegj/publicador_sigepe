@@ -1,9 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-import appConfig
 from Webdriver import nav
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from selenium.webdriver.common.by import By
 import time
 from views import Interfaces as i
@@ -24,7 +23,7 @@ class Habilitacao(i.Interfaces):
   def checarAcessoHabilitacao():
     try:
       gt.goTo("https://bgp.sigepe.planejamento.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf")
-      if(cebx.checkExistsByXpath(xpaths["habilitacao"]["acessoNegadoHeader"])):
+      if(cebx.checkExistsByXpath(ac.AppConfig.xpaths["habilitacao"]["acessoNegadoHeader"])):
         gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
         return False
       else:
@@ -57,9 +56,9 @@ class Habilitacao(i.Interfaces):
   def janelaHabilitacao(self):
     try:
       gt.goTo("https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
-      self.sigepe_habilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
+      self.sigepe_habilitacaoBotao = nav.find_element(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacaoBotao'])
       self.sigepe_habilitacaoBotao.click()
-      sigepe_HabilitacoesLinks = nav.find_elements(By.XPATH, xpaths['habilitacao']['habilitacoesLinks'])
+      sigepe_HabilitacoesLinks = nav.find_elements(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacoesLinks'])
 
       listaHabilitacoes = []
       for habilitacao in sigepe_HabilitacoesLinks:
@@ -79,7 +78,7 @@ class Habilitacao(i.Interfaces):
       botaoSelecionarHabilitacao = Button(
         self.habilitacaoContainer,
         text="Alterar habilitação",
-        font=appConfig.fontes["botao"],
+        font=ac.AppConfig.fontes["botao"],
         width=20,
         command=self.handleMudarHabilitacao
       )

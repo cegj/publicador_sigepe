@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 
 class Orgao:
   def __init__(self, sessao, container):
@@ -13,7 +13,7 @@ class Orgao:
     label = Label(
       self.subcontainer,
       text="Órgão",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     self.value = StringVar()
@@ -22,7 +22,7 @@ class Orgao:
       self.subcontainer,
       width=27,
       textvariable=self.value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     self.value.set(self.sessao.userConfig["valores_sigepe"]["orgao"])
     entry.pack(side=LEFT)

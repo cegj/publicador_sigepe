@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 from views import RemoverTermosConteudo as rtc
 
 class AbrirRemocaoTermosBtn:
@@ -12,7 +12,7 @@ class AbrirRemocaoTermosBtn:
     btn = Button(
       self.container,
       text="Config. remoção de termos",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=25,
       command=self.abrirJanela
       )

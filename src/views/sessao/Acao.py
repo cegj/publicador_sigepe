@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-import appConfig
+from controllers import AppConfig as ac
 
 class Acao:
   def __init__(self, sessao, container):
@@ -14,7 +14,7 @@ class Acao:
     label = Label(
       self.subcontainer,
       text="Ação",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     self.selected = StringVar()
@@ -26,7 +26,7 @@ class Acao:
       values=options,
       state="readonly",
       width=30,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     seletor.pack(side=LEFT)
     seletor.bind("<<ComboboxSelected>>", self.setSelected)

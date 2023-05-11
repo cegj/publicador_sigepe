@@ -1,4 +1,4 @@
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from Webdriver import nav
 from Webdriver import wait
 from selenium.webdriver.common.by import By
@@ -16,30 +16,30 @@ class Correlacao:
       command2 = "')) { li.click() } }"
 
       sigepe_botaoIncluirCorrelacao = wait["regular"].until(EC.element_to_be_clickable(
-          (By.XPATH, xpaths["publicacao"]["incluirCorrelacaoBotao"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["incluirCorrelacaoBotao"])))
       sigepe_botaoIncluirCorrelacao.click()
       wfl.waitForLoading()
 
 
       sigepe_campoAcao = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["acaoCorrelacaoSelect"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["acaoCorrelacaoSelect"])))
       sigepe_campoAcao.click()
       time.sleep(0.3)
 
       sigepe_buscarAcao = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["buscarAcaoCorrelacaoInput"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarAcaoCorrelacaoInput"])))
       sigepe_buscarAcao.send_keys(data['acao'])
       time.sleep(1.5)
       sigepe_buscarAcao.send_keys(Keys.ENTER)
       wfl.waitForLoading()
 
       sigepe_buscarAtoBotao = wait["regular"].until(EC.element_to_be_clickable(
-          (By.XPATH, xpaths["publicacao"]["buscarAtoCorrelacaoBotao"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarAtoCorrelacaoBotao"])))
       sigepe_buscarAtoBotao.click()
       wfl.waitForLoading()
 
       sigepe_campoOrigem = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["origemAtoCorrelacaoSelect"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["origemAtoCorrelacaoSelect"])))
       sigepe_campoOrigem.click()
       time.sleep(0.5)
       wfl.waitForLoading()
@@ -47,84 +47,84 @@ class Correlacao:
       wfl.waitForLoading()
 
       sigepe_campoOrgaoResponsavel = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["orgaoResponsavelAtoCorrelacaoSelect"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["orgaoResponsavelAtoCorrelacaoSelect"])))
       sigepe_campoOrgaoResponsavel.click()
       time.sleep(0.3)
 
       sigepe_buscarOrgaoResponsavel = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["buscarOrgaoResponsavelInput"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarOrgaoResponsavelInput"])))
       nav.execute_script("".join([command1, data['orgao'], command2]))
       wfl.waitForLoading()
 
       sigepe_campoUpagResponsavel = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["upagResponsavelAtoCorrelacaoSelect"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["upagResponsavelAtoCorrelacaoSelect"])))
       sigepe_campoUpagResponsavel.click()
       time.sleep(0.3)
 
       sigepe_buscarUpagResponsavel = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["buscarUpagResponsavelInput"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarUpagResponsavelInput"])))
       nav.execute_script("".join([command1, data['upag'], command2]))
       wfl.waitForLoading()
       time.sleep(1.3)
 
       sigepe_campoUorgResponsavel = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["uorgResponsavelAtoCorrelacaoSelect"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["uorgResponsavelAtoCorrelacaoSelect"])))
       sigepe_campoUorgResponsavel.click()
       time.sleep(0.3)
 
       sigepe_buscarUorgResponsavel = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["buscarUorgResponsavelInput"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarUorgResponsavelInput"])))
       nav.execute_script("".join([command1, data['uorg'], command2]))
       wfl.waitForLoading()
 
       sigepe_campoNumeroAtoCorrelacionado = wait["regular"].until(EC.element_to_be_clickable(
-          (By.XPATH, xpaths["publicacao"]["numeroAtoCorrelacaoInput"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["numeroAtoCorrelacaoInput"])))
       sigepe_campoNumeroAtoCorrelacionado.click()
       time.sleep(0.2)
       sigepe_campoNumeroAtoCorrelacionado.send_keys(data['numero'])
 
       sigepe_campoAnoDe = wait["regular"].until(EC.element_to_be_clickable(
-          (By.XPATH, xpaths["publicacao"]["anoDeAtoCorrelacaoInput"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["anoDeAtoCorrelacaoInput"])))
       sigepe_campoAnoDe.click()
       time.sleep(0.2)
       sigepe_campoAnoDe.send_keys(data['ano'])
 
       sigepe_campoAnoAte = wait["regular"].until(EC.element_to_be_clickable(
-          (By.XPATH, xpaths["publicacao"]["anoAteCorrelacaoInput"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["anoAteCorrelacaoInput"])))
       sigepe_campoAnoAte.click()
       time.sleep(0.2)
       sigepe_campoAnoAte.send_keys(data['ano'])
 
       sigepe_botaoPesquisarAto = wait["regular"].until(EC.element_to_be_clickable(
-          (By.XPATH, xpaths["publicacao"]["pesquisarAtoCorrelacaoBotao"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["pesquisarAtoCorrelacaoBotao"])))
       sigepe_botaoPesquisarAto.click()
       wfl.waitForLoading()
 
       sigepe_radioSelecionarAto = wait["regular"].until(EC.element_to_be_clickable(
-          (By.XPATH, xpaths["publicacao"]["atoCorrelacaoRadio"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoRadio"])))
       sigepe_radioSelecionarAto.click()
       time.sleep(0.3)
 
       sigepe_botaoSelecionarAto = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["selecionarAtoCorrelacaoBotao"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["selecionarAtoCorrelacaoBotao"])))
       # sigepe_botaoGravarAto.click()
       nav.execute_script("arguments[0].click();", sigepe_botaoSelecionarAto);
       wfl.waitForLoading()
 
       sigepe_botaoGravarAto = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["gravarAtoCorrelacaoBotao"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["gravarAtoCorrelacaoBotao"])))
       # sigepe_botaoGravarAto.click()
       nav.execute_script("arguments[0].click();", sigepe_botaoGravarAto);
       wfl.waitForLoading()
 
       sigepe_acaoSelecionada = wait["regular"].until(EC.presence_of_element_located(
-        (By.XPATH, xpaths["publicacao"]["atoCorrelacaoAcaoSelecionada"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoAcaoSelecionada"])))
 
       sigepe_especieSelecionada = wait["regular"].until(EC.presence_of_element_located(
-        (By.XPATH, xpaths["publicacao"]["atoCorrelacaoEspecieSelecionada"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoEspecieSelecionada"])))
 
       sigepe_numeroSelecionado = wait["regular"].until(EC.presence_of_element_located(
-        (By.XPATH, xpaths["publicacao"]["atoCorrelacaoNumeroSelecionado"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoNumeroSelecionado"])))
 
       selecionado = f"{sigepe_acaoSelecionada.text} {sigepe_especieSelecionada.text} {sigepe_numeroSelecionado.text}"
 

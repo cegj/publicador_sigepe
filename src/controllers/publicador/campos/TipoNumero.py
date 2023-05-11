@@ -1,4 +1,4 @@
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from Webdriver import wait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -11,11 +11,11 @@ class TipoNumero:
   def preencher(data):
     try:
       campoTipoNumero = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["tipoNumeroCampo"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoNumeroCampo"])))
       campoTipoNumero.click()
       time.sleep(0.3)
       campoBuscarTipoNumero = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["tipoNumeroBuscar"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoNumeroBuscar"])))
       campoBuscarTipoNumero.send_keys(data)
       time.sleep(1.5)
       campoBuscarTipoNumero.send_keys(Keys.ENTER)

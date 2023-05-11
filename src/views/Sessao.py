@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-import appConfig
 from Webdriver import nav
 from views import Interfaces as i
 from views.sessao import Habilitacao as s_h
@@ -25,6 +24,7 @@ from views.sessao import AbrirVerVariaveisBtn as s_avv
 from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
 from controllers import UserConfig as uc
+from controllers import AppConfig as ac
 from helpers import goTo as gt
 
 class Sessao(i.Interfaces):
@@ -73,7 +73,7 @@ class Sessao(i.Interfaces):
     tituloDadosPublicacao = Label(
       self.linha1c1,
       text="Dados da publicação",
-      font=appConfig.fontes["titulo"],
+      font=ac.AppConfig.fontes["titulo"],
       anchor=CENTER
     )
     tituloDadosPublicacao.pack()
@@ -101,7 +101,7 @@ class Sessao(i.Interfaces):
     tituloArquivos = Label(
       self.linha1c2,
       text="Arquivos",
-      font=appConfig.fontes["titulo"],
+      font=ac.AppConfig.fontes["titulo"],
       anchor=CENTER
     )
     tituloArquivos.pack()

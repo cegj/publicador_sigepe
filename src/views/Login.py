@@ -2,13 +2,12 @@ from views import Interfaces as i
 from controllers import Acesso as a
 from tkinter import *
 from tkinter import messagebox
-import appConfig
 from helpers import checkExistsByXpath as cebx
 from helpers import getScreenshotByXpath as gebx
 from helpers import goTo as gt
 from PIL import ImageTk, Image
 import os
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from Webdriver import nav
 
 class Login(i.Interfaces):
@@ -24,7 +23,7 @@ class Login(i.Interfaces):
     loginContainer.pack()
     loginContainerTitulo = Label(
       loginContainer, text="Entrar no Sigepe",
-      font=appConfig.fontes["titulo"])
+      font=ac.AppConfig.fontes["titulo"])
     loginContainerTitulo.pack()
 
     gt.goTo("https://admsistema.sigepe.planejamento.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf")
@@ -36,12 +35,12 @@ class Login(i.Interfaces):
     cpfLabel = Label(
       cpfContainer,
       text="CPF",
-      font=appConfig.fontes["normal"])
+      font=ac.AppConfig.fontes["normal"])
     cpfLabel.pack()
     cpfInput = Entry(
       cpfContainer,
       width=20,
-      font=appConfig.fontes["normal"])
+      font=ac.AppConfig.fontes["normal"])
     cpfInput.pack()
 
     senhaContainer = Frame(
@@ -51,21 +50,21 @@ class Login(i.Interfaces):
     senhaLabel = Label(
       senhaContainer,
       text="Senha",
-      font=appConfig.fontes["normal"])
+      font=ac.AppConfig.fontes["normal"])
     senhaLabel.pack()
     senhaInput = Entry(
       senhaContainer,
       width=20,
-      font=appConfig.fontes["normal"],
+      font=ac.AppConfig.fontes["normal"],
       show="*")
     senhaInput.pack()
 
-    if(cebx.checkExistsByXpath(xpaths['login']['recaptcha'])):
+    if(cebx.checkExistsByXpath(ac.AppConfig.xpaths['login']['recaptcha'])):
       messagebox.showerror("Erro fatal", "Não foi possível acessar o Sigepe devido a tentativas sucessivas com erro. Para evitar o bloqueio da sua conta, o Publicador Sigepe será encerrado. Inicie novamente.")
       self.handleFecharJanela()
 
     captchaInput = None
-    if(cebx.checkExistsByXpath(xpaths['login']['captchaImg'])):
+    if(cebx.checkExistsByXpath(ac.AppConfig.xpaths['login']['captchaImg'])):
         captchaContainer = Frame(
           loginContainer,
           pady=5)
@@ -73,9 +72,9 @@ class Login(i.Interfaces):
         captchaLabel = Label(
           captchaContainer,
           text="Confirme o código",
-          font=appConfig.fontes["normal"])
+          font=ac.AppConfig.fontes["normal"])
         captchaLabel.pack()
-        imgFileName = gebx.getScreenshotByXpath(xpaths['login']['captchaImg'], 'captcha')
+        imgFileName = gebx.getScreenshotByXpath(ac.AppConfig.xpaths['login']['captchaImg'], 'captcha')
         imgFile = Image.open(imgFileName)
         captchaImg = ImageTk.PhotoImage(imgFile)
         captchaImgLabel = Label(
@@ -87,13 +86,13 @@ class Login(i.Interfaces):
         captchaInput = Entry(
           captchaContainer,
           width=20,
-          font=appConfig.fontes["normal"])
+          font=ac.AppConfig.fontes["normal"])
         captchaInput.pack()
 
     botaoEntrar = Button(
       loginContainer,
       text="Entrar",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=12,
       command=handleEntrar)
     botaoEntrar.pack()

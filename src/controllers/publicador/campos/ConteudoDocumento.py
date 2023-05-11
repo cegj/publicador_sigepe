@@ -1,4 +1,4 @@
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from Webdriver import nav
 from Webdriver import wait
 from selenium.webdriver.common.by import By
@@ -13,7 +13,7 @@ class ConteudoDocumento:
     try:
       nav.switch_to.frame(0)
       sigepe_campoTextoPortaria = wait["long"].until(
-          EC.element_to_be_clickable((By.XPATH, xpaths["publicacao"]["conteudoDocumentoTextarea"])))
+          EC.element_to_be_clickable((By.XPATH, ac.AppConfig.xpaths["publicacao"]["conteudoDocumentoTextarea"])))
       sigepe_campoTextoPortaria.click()
       time.sleep(0.3)
       for part in reversed(data.split('\n')):

@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from controllers import ObterDoSigepe as ods
-import appConfig
+from controllers import AppConfig as ac
 from views import TemaAutomatico as ta
 
 class TemaAssunto:
@@ -16,7 +16,7 @@ class TemaAssunto:
     temaLabel = Label(
       self.subcontainer,
       text="Tema",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     temaLabel.pack(side=LEFT)
     self.seletorTipoTemaAssunto()
@@ -59,7 +59,7 @@ class TemaAssunto:
     self.botaoConfigTemaAutomatico = Button(
       self.temaAutomaticoContainer,
       text="Configurar busca de temas",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=30,
       command=abrirJanela
       )
@@ -77,7 +77,7 @@ class TemaAssunto:
       values=listaTemas,
       state="readonly",
       width=40,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     seletorTema.pack(side=LEFT)
     self.setTemaManual()
@@ -94,7 +94,7 @@ class TemaAssunto:
     assuntoLabel = Label(
       self.assuntoManualContainer,
       text="Assunto",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     assuntoLabel.pack(side=LEFT)
     self.assuntoSelected = StringVar()
@@ -109,7 +109,7 @@ class TemaAssunto:
       values=listaAssuntos,
       state="readonly",
       width=30,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     seletorAssunto.pack(side=LEFT)
     seletorAssunto.bind("<<ComboboxSelected>>", self.setAssuntoManual)

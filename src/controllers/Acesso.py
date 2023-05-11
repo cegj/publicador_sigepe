@@ -6,9 +6,9 @@ from helpers import waitForLoading as wfl
 from views import Sessao as s
 from Webdriver import nav
 from Webdriver import wait
-from appXpaths import xpaths
 from views import Login as l
 from views import Habilitacao as h
+from controllers import AppConfig as ac
 from controllers import UserConfig as uc
 import time
 from selenium.webdriver.support import expected_conditions as EC
@@ -22,28 +22,28 @@ class Acesso:
         try:
             cpf = cpfInput.get()
             senha = senhaInput.get()
-            campoUsuario = nav.find_element(By.XPATH, xpaths['login']['usuarioInput'])
+            campoUsuario = nav.find_element(By.XPATH, ac.AppConfig.xpaths['login']['usuarioInput'])
             campoUsuario.click()
             campoUsuario.send_keys(cpf)
-            campoSenha = nav.find_element(By.XPATH, xpaths['login']['senhaInput'])
+            campoSenha = nav.find_element(By.XPATH, ac.AppConfig.xpaths['login']['senhaInput'])
             campoSenha.click()
             campoSenha.send_keys(senha)
 
             if(cebx.checkExistsByXpath('//*[@id="captchaImg"]')):
                 captcha = captchaInput.get()
-                campoCaptcha = nav.find_element(By.XPATH, xpaths['login']['captchaInput'])
+                campoCaptcha = nav.find_element(By.XPATH, ac.AppConfig.xpaths['login']['captchaInput'])
                 campoCaptcha.click()
                 campoCaptcha.send_keys(captcha)
 
-            botaoAcessar = nav.find_element(By.XPATH, xpaths['login']['acessarBnt'])
+            botaoAcessar = nav.find_element(By.XPATH, ac.AppConfig.xpaths['login']['acessarBnt'])
             botaoAcessar.click()
 
             if (cebx.checkExistsByXpath('//*[@id="msg_alerta"]')):
-                erroLogin = nav.find_element(By.XPATH, xpaths['login']['loginError'])
+                erroLogin = nav.find_element(By.XPATH, ac.AppConfig.xpaths['login']['loginError'])
                 raise Exception(erroLogin.text)
 
-            if (cebx.checkExistsByXpath(xpaths['login']['novoUsuarioPageTitle'])):
-                erroLogin = nav.find_element(By.XPATH, xpaths['login']['novoUsuarioPageTitle'])
+            if (cebx.checkExistsByXpath(ac.AppConfig.xpaths['login']['novoUsuarioPageTitle'])):
+                erroLogin = nav.find_element(By.XPATH, ac.AppConfig.xpaths['login']['novoUsuarioPageTitle'])
                 if (erroLogin.text == "Primeiro Acesso - Identificação de Usuário"):
                     raise Exception("Usuário foi identificado como de primeiro acesso. Verifique se o CPF foi preenchido corretamente ou faça o seu cadastro no Sigepe.")
                 else:
@@ -70,7 +70,7 @@ class Acesso:
     def definirHabilitacaoInicial():
         try:
             userConfig = uc.UserConfig.obterConfiguracoesSalvas()
-            sigepe_habilitacaoBotao = nav.find_element(By.XPATH, xpaths['habilitacao']['habilitacaoBotao'])
+            sigepe_habilitacaoBotao = nav.find_element(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacaoBotao'])
             sigepe_habilitacaoBotao.click()
             xPathHabInicial = f"//*[contains(text(), '{userConfig['habilitacao']['inicial']}')]"
             if (cebx.checkExistsByXpath(xPathHabInicial)):

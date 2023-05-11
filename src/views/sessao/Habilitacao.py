@@ -1,6 +1,6 @@
 from tkinter import *
 from controllers import ObterDoSigepe as ods
-import appConfig
+from controllers import AppConfig as ac
 from views import Habilitacao as h
 
 class Habilitacao:
@@ -17,13 +17,13 @@ class Habilitacao:
       self.subcontainer,
       text=f"Habilitação atual: {sigepe_habilitacaoBotao.text}",
       anchor="w",
-      font=appConfig.fontes["normal"])
+      font=ac.AppConfig.fontes["normal"])
     habilitacaoAtualLabel.pack(side=LEFT)
     self.sessao.userConfig["habilitacao"]["inicial"] = sigepe_habilitacaoBotao.text
     botaoAlterarHabilitacao = Button(
       self.subcontainer,
       text="Alterar habilitação",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=self.abrirSeletorHabilitacao)
     botaoAlterarHabilitacao.pack(side=LEFT)

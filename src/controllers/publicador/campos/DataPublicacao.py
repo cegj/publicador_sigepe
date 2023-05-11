@@ -1,4 +1,4 @@
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from Webdriver import wait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,7 +9,7 @@ class DataPublicacao:
   def preencher(data):
     try:
       sigepe_campoDataPublicacao = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["dataPublicacaoCampo"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["dataPublicacaoCampo"])))
 
       sigepe_campoDataPublicacao.click()
 

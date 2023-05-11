@@ -1,4 +1,4 @@
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from Webdriver import wait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,9 +9,9 @@ class EdicaoBoletim:
   def preencher(data):
     try:
       edicaoNormal = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["edicaoBoletimNormalLabel"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["edicaoBoletimNormalLabel"])))
       edicaoExtraordinaria = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["edicaoBoletimExtraordinariaLabel"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["edicaoBoletimExtraordinariaLabel"])))
 
       if (data == "Normal"):
           edicaoNormal.click()

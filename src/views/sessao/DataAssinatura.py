@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 
 class DataAssinatura:
   def __init__(self, sessao, container):
@@ -13,7 +13,7 @@ class DataAssinatura:
     label = Label(
       self.subcontainer,
       text="Data de assinatura",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     self.value = StringVar()
@@ -22,7 +22,7 @@ class DataAssinatura:
       self.subcontainer,
       width=20,
       textvariable=self.value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     self.value.set(self.sessao.userConfig["valores_sigepe"]["data_assinatura"])
     entry.pack(side=LEFT)

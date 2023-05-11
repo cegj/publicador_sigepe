@@ -1,10 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-import appConfig
 from views import Interfaces as i
 from copy import copy
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 import os
 
 class CriarCorrelacao:
@@ -37,7 +36,7 @@ class CriarCorrelacao:
     labelTitulo = Label(
       self.container,
       text="Criar correlação para o documento",
-      font=appConfig.fontes["titulo"]
+      font=ac.AppConfig.fontes["titulo"]
       )
     labelTitulo.pack()
     self.acao()
@@ -58,7 +57,7 @@ class CriarCorrelacao:
     label = Label(
       subcontainer,
       text="Ação:",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.grid(row=1, column=1, sticky="w")
     selected = StringVar()
@@ -87,7 +86,7 @@ class CriarCorrelacao:
       values=options,
       state="readonly",
       width=20,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     seletor.grid(row=1, column=2, sticky="w")
     seletor.bind("<<ComboboxSelected>>", setSelected)
@@ -100,7 +99,7 @@ class CriarCorrelacao:
     label = Label(
       container,
       text="Origem:",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.grid(row=1, column=1, sticky="w")
     selected = StringVar()
@@ -123,7 +122,7 @@ class CriarCorrelacao:
       values=options,
       state="readonly",
       width=20,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     seletor.grid(row=1, column=2, sticky="w")
     seletor.bind("<<ComboboxSelected>>", setSelected)
@@ -136,7 +135,7 @@ class CriarCorrelacao:
     label = Label(
       subcontainer,
       text="Órgão",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     value = StringVar()
@@ -147,7 +146,7 @@ class CriarCorrelacao:
       subcontainer,
       width=27,
       textvariable=value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     entry.pack(side=LEFT)
 
@@ -159,7 +158,7 @@ class CriarCorrelacao:
     label = Label(
       subcontainer,
       text="UPAG",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     value = StringVar()
@@ -170,7 +169,7 @@ class CriarCorrelacao:
       subcontainer,
       width=27,
       textvariable=value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     entry.pack(side=LEFT)
 
@@ -182,7 +181,7 @@ class CriarCorrelacao:
     label = Label(
       subcontainer,
       text="UORG",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     value = StringVar()
@@ -193,7 +192,7 @@ class CriarCorrelacao:
       subcontainer,
       width=27,
       textvariable=value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     entry.pack(side=LEFT)
 
@@ -205,7 +204,7 @@ class CriarCorrelacao:
     label = Label(
       subcontainer,
       text="Número do ato",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     value = StringVar()
@@ -215,7 +214,7 @@ class CriarCorrelacao:
       subcontainer,
       width=20,
       textvariable=value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     entry.pack(side=LEFT)
 
@@ -227,7 +226,7 @@ class CriarCorrelacao:
     label = Label(
       subcontainer,
       text="Ano de publicação",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     value = StringVar()
@@ -237,7 +236,7 @@ class CriarCorrelacao:
       subcontainer,
       width=18,
       textvariable=value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     entry.pack(side=LEFT)
 
@@ -249,7 +248,7 @@ class CriarCorrelacao:
     botao = Button(
       subcontainer,
       text=text,
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=self.criar
     )
@@ -261,7 +260,7 @@ class CriarCorrelacao:
     botao = Button(
       subcontainer,
       text="Apagar correlação",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=self.apagar
     )

@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
-import appConfig
+from controllers import AppConfig as ac
 from views import Publicacao as p
 from views import CriarCorrelacao as cc
 import os
@@ -81,7 +81,7 @@ class ArquivosPublicar:
     btn = Button(
       self.btnsContainer,
       text="Selecionar arquivos",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=self.getFiles
       )
@@ -91,7 +91,7 @@ class ArquivosPublicar:
     btn = Button(
       self.btnsContainer,
       text="Publicar",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       bg="#429321",
       fg="white",

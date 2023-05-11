@@ -1,4 +1,4 @@
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from Webdriver import wait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,7 +12,7 @@ class Especie:
     try:
       time.sleep(1)
       sigepe_campoEspecie = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["especieSelect"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["especieSelect"])))
 
       wfl.waitForLoading()
 
@@ -21,7 +21,7 @@ class Especie:
       time.sleep(0.3)
 
       sigepe_campoBuscarEspecie = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["buscarEspecieInput"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarEspecieInput"])))
 
       sigepe_campoBuscarEspecie.send_keys(data)
 

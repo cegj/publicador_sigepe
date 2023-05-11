@@ -1,9 +1,9 @@
 from views import Interfaces as i
 from controllers import UserConfig as uc
+from controllers import AppConfig as ac
 from controllers import Publicador as p
 from tkinter import *
 import tkinter.scrolledtext as st
-import appConfig
 from copy import copy
 from tkinter import filedialog
 from tkinter import messagebox
@@ -38,7 +38,7 @@ class Publicacao:
     pendingFilesLabel = Label(
       pendingFilesContainer,
       text="Arquivos na fila",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
     )
     pendingFilesLabel.pack()
     self.pendingFilesList = Listbox(
@@ -58,7 +58,7 @@ class Publicacao:
     successFilesLabel = Label(
       successFilesContainer,
       text="Arquivos publicados",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
     )
     successFilesLabel.pack()
     self.successFilesList = Listbox(
@@ -78,7 +78,7 @@ class Publicacao:
     failFilesLabel = Label(
       failFilesContainer,
       text="Arquivos não publicados",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
     )
     failFilesLabel.pack()
     self.failFilesList = Listbox(
@@ -98,14 +98,14 @@ class Publicacao:
     logBoxLabel = Label(
       logboxContainer,
       text="Todos os logs",
-      font=appConfig.fontes["normal"],
+      font=ac.AppConfig.fontes["normal"],
     )
     logBoxLabel.pack()
     self.logbox = st.ScrolledText(
       logboxContainer,
       width=50,
       height=10,
-      font=appConfig.fontes["log"],
+      font=ac.AppConfig.fontes["log"],
       spacing3=5
       )
     self.logbox.pack()
@@ -116,14 +116,14 @@ class Publicacao:
     fileContentLabel = Label(
       resultBoxContainer,
       text="Logs em destaque",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
     )
     fileContentLabel.pack()
     self.resultBox = st.ScrolledText(
       resultBoxContainer,
       width=50,
       height=10,
-      font=appConfig.fontes["log"],
+      font=ac.AppConfig.fontes["log"],
       spacing3=5
       )
     self.resultBox.pack()
@@ -134,14 +134,14 @@ class Publicacao:
     fileContentLabel = Label(
       fileContentContainer,
       text="Conteúdo do documento atual",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
     )
     fileContentLabel.pack()
     self.fileContentBox = st.ScrolledText(
       fileContentContainer,
       width=50,
       height=10,
-      font=appConfig.fontes["log"],
+      font=ac.AppConfig.fontes["log"],
       spacing3=5
       )
     self.fileContentBox.pack()
@@ -153,7 +153,7 @@ class Publicacao:
     salvarLogsBtn = Button(
       btnsContainer,
       text="Salvar logs da publicação",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=25,
       command=self.saveLogs
       )
@@ -162,7 +162,7 @@ class Publicacao:
     fecharBtn = Button(
       btnsContainer,
       text="Fechar",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=self.close
       )

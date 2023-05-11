@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
-import appConfig
 from views import Interfaces as i
 from controllers import UserConfig as uc
+from controllers import AppConfig as ac
 from copy import copy
 
 class RemoverTermosConteudo:
@@ -23,21 +23,21 @@ class RemoverTermosConteudo:
     termosLabel = Label(
       self.termosContainer,
       text="Termos para remover do conteúdo:",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     termosLabel.pack()
     self.termosInput = Text(
       self.termosContainer,
       width=40,
       height=10,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     self.termosInput.insert(END, self.config["termos"])
     self.termosInput.pack()
     infoLabel = Label(
       self.termosContainer,
       text="Para informar diferentes termos, separe-os com ponto-e-vírgula",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     infoLabel.pack()
 
@@ -57,7 +57,7 @@ class RemoverTermosConteudo:
     self.salvarConfigBtn = Button(
       container,
       text="Salvar",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=salvar
     )

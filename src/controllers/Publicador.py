@@ -1,7 +1,7 @@
 from tkinter import *
-import appConfig
 from controllers import Variaveis as v
 from controllers import UserConfig as uc
+from controllers import AppConfig as ac
 from striprtf.striprtf import rtf_to_text
 from tkinter import messagebox
 import os
@@ -25,7 +25,6 @@ from controllers.publicador import Pospublicacao as pp
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from Webdriver import wait
-from appXpaths import xpaths
 from helpers import waitForLoading as wfl
 import re
 
@@ -239,10 +238,10 @@ class Publicador:
     try:
 
       if (self.config["acao"].lower() == "enviar para assinatura / publicação"):
-        if(self.config["valores_sigepe"]["tipo_assinatura"].lower() == "digital"): xpath = xpaths["publicacao"]["enviarParaAssinaturaBotao"]
-        elif(self.config["valores_sigepe"]["tipo_assinatura"].lower() == "manual"): xpath = xpaths["publicacao"]["enviarParaPublicacaoBotao"]
-      elif (self.config["acao"].lower() == "enviar para análise"): xpath = xpaths["publicacao"]["enviarParaAnaliseBotao"]
-      elif (self.config["acao"].lower() == "gravar rascunho"): xpath = xpaths["publicacao"]["gravarRascunhoBotao"]
+        if(self.config["valores_sigepe"]["tipo_assinatura"].lower() == "digital"): xpath = ac.AppConfig.xpaths["publicacao"]["enviarParaAssinaturaBotao"]
+        elif(self.config["valores_sigepe"]["tipo_assinatura"].lower() == "manual"): xpath = ac.AppConfig.xpaths["publicacao"]["enviarParaPublicacaoBotao"]
+      elif (self.config["acao"].lower() == "enviar para análise"): xpath = ac.AppConfig.xpaths["publicacao"]["enviarParaAnaliseBotao"]
+      elif (self.config["acao"].lower() == "gravar rascunho"): xpath = ac.AppConfig.xpaths["publicacao"]["gravarRascunhoBotao"]
 
       self.publicacao.insertLog(f"Executando a ação {self.config['acao'].lower()}", "n", numeroDocumento)
 
@@ -251,16 +250,16 @@ class Publicador:
       sigepe_botaoAcao.click()
       wfl.waitForLoading()
 
-      if (cebx.checkExistsByXpath(xpaths["publicacao"]["mensagemErroPublicacao"])):
+      if (cebx.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemErroPublicacao"])):
         self.resultados["erro"].append(filename)
         mensagemErro = wait["regular"].until(EC.presence_of_element_located(
-          (By.XPATH, xpaths["publicacao"]["mensagemErroPublicacao"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["mensagemErroPublicacao"])))
         raise Exception(f"Falha ao cadastrar documento: {mensagemErro.text}")
       
-      if (cebx.checkExistsByXpath(xpaths["publicacao"]["mensagemSucessoPublicacao"])):
+      if (cebx.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemSucessoPublicacao"])):
         self.resultados["sucesso"].append(filename)
         mensagemSucesso = wait["regular"].until(EC.presence_of_element_located(
-          (By.XPATH, xpaths["publicacao"]["mensagemSucessoPublicacao"])))
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["mensagemSucessoPublicacao"])))
         return {"log": f"Sucesso: {mensagemSucesso.text}", "type": "s", "isFinalResult": True}
 
     except Exception as e:

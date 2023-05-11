@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 
 class Uorg:
   def __init__(self, sessao, container):
@@ -13,7 +13,7 @@ class Uorg:
     label = Label(
       self.subcontainer,
       text="UORG",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
     self.value = StringVar()
@@ -22,7 +22,7 @@ class Uorg:
       self.subcontainer,
       width=27,
       textvariable=self.value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     self.value.set(self.sessao.userConfig["valores_sigepe"]["uorg"])
     entry.pack(side=LEFT)

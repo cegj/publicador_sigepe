@@ -1,4 +1,4 @@
-from appXpaths import xpaths
+from controllers import AppConfig as ac
 from Webdriver import wait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,9 +9,9 @@ class TipoAssinatura:
   def preencher(data):
     try:
       tipoAssinaturaDigital = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["tipoAssinaturaDigitalLabel"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoAssinaturaDigitalLabel"])))
       tipoAssinaturaManual = wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, xpaths["publicacao"]["tipoAssinaturaManualLabel"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoAssinaturaManualLabel"])))
 
       if (data == "Manual"):
           tipoAssinaturaManual.click()

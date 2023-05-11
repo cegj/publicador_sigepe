@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 from controllers import UserConfig as uc
 
 class ManterDadosBtn:
@@ -12,7 +12,7 @@ class ManterDadosBtn:
     btn = Button(
       self.container,
       text="Manter dados",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=lambda: uc.UserConfig.salvarConfiguracoes(self.sessao.userConfig)
       )

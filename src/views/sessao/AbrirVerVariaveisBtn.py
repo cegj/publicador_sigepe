@@ -1,5 +1,5 @@
 from tkinter import *
-import appConfig
+from controllers import AppConfig as ac
 from views import VerVariaveis as vv
 
 class AbrirVerVariaveisBtn:
@@ -12,7 +12,7 @@ class AbrirVerVariaveisBtn:
     btn = Button(
       self.container,
       text="Ver variáveis",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=self.abrirJanela
       )

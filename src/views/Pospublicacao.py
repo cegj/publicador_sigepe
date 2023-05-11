@@ -1,9 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
-import appConfig
 from views import Interfaces as i
 from controllers import UserConfig as uc
+from controllers import AppConfig as ac
 from copy import copy
 
 class Pospublicacao:
@@ -37,7 +37,7 @@ class Pospublicacao:
     copyMoveLabel = Label(
       self.posPublicacaoContainer,
       text="Após publicar",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     copyMoveLabel.grid(column=1, row=1, padx=10, pady=5, sticky='w')
     copyMoveOptionsList = ["Copiar para...", "Mover para...", "Não copiar nem mover"]
@@ -61,13 +61,13 @@ class Pospublicacao:
       self.posPublicacaoContainer,
       textvariable=targetPath,
       width=50,
-      font=appConfig.fontes["normal"],
+      font=ac.AppConfig.fontes["normal"],
       )
     destinoInput.grid(column=3, row=1)
     botaoDiretorioDestino = Button(
       self.posPublicacaoContainer,
       text="Alterar destino",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=getTargetPath
       )
@@ -79,7 +79,7 @@ class Pospublicacao:
     addToFilenameLabel = Label(
       self.posPublicacaoContainer,
       text="Adicionar ao nome do arquivo:",
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     addToFilenameLabel.grid(column=1, columnspan=2, row=2, padx=10, pady=5, sticky='w')
     value = StringVar()
@@ -88,7 +88,7 @@ class Pospublicacao:
       self.posPublicacaoContainer,
       width=40,
       textvariable=value,
-      font=appConfig.fontes["normal"]
+      font=ac.AppConfig.fontes["normal"]
       )
     value.set(self.afterpublishingconfig["adicionar_ao_nome_arquivo"])
     addToFilenameInput.grid(column=3, row=2, columnspan=2, sticky="w")
@@ -106,7 +106,7 @@ class Pospublicacao:
     self.salvarConfigBtn = Button(
       container,
       text="Salvar",
-      font=appConfig.fontes["botao"],
+      font=ac.AppConfig.fontes["botao"],
       width=20,
       command=salvar
     )
