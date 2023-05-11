@@ -8,7 +8,7 @@ from helpers import goTo as gt
 from PIL import ImageTk, Image
 import os
 from controllers import AppConfig as ac
-from Webdriver import nav
+from controllers import Webdriver as wd
 
 class Login(i.Interfaces):
   def __init__(self):
@@ -105,5 +105,5 @@ class Login(i.Interfaces):
     self.root.mainloop()
 
   def handleFecharJanela(self):
-    nav.quit()
+    wd.Webdriver.nav.quit()
     self.root.destroy()

@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from Webdriver import nav
+from controllers import Webdriver as wd
 from views import Interfaces as i
 from views.sessao import Habilitacao as s_h
 from views.sessao import Acao as s_a
