@@ -80,6 +80,7 @@
     "atoCorrelacaoAcaoSelecionada": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[2]/div/span/span/span/div/table/tbody/tr/td[2]/div/span",
     "atoCorrelacaoEspecieSelecionada": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[2]/div/span/span/span/div/table/tbody/tr/td[3]/div/span",
     "atoCorrelacaoNumeroSelecionado": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[2]/div/span/span/span/div/table/tbody/tr/td[4]/div/span",
+    "atoCorrelacaoMensagemErro": "//*[@id='frmCadastrarAto:cadastradorDeAtoParaPublicacao:seletorDeAto:seletorDeAtoMessages']/div/ul/li/span[2]",
     "incluirInteressadoBotao": "//*[text()='Incluir interessado']",
     "matriculaInteressadoInput": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[3]/div/span/span/div[2]/div[2]/span/span/span[1]/div/fieldset[1]/div/div[3]/div[2]/input",
     "pesquisarInteressadoBotao": "//*[text()='Pesquisar']",

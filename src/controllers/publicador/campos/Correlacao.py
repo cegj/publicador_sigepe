@@ -98,6 +98,12 @@ class Correlacao:
       sigepe_botaoPesquisarAto.click()
       wd.Webdriver.waitLoadingModal()
 
+      if (wd.Webdriver.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoMensagemErro"])):
+        sigepe_erroBuscaAto = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoMensagemErro"])))
+        conteudoErro = sigepe_erroBuscaAto.text
+        raise Exception(conteudoErro)
+
       sigepe_radioSelecionarAto = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["atoCorrelacaoRadio"])))
       sigepe_radioSelecionarAto.click()
@@ -129,7 +135,6 @@ class Correlacao:
       return {"log": f"Correlação selecionada: {selecionado}", "type": "n"}
 
     except Exception as e:
-      print(e)
       return {"log": f"Falha ao selecionar correlação: {e}", "type": "e", "e": e}
 
   @staticmethod
