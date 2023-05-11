@@ -1,6 +1,5 @@
 from controllers import AppConfig as ac
-from Webdriver import nav
-from Webdriver import wait
+from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
@@ -11,8 +10,8 @@ class ConteudoDocumento:
   @staticmethod
   def preencher(data):
     try:
-      nav.switch_to.frame(0)
-      sigepe_campoTextoPortaria = wait["long"].until(
+      wd.Webdriver.nav.switch_to.frame(0)
+      sigepe_campoTextoPortaria = wd.Webdriver.wait["long"].until(
           EC.element_to_be_clickable((By.XPATH, ac.AppConfig.xpaths["publicacao"]["conteudoDocumentoTextarea"])))
       sigepe_campoTextoPortaria.click()
       time.sleep(0.3)
@@ -20,7 +19,7 @@ class ConteudoDocumento:
         sigepe_campoTextoPortaria.send_keys(part)
         sigepe_campoTextoPortaria.send_keys(Keys.ENTER)
       time.sleep(0.3)
-      nav.switch_to.default_content()
+      wd.Webdriver.nav.switch_to.default_content()
       wfl.waitForLoading()
       return {"log": f"Conteúdo do documento preenchido", "type": "n"}
 

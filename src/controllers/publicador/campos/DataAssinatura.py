@@ -1,5 +1,4 @@
 from controllers import AppConfig as ac
-from Webdriver import wait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
@@ -8,7 +7,7 @@ class DataAssinatura:
   @staticmethod
   def preencher(data):
     try:
-      sigepe_campoDataAssinatura = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_campoDataAssinatura = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["dataAssinaturaCampo"])))
 
       sigepe_campoDataAssinatura.click()

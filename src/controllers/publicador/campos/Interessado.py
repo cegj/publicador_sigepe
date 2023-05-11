@@ -1,6 +1,5 @@
 from controllers import AppConfig as ac
-from Webdriver import nav
-from Webdriver import wait
+from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
@@ -10,38 +9,38 @@ class Interessado:
   @staticmethod
   def preencher(data):
     try:
-      sigepe_botaoIncluirInteressado = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_botaoIncluirInteressado = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["incluirInteressadoBotao"])))
       sigepe_botaoIncluirInteressado.click()
       wfl.waitForLoading()
 
-      sigepe_campoMatricula = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_campoMatricula = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["matriculaInteressadoInput"])))
       sigepe_campoMatricula.click()
       time.sleep(0.2)
       sigepe_campoMatricula.send_keys(data)
 
-      sigepe_botaoPesquisarInteressado = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_botaoPesquisarInteressado = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["pesquisarInteressadoBotao"])))
       sigepe_botaoPesquisarInteressado.click()
       wfl.waitForLoading()
 
-      sigepe_checkboxSelecionarServidor = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_checkboxSelecionarServidor = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["selecionarInteressadoCheckbox"])))
       sigepe_checkboxSelecionarServidor.click()
       time.sleep(0.3)
 
-      sigepe_botaoIncluirNaLista = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_botaoIncluirNaLista = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["incluirInteressadoNaListaBotao"])))
-      nav.execute_script("arguments[0].click();", sigepe_botaoIncluirNaLista);
+      wd.Webdriver.nav.execute_script("arguments[0].click();", sigepe_botaoIncluirNaLista);
       wfl.waitForLoading()
 
-      sigepe_botaoSelecionarAto = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_botaoSelecionarAto = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["selecionarServidorBotao"])))
-      nav.execute_script("arguments[0].click();", sigepe_botaoSelecionarAto);
+      wd.Webdriver.nav.execute_script("arguments[0].click();", sigepe_botaoSelecionarAto);
       wfl.waitForLoading()
 
-      interessadoSelecionado = wait["regular"].until(EC.presence_of_element_located(
+      interessadoSelecionado = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["interessadoSelecionado"])))
 
       return {"log": f"Interessado selecionado: {interessadoSelecionado.text}", "type": "n"}

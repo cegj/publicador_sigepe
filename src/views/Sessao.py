@@ -36,7 +36,7 @@ class Sessao(i.Interfaces):
   def handleFecharJanela(self):
     confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar?\n\nCaso confirme, a aplicação será encerrada.")
     if (confirmarFechar == 'yes'):
-      nav.quit()
+      wd.Webdriver.nav.quit()
       self.root.destroy()
 
   def sessao(self):

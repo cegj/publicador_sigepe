@@ -1,5 +1,5 @@
 from controllers import AppConfig as ac
-from Webdriver import wait
+from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
@@ -11,7 +11,7 @@ class Especie:
   def preencher(data):
     try:
       time.sleep(1)
-      sigepe_campoEspecie = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_campoEspecie = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["especieSelect"])))
 
       wfl.waitForLoading()
@@ -20,7 +20,7 @@ class Especie:
 
       time.sleep(0.3)
 
-      sigepe_campoBuscarEspecie = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_campoBuscarEspecie = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarEspecieInput"])))
 
       sigepe_campoBuscarEspecie.send_keys(data)

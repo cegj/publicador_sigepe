@@ -5,7 +5,6 @@ from helpers import checkExistsByXpath as cebx
 from helpers import waitForLoading as wfl
 from views import Sessao as s
 from controllers import Webdriver as wd
-from Webdriver import wait
 from views import Login as l
 from views import Habilitacao as h
 from controllers import AppConfig as ac
@@ -74,7 +73,7 @@ class Acesso:
             sigepe_habilitacaoBotao.click()
             xPathHabInicial = f"//*[contains(text(), '{userConfig['habilitacao']['inicial']}')]"
             if (cebx.checkExistsByXpath(xPathHabInicial)):
-                sigepe_novaHabilitacaoBotao = wait["regular"].until(EC.element_to_be_clickable(
+                sigepe_novaHabilitacaoBotao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
                 (By.XPATH, xPathHabInicial)))
                 sigepe_novaHabilitacaoBotao.click()
                 wfl.waitForLoading()

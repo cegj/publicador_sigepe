@@ -24,7 +24,6 @@ from controllers.publicador.campos import Interessado as i
 from controllers.publicador import Pospublicacao as pp
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from Webdriver import wait
 from helpers import waitForLoading as wfl
 import re
 
@@ -245,20 +244,20 @@ class Publicador:
 
       self.publicacao.insertLog(f"Executando a ação {self.config['acao'].lower()}", "n", numeroDocumento)
 
-      sigepe_botaoAcao = wait["regular"].until(EC.element_to_be_clickable(
+      sigepe_botaoAcao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, xpath)))
       sigepe_botaoAcao.click()
       wfl.waitForLoading()
 
       if (cebx.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemErroPublicacao"])):
         self.resultados["erro"].append(filename)
-        mensagemErro = wait["regular"].until(EC.presence_of_element_located(
+        mensagemErro = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["mensagemErroPublicacao"])))
         raise Exception(f"Falha ao cadastrar documento: {mensagemErro.text}")
       
       if (cebx.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemSucessoPublicacao"])):
         self.resultados["sucesso"].append(filename)
-        mensagemSucesso = wait["regular"].until(EC.presence_of_element_located(
+        mensagemSucesso = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["mensagemSucessoPublicacao"])))
         return {"log": f"Sucesso: {mensagemSucesso.text}", "type": "s", "isFinalResult": True}
 

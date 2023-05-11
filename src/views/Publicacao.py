@@ -8,7 +8,7 @@ from copy import copy
 from tkinter import filedialog
 from tkinter import messagebox
 from datetime import datetime
-from Webdriver import nav
+from controllers import Webdriver as wd
 
 class Publicacao:
   def __init__(self, sessao):
@@ -179,7 +179,7 @@ class Publicacao:
   def close(self):
     answer = messagebox.askyesnocancel("Publicador Sigepe", "Deseja encerrar completamente o Publicador Sigepe?\n\nCaso selecione Não, somente a publicação atual será fechada.")
     if (answer == True):
-      nav.quit()
+      wd.Webdriver.nav.quit()
       self.sessao.root.destroy()
       self.master.destroy()
     elif (answer == False):

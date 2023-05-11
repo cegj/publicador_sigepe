@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-from Webdriver import nav
+from controllers import Webdriver as wd
 from controllers import AppConfig as ac
 from selenium.webdriver.common.by import By
 import time
@@ -35,7 +35,7 @@ class Habilitacao(i.Interfaces):
     if (self.sigepe_habilitacaoBotao.text == self.seletorHabilitacoes.get()):
       messagebox.showinfo("Não houve alteração", f"A habilitação {self.seletorHabilitacoes.get()} já é a habilitação ativa no Sigepe no momento.")
     else:
-      sigepe_novaHabilitacaoBotao = nav.find_element(By.XPATH, f"//*[contains(text(), '{self.seletorHabilitacoes.get()}')]")
+      sigepe_novaHabilitacaoBotao = wd.Webdriver.nav.find_element(By.XPATH, f"//*[contains(text(), '{self.seletorHabilitacoes.get()}')]")
       sigepe_novaHabilitacaoBotao.click()
       time.sleep(2)
       if (Habilitacao.checarAcessoHabilitacao()):
@@ -50,15 +50,15 @@ class Habilitacao(i.Interfaces):
   def handleFecharJanela(self):
     confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar?\n\nCaso confirme, a aplicação será encerrada.")
     if (confirmarFechar == 'yes'):
-      nav.quit()
+      wd.Webdriver.nav.quit()
       self.root.destroy()
 
   def janelaHabilitacao(self):
     try:
       gt.goTo(ac.AppConfig.urls["areaDeTrabalho"])
-      self.sigepe_habilitacaoBotao = nav.find_element(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacaoBotao'])
+      self.sigepe_habilitacaoBotao = wd.Webdriver.nav.find_element(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacaoBotao'])
       self.sigepe_habilitacaoBotao.click()
-      sigepe_HabilitacoesLinks = nav.find_elements(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacoesLinks'])
+      sigepe_HabilitacoesLinks = wd.Webdriver.nav.find_elements(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacoesLinks'])
 
       listaHabilitacoes = []
       for habilitacao in sigepe_HabilitacoesLinks:

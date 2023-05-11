@@ -1,6 +1,5 @@
 from controllers import AppConfig as ac
-from Webdriver import nav
-from Webdriver import wait
+from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from helpers import waitForLoading as wfl
@@ -14,14 +13,14 @@ class Tema:
   def preencher(data):
     try:
       temaSplitted = data.split('//')
-      campoTema = wait["regular"].until(EC.element_to_be_clickable(
+      campoTema = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["temaSelect"])))
       campoTema.click()
       time.sleep(0.3)
 
-      campoBuscarTema = wait["regular"].until(EC.element_to_be_clickable(
+      campoBuscarTema = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarTemaInput"])))
-      nav.execute_script("arguments[0].setAttribute('value',arguments[1])",campoBuscarTema, "")
+      wd.Webdriver.nav.execute_script("arguments[0].setAttribute('value',arguments[1])",campoBuscarTema, "")
       time.sleep(0.3)
       campoBuscarTema.send_keys(temaSplitted[0])
       time.sleep(1.5)
@@ -36,7 +35,7 @@ class Tema:
       campoBuscarTema.send_keys(Keys.ENTER)
       wfl.waitForLoading()
 
-      campoTemaPreenchido = wait["regular"].until(EC.element_to_be_clickable(
+      campoTemaPreenchido = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
         (By.XPATH, ac.AppConfig.xpaths["publicacao"]["temaSelect"])))
 
       return {"log": f"Tema selecionado: {campoTemaPreenchido.text}", "type": "n"}
