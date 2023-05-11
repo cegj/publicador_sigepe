@@ -89,8 +89,8 @@
     "selecionarServidorBotao": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[3]/div/span/span/div[2]/div[2]/span/span/div[3]/button[1]",
     "interessadoSelecionado": "/html/body/div[2]/div[4]/div/form[3]/span/span[3]/fieldset[3]/div/span/span/span/div/table/tbody/tr/td[3]/div/span",
     "enviarParaAnaliseBotao": "//*[text()='Enviar para análise']",
-    "enviarParaPublicacaoBotao": "//*[text()='Enviar para assinatura']",
-    "enviarParaAssinaturaBotao": "//*[text()='Enviar para publicação']",
+    "enviarParaPublicacaoBotao": "//*[text()='Enviar para publicação']",
+    "enviarParaAssinaturaBotao": "//*[text()='Enviar para assinatura']",
     "gravarRascunhoBotao": "//*[text()='Gravar Rascunho']",
     "mensagemErroPublicacao": "//*[@id='msgCadastrarAto']/div[2]/ul/li/span[2]",
     "mensagemSucessoPublicacao": "//*[@id='idFormMsg:idMensagem']/div/ul/li/span[2]"

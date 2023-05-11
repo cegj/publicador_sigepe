@@ -282,6 +282,11 @@ class Publicador:
     if (result["type"] != 'n'):
       self.publicacao.insertResult(currentFileName, result["log"], result["type"], docnumber)
 
+      if (result["type"] == 'e'):
+        log = "A publicação do arquivo foi interrompida devido ao erro acima"
+        self.publicacao.insertLog(log, result["type"], docnumber)
+        self.publicacao.insertResult(currentFileName, log, result["type"], docnumber)
+
       if (result["type"] == 's'):
         newFilename = None
         if (self.pospublicacao["adicionar_ao_nome_arquivo"] != ""):

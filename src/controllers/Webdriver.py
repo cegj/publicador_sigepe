@@ -22,7 +22,9 @@ class Webdriver:
       opcoes.add_argument("start-maximized")
       # opcoes.add_argument("--headless")
       opcoes.add_experimental_option('excludeSwitches', ['enable-logging'])
-      return webdriver.Chrome(ChromeDriverManager().install(), service = chrome_service, options=opcoes)
+      driver = webdriver.Chrome(ChromeDriverManager().install(), service = chrome_service, options=opcoes)
+      driver.minimize_window()
+      return driver
     except Exception as e:
       error = str(e)
       errors = {
