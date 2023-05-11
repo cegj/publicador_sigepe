@@ -2,8 +2,8 @@
     "habilitacao":{
         "inicial":"GESTOR - ÓRGÃO:UFES"
     },
-    "tipo_tema_assunto":"Buscar no conteúdo do documento",
-    "acao":"Enviar para análise",
+    "tipo_tema_assunto":"",
+    "acao":"",
     "valores_sigepe":{
         "edicao_bgp":"Normal",
         "tipo_assinatura":"Manual",
