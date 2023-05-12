@@ -21,7 +21,7 @@ class UserConfig:
     try:
       json_file = open('config/user/userconfig.json', 'w', encoding="utf-8")
       json.dump(newUserConfig, json_file, ensure_ascii=False, indent=4, separators=(',',':'))
-      messagebox.showinfo("Sucesso", "Configurações salvas com sucesso")
+      messagebox.showinfo("Sucesso", "Dados salvos com sucesso")
     except Exception as e:
         messagebox.showerror("Erro ao salvar configurações do usuário", e)
     finally:

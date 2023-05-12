@@ -17,10 +17,11 @@ from views.sessao import Uorg as s_uo
 from views.sessao import ResponsavelAssinatura as s_ra
 from views.sessao import CargoResponsavel as s_cr
 from views.sessao import ManterDadosBtn as s_mdb
-from views.sessao import AbrirDelimitadoresBtn as s_adb
-from views.sessao import AbrirPospublicacaoBtn as s_apb
-from views.sessao import AbrirRemocaoTermosBtn as s_art
-from views.sessao import AbrirVerVariaveisBtn as s_avv
+# from views.sessao import AbrirDelimitadoresBtn as s_adb
+# from views.sessao import AbrirPospublicacaoBtn as s_apb
+# from views.sessao import AbrirRemocaoTermosBtn as s_art
+# from views.sessao import AbrirVerVariaveisBtn as s_avv
+from views.sessao import ConfiguracoesBtn as s_cb
 from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
 from controllers import UserConfig as uc
@@ -92,10 +93,7 @@ class Sessao(i.Interfaces):
     s_ra.ResponsavelAssinatura(self, self.linha7c1)
     s_cr.CargoResponsavel(self, self.linha7c1)
     s_mdb.ManterDadosBtn(self, self.linha8c1)
-    s_adb.AbrirDelimitadoresBtn(self, self.linha8c1)
-    s_apb.AbrirPospublicacaoBtn(self, self.linha8c1)
-    s_art.AbrirRemocaoTermosBtn(self, self.linha8c1)
-    s_avv.AbrirVerVariaveisBtn(self, self.linha8c1)
+    s_cb.ConfiguracoesBtn(self, self.linha8c1)
 
     tituloArquivos = Label(
       self.linha1c2,
