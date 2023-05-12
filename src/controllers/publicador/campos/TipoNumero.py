@@ -10,11 +10,13 @@ class TipoNumero:
   def preencher(data):
     try:
       campoTipoNumero = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoNumeroCampo"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoNumeroCampo"])),
+        message="Não foi possível localizar ou clicar no campo 'Tipo de número'")
       campoTipoNumero.click()
       time.sleep(0.3)
       campoBuscarTipoNumero = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoNumeroBuscar"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoNumeroBuscar"])),
+        message="Não foi possível localizar ou clicar no campo 'Buscar tipo de número'")
       campoBuscarTipoNumero.send_keys(data)
       time.sleep(1.5)
       campoBuscarTipoNumero.send_keys(Keys.ENTER)
@@ -22,4 +24,4 @@ class TipoNumero:
       return {"log": f"Tipo de preenchimento do número selecionado: {data}", "type": "n"}
 
     except Exception as e:
-      return {"log": f"Falha ao preencher tipo de preenchimento do número: {e}", "type": "e", "e": e}
+      return wd.Webdriver.handleExceptions(e, "tipo de número do ato")

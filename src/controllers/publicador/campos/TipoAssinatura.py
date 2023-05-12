@@ -7,18 +7,19 @@ class TipoAssinatura:
   @staticmethod
   def preencher(data):
     try:
-      tipoAssinaturaDigital = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoAssinaturaDigitalLabel"])))
-      tipoAssinaturaManual = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoAssinaturaManualLabel"])))
-
       if (data == "Manual"):
-          tipoAssinaturaManual.click()
+        tipoAssinaturaManual = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoAssinaturaManualLabel"])),
+          message="Não foi possível localizar ou clicar na opção 'Manual' de tipo de assinatura")
+        tipoAssinaturaManual.click()
       elif (data == "Digital"):
-          tipoAssinaturaDigital.click()
-
+        tipoAssinaturaDigital = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
+          (By.XPATH, ac.AppConfig.xpaths["publicacao"]["tipoAssinaturaDigitalLabel"])),
+          message="Não foi possível localizar ou clicar na opção 'Digital' de tipo de assinatura")
+        tipoAssinaturaDigital.click()
       wd.Webdriver.waitLoadingModal()
+
       return {"log": f"Tipo de assinatura selecionado: {data}", "type": "n"}
 
     except Exception as e:
-      return {"log": f"Falha ao preencher tipo de assinatura: {e}", "type": "e", "e": e}
+      return wd.Webdriver.handleExceptions(e, "tipo de assinatura")

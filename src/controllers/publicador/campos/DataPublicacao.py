@@ -8,15 +8,12 @@ class DataPublicacao:
   def preencher(data):
     try:
       sigepe_campoDataPublicacao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["dataPublicacaoCampo"])))
-
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["dataPublicacaoCampo"])),
+        message="Não foi possível localizar ou clicar no campo 'Data de publicação'")
       sigepe_campoDataPublicacao.click()
-
       sigepe_campoDataPublicacao.send_keys(data)
-
       wd.Webdriver.waitLoadingModal()
-
       return {"log": f"Data de publicação preenchida: {data}", "type": "n"}
 
     except Exception as e:
-      return {"log": f"Falha ao preencher data de publicação: {e}", "type": "e", "e": e}
+      return wd.Webdriver.handleExceptions(e, "data de publicação")

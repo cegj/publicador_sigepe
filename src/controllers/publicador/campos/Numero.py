@@ -8,15 +8,13 @@ class Numero:
   def preencher(data):
     try:
       sigepe_campoNumero = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["numeroCampo"])))
-
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["numeroCampo"])),
+        message="Não foi possível localizar ou clicar no campo 'Número do ato'")
       sigepe_campoNumero.click()
-
       sigepe_campoNumero.send_keys(data)
-
       wd.Webdriver.waitLoadingModal()
 
       return {"log": f"Número do documento preenchido: {data}", "type": "n"}
 
     except Exception as e:
-      return {"log": f"Falha ao preencher número do documento: {e}", "type": "e", "e": e}
+      return wd.Webdriver.handleExceptions(e, "número do ato")

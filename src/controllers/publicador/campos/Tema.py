@@ -13,12 +13,14 @@ class Tema:
     try:
       temaSplitted = data.split('//')
       campoTema = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["temaSelect"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["temaSelect"])),
+        message="Não foi possível localizar ou clicar no campo 'Tema'")
       campoTema.click()
       time.sleep(0.3)
 
       campoBuscarTema = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarTemaInput"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["buscarTemaInput"])),
+        message="Não foi possível localizar ou clicar no campo 'Buscar tema'")
       wd.Webdriver.nav.execute_script("arguments[0].setAttribute('value',arguments[1])",campoBuscarTema, "")
       time.sleep(0.3)
       campoBuscarTema.send_keys(temaSplitted[0])
@@ -35,12 +37,13 @@ class Tema:
       wd.Webdriver.waitLoadingModal()
 
       campoTemaPreenchido = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["temaSelect"])))
+        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["temaSelect"])),
+        message="Não foi possível localizar ou clicar no campo 'Tema' preenchido")
 
       return {"log": f"Tema selecionado: {campoTemaPreenchido.text}", "type": "n"}
 
     except Exception as e:
-      return {"log": f"Falha ao selecionar tema: {e}", "type": "e", "e": e}
+      return wd.Webdriver.handleExceptions(e, "tema")
 
   @staticmethod
   def buscar(filetext):

@@ -24,6 +24,17 @@ class AppConfig:
     finally:
       json_file.close()
 
+  @staticmethod
+  def obterWebdriverSettings():
+    try:
+      json_file = open('config/app/webdriversettings.json', 'r', encoding="utf-8")
+      content = json.load(json_file)
+      return content
+    except Exception as e:
+        messagebox.showerror("Erro ao carregar endereços das páginas do Sigepe (URLs)", e)
+    finally:
+      json_file.close()
+
   nome = "Publicador Sigepe"
   versao = "v1.1.0"
   fontes = {
@@ -35,4 +46,5 @@ class AppConfig:
   pad = {"x": 20, "y": 20}
   xpaths = obterXpaths.__func__()
   urls = obterUrls.__func__()
+  webdriverSettings = obterWebdriverSettings.__func__()
   

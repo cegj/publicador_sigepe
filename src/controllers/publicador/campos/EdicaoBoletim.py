@@ -7,18 +7,18 @@ class EdicaoBoletim:
   @staticmethod
   def preencher(data):
     try:
-      edicaoNormal = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["edicaoBoletimNormalLabel"])))
-      edicaoExtraordinaria = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-        (By.XPATH, ac.AppConfig.xpaths["publicacao"]["edicaoBoletimExtraordinariaLabel"])))
-
       if (data == "Normal"):
+          edicaoNormal = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
+            (By.XPATH, ac.AppConfig.xpaths["publicacao"]["edicaoBoletimNormalLabel"])),
+            message="Não foi possível localizar ou clicar na opção 'Edição normal'")
           edicaoNormal.click()
       elif (data == "Extraordinária"):
+          edicaoExtraordinaria = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
+            (By.XPATH, ac.AppConfig.xpaths["publicacao"]["edicaoBoletimExtraordinariaLabel"])),
+            message="Não foi possível localizar ou clicar na opção 'Edição extraordinária'")
           edicaoExtraordinaria.click()
-
       wd.Webdriver.waitLoadingModal()
       return {"log": f"Edição do boletim selecionada: {data}", "type": "n"}
 
     except Exception as e:
-      return {"log": f"Falha ao preencher edição do boletim: {e}", "type": "e", "e": e}
+      return wd.Webdriver.handleExceptions(e, "edição do boletim")
