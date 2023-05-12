@@ -20,7 +20,7 @@ class Webdriver:
       opcoes = Options()
       opcoes.add_argument('ignore-certificate-errors')
       opcoes.add_argument("start-maximized")
-      # opcoes.add_argument("--headless")
+      opcoes.add_argument("--headless")
       opcoes.add_experimental_option('excludeSwitches', ['enable-logging'])
       driver = webdriver.Chrome(ChromeDriverManager().install(), service = chrome_service, options=opcoes)
       driver.minimize_window()
