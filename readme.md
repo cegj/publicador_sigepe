@@ -21,10 +21,6 @@ Publicador Sigepe é um software para publicação *em lote* de documentos (port
 - Utilização de variáveis para representar datas (hoje, próximo dia útil, mês, ano etc.) nos dados da publicação;
 - Tela de publicação com fila de arquivos e logs para acompanhar o passo-a-passo da publicação de cada documento.
 
-### Planejado
-
-1. Oferecer opção de salvar documento como PDF após a publicação;
-
 ### Limitações
 
 1. Somente são publicados arquivos no formato **RTF (Rich Text Format)** — outros formatos, como .docx, .odt ou .txt não são suportados;
@@ -42,7 +38,7 @@ Tela de publicação em execução (exemplo)<br>
 
 ## Documentação de ajuda
 
-Em breve.
+[Disponível clicando aqui (ref. v1.1.0)](https://cegj.notion.site/Publicador-Sigepe-v1-1-0-Documenta-o-e9f3ed820e9748f1ab1e399b6d4d8134)
 
 ## Requisitos prévios
 
