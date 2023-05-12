@@ -6,6 +6,7 @@ from views.configuracoes import Delimitadores as d
 from views.configuracoes import Pospublicacao as pp
 from views.configuracoes import RemoverTermosConteudo as rtc
 from views.configuracoes import VerVariaveis as vv
+import webbrowser
 
 class Configuracoes:
   def __init__(self):
@@ -27,6 +28,7 @@ class Configuracoes:
     self.pos_publicacao()
     self.remocao_termos()
     self.variaveis()
+    self.ajuda()
 
   def delimitadores(self):
     btn = Button(
@@ -65,5 +67,15 @@ class Configuracoes:
       font=ac.AppConfig.fontes["botao"],
       width=20,
       command=vv.VerVariaveis
+      )
+    btn.pack(padx=10, pady=7)
+
+  def ajuda(self):
+    btn = Button(
+      self.container,
+      text="Ajuda",
+      font=ac.AppConfig.fontes["botao"],
+      width=20,
+      command=lambda: webbrowser.open_new_tab("https://cegj.notion.site/Publicador-Sigepe-v1-1-0-Documenta-o-e9f3ed820e9748f1ab1e399b6d4d8134")
       )
     btn.pack(padx=10, pady=7)
