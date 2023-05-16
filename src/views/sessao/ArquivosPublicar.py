@@ -5,6 +5,7 @@ from controllers import AppConfig as ac
 from views import Publicacao as p
 from views import CriarCorrelacao as cc
 import os
+from helpers import validateFields as vf
 
 class ArquivosPublicar:
   def __init__(self, sessao, container):
@@ -100,9 +101,10 @@ class ArquivosPublicar:
     btn.pack(side=LEFT, padx=10)
 
   def iniciarPublicacao(self, event = None):
-    if (self.sessao.userConfig["acao"] != ""):
-      if (len(self.sessao.files) > 0): p.Publicacao(self.sessao)
-      else: messagebox.showerror("Erro", "Nenhum arquivo selecionado para publicação.\nSelecione os arquivos antes de iniciar a publicação.")
-    else: messagebox.showerror("Erro", "Nenhuma ação selecionada.\nSelecione uma ação antes de iniciar a publicação.")
+    if (vf.validateFields(self.sessao.userConfig)):
+      if (self.sessao.userConfig["acao"] != ""):
+        if (len(self.sessao.files) > 0): p.Publicacao(self.sessao)
+        else: messagebox.showerror("Erro", "Nenhum arquivo selecionado para publicação.\nSelecione os arquivos antes de iniciar a publicação.")
+      else: messagebox.showerror("Erro", "Nenhuma ação selecionada.\nSelecione uma ação antes de iniciar a publicação.")
 
 
