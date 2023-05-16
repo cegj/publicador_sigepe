@@ -59,21 +59,28 @@ class Publicador:
       log = {"log": f"Iniciando publicação do documento {filename}", "type": "em"}
       self.handleResult(log)
 
-      numeroDocumento = self.obterDoTexto("numero_documento", completeFiletext)
-      if (numeroDocumento != ""):
-        log = {"log": f"Número do documento identificado", "type": "n"}
-        self.handleResult(log, numeroDocumento)
-      else:
-        log = {"log": f"Não foi localizado um número no texto do documento", "type": "a"}
-        self.handleResult(log)
+      numeroDocumentoResult = self.obterDoTexto("numero_documento", "Número do documento", completeFiletext)
+      numeroDocumento = numeroDocumentoResult["result"]
+      self.handleResult(numeroDocumentoResult, numeroDocumento)
 
-      matriculaSiape = self.obterDoTexto("matricula_siape", completeFiletext)
-      if (matriculaSiape != ""):
-        log = {"log": f"Matrícula SIAPE identificada: {matriculaSiape}", "type": "n"}
-        self.handleResult(log, numeroDocumento)
-      else:
-        log = {"log": f"Não foi localizada uma matrícula SIAPE no texto do documento", "type": "a"}
-        self.handleResult(log, numeroDocumento)
+      # if (numeroDocumento != ""):
+      #   log = {"log": f"Número do documento identificado", "type": "n"}
+      #   self.handleResult(log, numeroDocumento)
+      # else:
+      #   log = {"log": f"Não foi localizado um número no texto do documento", "type": "a"}
+      #   self.handleResult(log)
+
+      matriculaSiapeResult = self.obterDoTexto("matricula_siape", "Matrícula SIAPE", completeFiletext)
+      matriculaSiape = matriculaSiapeResult["result"]
+      self.handleResult(matriculaSiapeResult, numeroDocumento)
+
+      # matriculaSiape = self.obterDoTexto("matricula_siape", completeFiletext)
+      # if (matriculaSiape != ""):
+      #   log = {"log": f"Matrícula SIAPE identificada: {matriculaSiape}", "type": "n"}
+      #   self.handleResult(log, numeroDocumento)
+      # else:
+      #   log = {"log": f"Não foi localizada uma matrícula SIAPE no texto do documento", "type": "a"}
+      #   self.handleResult(log, numeroDocumento)
 
       if(self.config["tipo_tema_assunto"] == "Buscar no conteúdo do documento"):
         autoTemaResult = t.Tema.buscar(filetext)
@@ -189,14 +196,19 @@ class Publicador:
   def stripText(filetext):
     return filetext.strip()
 
-  def obterDoTexto(self, delimiterkey, filetext):
+  def obterDoTexto(self, delimiterkey, description, filetext):
     try:
-      a = filetext.split(self.delimitadores[f"{delimiterkey}"][0], 1)
-      b = a[1].split(self.delimitadores[f"{delimiterkey}"][1], 1)
+      firstDelimiter = self.delimitadores[f"{delimiterkey}"][0]
+      secondDelimiter = self.delimitadores[f"{delimiterkey}"][1]
+      a = filetext.split(firstDelimiter, 1)
+      b = a[1].split(secondDelimiter, 1)
       data = b[0]
-      return data
+      if (data == ""): return {"log": f"A busca por {description.lower()} entre os termos '{firstDelimiter}' e '{secondDelimiter}' no conteúdo retornou um valor vazio", "type": "a", "result": data}
+      else: return {"log": f"{description} identificado(a) no conteúdo: {data}", "type": "n", "result": data}
+    except IndexError as e:
+      return {"log": f"Não foi possível identificar {description.lower()} no conteúdo: os delimitadores '{firstDelimiter}' e/ou '{secondDelimiter}' não foram localizados.", "type": "a", "result": ""}
     except Exception as e:
-      messagebox.showerror("Erro ao obter informação do documento", f"Informação: {delimiterkey}. Erro: {e}")
+      return {"log": f"Não foi possível identificar {description.lower()} no conteúdo: {e}", "type": "a", "result": ""}
 
   def removerPrimeiraLinha(self, filetext):
     try:  
