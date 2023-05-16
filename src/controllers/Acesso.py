@@ -53,7 +53,6 @@ class Acesso:
                 sessao = s.Sessao()
                 sessao.sessao()
             else:
-                messagebox.showinfo("Habilitação sem acesso", "A habilitação definida pelo Sigepe não tem acesso ao módulo Publicação. Selecione uma nova habilitação para continuar.")
                 seletorHabilitacao = h.Habilitacao();
 
             return True

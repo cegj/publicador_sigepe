@@ -46,7 +46,7 @@ class Publicador:
       self.currentFile = file
       wd.Webdriver.go(ac.AppConfig.urls["cadastrarAtoPublicacao"])
 
-      if (file.closed): file.open()
+      if (file.closed): file = open(file.name)
       filename = os.path.basename(file.name)
       completeFiletext = self.obterTextoDocumento(file)
       textBeforeRemoveTerms = self.removerPrimeiraLinha(completeFiletext)
@@ -63,24 +63,9 @@ class Publicador:
       numeroDocumento = numeroDocumentoResult["result"]
       self.handleResult(numeroDocumentoResult, numeroDocumento)
 
-      # if (numeroDocumento != ""):
-      #   log = {"log": f"Número do documento identificado", "type": "n"}
-      #   self.handleResult(log, numeroDocumento)
-      # else:
-      #   log = {"log": f"Não foi localizado um número no texto do documento", "type": "a"}
-      #   self.handleResult(log)
-
       matriculaSiapeResult = self.obterDoTexto("matricula_siape", "Matrícula SIAPE", completeFiletext)
       matriculaSiape = matriculaSiapeResult["result"]
       self.handleResult(matriculaSiapeResult, numeroDocumento)
-
-      # matriculaSiape = self.obterDoTexto("matricula_siape", completeFiletext)
-      # if (matriculaSiape != ""):
-      #   log = {"log": f"Matrícula SIAPE identificada: {matriculaSiape}", "type": "n"}
-      #   self.handleResult(log, numeroDocumento)
-      # else:
-      #   log = {"log": f"Não foi localizada uma matrícula SIAPE no texto do documento", "type": "a"}
-      #   self.handleResult(log, numeroDocumento)
 
       if(self.config["tipo_tema_assunto"] == "Buscar no conteúdo do documento"):
         autoTemaResult = t.Tema.buscar(filetext)
@@ -200,6 +185,7 @@ class Publicador:
     try:
       firstDelimiter = self.delimitadores[f"{delimiterkey}"][0]
       secondDelimiter = self.delimitadores[f"{delimiterkey}"][1]
+      if (firstDelimiter == "" or secondDelimiter == ""): raise Exception("um ou mais delimitadores estão vazios.")
       a = filetext.split(firstDelimiter, 1)
       b = a[1].split(secondDelimiter, 1)
       data = b[0]
