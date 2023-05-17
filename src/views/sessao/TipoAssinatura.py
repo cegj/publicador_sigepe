@@ -33,3 +33,4 @@ class TipoAssinatura:
 
   def setSelected(self, Event = None):
     self.sessao.userConfig["valores_sigepe"]["tipo_assinatura"] = self.selected.get()
+    self.sessao.handleFieldState("tipo_assinatura", "manual", "dataAssinaturaInput")

@@ -18,14 +18,14 @@ class DataAssinatura:
     label.pack(side=LEFT)
     self.value = StringVar()
     self.value.trace_add("write", self.setValue)
-    entry = Entry(
+    self.sessao.dataAssinaturaInput = Entry(
       self.subcontainer,
       width=20,
       textvariable=self.value,
       font=ac.AppConfig.fontes["normal"]
       )
     self.value.set(self.sessao.userConfig["valores_sigepe"]["data_assinatura"])
-    entry.pack(side=LEFT)
+    self.sessao.dataAssinaturaInput.pack(side=LEFT)
 
   def setValue(self, a=None, b=None, c=None):
     self.sessao.userConfig["valores_sigepe"]["data_assinatura"] = self.value.get()

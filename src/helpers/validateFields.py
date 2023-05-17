@@ -28,8 +28,10 @@ labels = {
 required = ["edicao_bgp", "tipo_assinatura", "especie", "tipo_preenchimento", "orgao", "upag", "uorg", "responsavel_assinatura", "cargo_responsavel"]
 
 conditionallyRequired = [
-  ["data_publicacao", "edicao_bgp", "Normal", "deve ser preenchido quando a edição do BGP selecionada é 'Normal'"],
-  ["data_assinatura", "tipo_assinatura", "Manual", "deve ser preenchido quando o tipo de assinatura selecionado é 'Manual'"]
+  ["data_publicacao", "valores_sigepe//edicao_bgp", "Normal"],
+  ["data_assinatura", "valores_sigepe//tipo_assinatura", "Manual"],
+  ["tema", "tipo_tema_assunto", "Selecionar manualmente"],
+  ["assunto", "tipo_tema_assunto", "Selecionar manualmente"]
 ]
 
 def validateFields(userConfig):
@@ -39,8 +41,12 @@ def validateFields(userConfig):
       if (field == key and value == ""): failed.append(field)
     for field in conditionallyRequired:
       if (field[0] == key and value == ""):
-        if (userConfig["valores_sigepe"][field[1]] == field[2]): failed.append(field[0])
-  
+        keys = field[1].split("//")
+        if (len(keys) == 2):
+          if(userConfig[keys[0]][keys[1]] == field[2]): failed.append(field[0])
+        else:
+          if (userConfig[keys[0]] == field[2]): failed.append(field[0])        
+
   if (len(failed) > 0):
     msg = "Os seguintes campos devem ser preenchidos:\n"
     for field in failed:

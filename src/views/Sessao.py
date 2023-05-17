@@ -85,7 +85,9 @@ class Sessao(i.Interfaces):
     s_tn.TipoNumero(self, self.linha3c1)
     s_e.Especie(self, self.linha4c1)
     s_da.DataAssinatura(self, self.linha4c1)
+    self.handleFieldState("tipo_assinatura", "manual", "dataAssinaturaInput")
     s_dp.DataPublicacao(self, self.linha4c1)
+    self.handleFieldState("edicao_bgp", "normal", "dataPublicacaoInput")
     s_tas.TemaAssunto(self, self.linha5c1)
     s_or.Orgao(self, self.linha6c1)
     s_up.Upag(self, self.linha6c1)
@@ -105,3 +107,11 @@ class Sessao(i.Interfaces):
     s_ap.ArquivosPublicar(self, self.linha2c2)
     self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
     self.root.mainloop()
+
+  def handleFieldState(self, fieldName, valueToEnable, target):
+    try:
+      field = getattr(self, target)
+      if (self.userConfig["valores_sigepe"][fieldName].lower() == valueToEnable.lower()): field.config(state=NORMAL)
+      else: field.config(state=DISABLED)
+    except Exception as e:
+      print(e)

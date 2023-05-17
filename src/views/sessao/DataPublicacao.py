@@ -18,14 +18,14 @@ class DataPublicacao:
     label.pack(side=LEFT)
     self.value = StringVar()
     self.value.trace_add("write", self.setValue)
-    entry = Entry(
+    self.sessao.dataPublicacaoInput = Entry(
       self.subcontainer,
       width=20,
       textvariable=self.value,
       font=ac.AppConfig.fontes["normal"]
       )
     self.value.set(self.sessao.userConfig["valores_sigepe"]["data_publicacao"])
-    entry.pack(side=LEFT)
+    self.sessao.dataPublicacaoInput.pack(side=LEFT)
 
   def setValue(self, a=None, b=None, c=None):
       self.sessao.userConfig["valores_sigepe"]["data_publicacao"] = self.value.get()

@@ -33,3 +33,4 @@ class EdicaoBoletim:
 
   def setSelected(self, Event = None):
     self.sessao.userConfig["valores_sigepe"]["edicao_bgp"] = self.selected.get()
+    self.sessao.handleFieldState("edicao_bgp", "normal", "dataPublicacaoInput")
