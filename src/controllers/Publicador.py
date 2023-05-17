@@ -42,6 +42,16 @@ class Publicador:
     for file in self.files:
       self.publicacao.insertOnPendingFiles(os.path.basename(file.name))
 
+
+    tipoNumero = self.config["valores_sigepe"]["tipo_preenchimento"]
+    if (tipoNumero.lower() == "sem número"):
+      answer = messagebox.askyesno("Aviso", "Você selecionou o Tipo de Número como 'Sem número'. Neste caso, todos os documentos da lista serão publicados sem um número do ato. Deseja continuar?")
+      if (answer == False): self.publicacao.handleFecharJanela()
+
+    if (tipoNumero.lower() == "automático"):
+      answer = messagebox.askyesno("Aviso", "Você selecionou o Tipo de Número como 'Automático'. Neste caso, a numeração dos documentos será definida automaticamente pelo Sigepe ao publicar. Deseja continuar?")
+      if (answer == False): self.publicacao.handleFecharJanela()
+
     for file in self.files:
       self.currentFile = file
       wd.Webdriver.go(ac.AppConfig.urls["cadastrarAtoPublicacao"])
@@ -59,9 +69,12 @@ class Publicador:
       log = {"log": f"Iniciando publicação do documento {filename}", "type": "em"}
       self.handleResult(log)
 
-      numeroDocumentoResult = self.obterDoTexto("numero_documento", "Número do documento", completeFiletext)
-      numeroDocumento = numeroDocumentoResult["result"]
-      self.handleResult(numeroDocumentoResult, numeroDocumento)
+      if (tipoNumero.lower() == "manual"):
+        numeroDocumentoResult = self.obterDoTexto("numero_documento", "Número do documento", completeFiletext)
+        numeroDocumento = numeroDocumentoResult["result"]
+        self.handleResult(numeroDocumentoResult, numeroDocumento)
+      else:
+        numeroDocumento = ""
 
       matriculaSiapeResult = self.obterDoTexto("matricula_siape", "Matrícula SIAPE", completeFiletext)
       matriculaSiape = matriculaSiapeResult["result"]
@@ -101,20 +114,29 @@ class Publicador:
       self.handleResult(assuntoResult, numeroDocumento)
       if not self.checkResult(assuntoResult): continue
 
-      if (self.config["valores_sigepe"]["tipo_preenchimento"] == "Manual"):
+      if (self.config["valores_sigepe"]["tipo_preenchimento"].lower() == "manual"):
         numeroResult = n.Numero.preencher(numeroDocumento)
         self.handleResult(numeroResult, numeroDocumento)
         if not self.checkResult(numeroResult): continue
+      else:
+        log = {"log": f"Número do ato não preenchido: o tipo de número é '{self.config['valores_sigepe']['tipo_preenchimento'].lower()}'", "type": "n"}
+        self.handleResult(log, numeroDocumento)
 
-      if (self.config["valores_sigepe"]["tipo_preenchimento"] == "Manual"):
+      if (self.config["valores_sigepe"]["tipo_assinatura"].lower() == "manual"):
         dataAssinaturaResult = da.DataAssinatura.preencher(self.config["valores_sigepe"]["data_assinatura"])
         self.handleResult(dataAssinaturaResult, numeroDocumento)
         if not self.checkResult(dataAssinaturaResult): continue
+      else:
+        log = {"log": f"Data de assinatura não preenchida: o tipo de assinatura é '{self.config['valores_sigepe']['tipo_assinatura'].lower()}'", "type": "n"}
+        self.handleResult(log, numeroDocumento)
 
-      if (self.config["valores_sigepe"]["edicao_bgp"] == "Normal"):
+      if (self.config["valores_sigepe"]["edicao_bgp"].lower() == "normal"):
         dataPublicacaoResult = dp.DataPublicacao.preencher(self.config["valores_sigepe"]["data_publicacao"])
         self.handleResult(dataPublicacaoResult, numeroDocumento)
         if not self.checkResult(dataPublicacaoResult): continue
+      else:
+        log = {"log": f"Data de publicação preenchido automaticamente: a edição do boletim selecionada é '{self.config['valores_sigepe']['edicao_bgp'].lower()}'", "type": "n"}
+        self.handleResult(log, numeroDocumento)
 
       especieResult = e.Especie.preencher(self.config["valores_sigepe"]["especie"])
       self.handleResult(especieResult, numeroDocumento)
