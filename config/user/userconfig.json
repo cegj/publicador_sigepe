@@ -1,22 +1,22 @@
 {
     "habilitacao":{
-        "inicial":"GESTOR - ÓRGÃO:UFES"
+        "inicial":""
     },
-    "tipo_tema_assunto":"Selecionar manualmente",
-    "acao":"Enviar para assinatura / publicação",
+    "tipo_tema_assunto":"",
+    "acao":"",
     "valores_sigepe":{
-        "edicao_bgp":"Normal",
-        "tipo_assinatura":"Manual",
-        "especie":"Portaria",
+        "edicao_bgp":"",
+        "tipo_assinatura":"",
+        "especie":"",
         "tema":"",
         "assunto":"",
-        "tipo_preenchimento":"Sem Número",
-        "data_assinatura":"17/05/2023",
-        "data_publicacao":"21/05/2023",
-        "orgao":"26234",
-        "upag":"1202",
-        "uorg":"743",
-        "responsavel_assinatura":"Josiana Binda",
-        "cargo_responsavel":"Pró-Reitora de Gestão de Pessoas"
+        "tipo_preenchimento":"",
+        "data_assinatura":"",
+        "data_publicacao":"",
+        "orgao":"",
+        "upag":"",
+        "uorg":"",
+        "responsavel_assinatura":"",
+        "cargo_responsavel":""
     }
 }
