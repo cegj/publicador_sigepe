@@ -1,8 +1,8 @@
 {
     "habilitacao":{
-        "inicial":""
+        "inicial":"GESTOR - ÓRGÃO:UFES"
     },
-    "tipo_tema_assunto":"",
+    "tipo_tema_assunto":"Selecionar manualmente",
     "acao":"",
     "valores_sigepe":{
         "edicao_bgp":"",

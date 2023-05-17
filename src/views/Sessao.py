@@ -17,10 +17,6 @@ from views.sessao import Uorg as s_uo
 from views.sessao import ResponsavelAssinatura as s_ra
 from views.sessao import CargoResponsavel as s_cr
 from views.sessao import ManterDadosBtn as s_mdb
-# from views.sessao import AbrirDelimitadoresBtn as s_adb
-# from views.sessao import AbrirPospublicacaoBtn as s_apb
-# from views.sessao import AbrirRemocaoTermosBtn as s_art
-# from views.sessao import AbrirVerVariaveisBtn as s_avv
 from views.sessao import ConfiguracoesBtn as s_cb
 from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
@@ -79,7 +75,7 @@ class Sessao(i.Interfaces):
     tituloDadosPublicacao.pack()
 
     s_h.Habilitacao(self, self.linha2c1)
-    s_a.Acao(self, self.linha2c1)
+    # s_a.Acao(self, self.linha2c1)
     s_eb.EdicaoBoletim(self, self.linha3c1)
     s_ta.TipoAssinatura(self, self.linha3c1)
     s_tn.TipoNumero(self, self.linha3c1)

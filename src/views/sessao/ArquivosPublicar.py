@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 from controllers import AppConfig as ac
@@ -21,16 +22,17 @@ class ArquivosPublicar:
     self.btnsContainer.pack(padx=10)
     self.listbox = Listbox(
       self.subcontainer,
-      height = 12,
+      height = 10,
       width = 40,
       bg = "white",
       font = "Helvetica",
       fg = "gray",
       activestyle="none"
     )
-    self.listbox.pack(anchor=CENTER, pady=10)
+    self.listbox.pack(anchor=CENTER, pady=7)
     self.listbox.bind("<Key>", self.deleteFiles)
     self.listbox.bind("<Double-Button-1>", self.createCorrelation)
+    self.acao()
     self.selecionarArquivosBtn()
     self.publicarBtn()
 
@@ -77,6 +79,33 @@ class ArquivosPublicar:
       cc.CriarCorrelacao(self.sessao, self.listbox, filename)
     except Exception as e:
       messagebox.showerror("Erro ao abrir Criar correlação", e)
+
+
+  def acao(self):
+    container = Frame(self.subcontainer)
+    container.pack(side=LEFT, padx=10, pady=10)
+    label = Label(
+      container,
+      text="Ação",
+      font=ac.AppConfig.fontes["normal"]
+      )
+    label.pack(side=LEFT)
+    self.selected = StringVar()
+    self.selected.set(self.sessao.userConfig["acao"])
+    options = ["Enviar para análise", "Enviar para assinatura / publicação", "Gravar rascunho"]
+    seletor = ttk.Combobox(
+      container,
+      textvariable=self.selected,
+      values=options,
+      state="readonly",
+      width=30,
+      font=ac.AppConfig.fontes["normal"]
+      )
+    seletor.pack(side=LEFT)
+    seletor.bind("<<ComboboxSelected>>", self.setSelected)
+
+  def setSelected(self, Event = None):
+    self.sessao.userConfig["acao"] = self.selected.get()
 
   def selecionarArquivosBtn(self):
     btn = Button(

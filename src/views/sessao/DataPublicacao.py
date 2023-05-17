@@ -12,7 +12,7 @@ class DataPublicacao:
     self.subcontainer.pack(side=LEFT, padx=10)
     label = Label(
       self.subcontainer,
-      text="Data de publicacao",
+      text="Data de publicação",
       font=ac.AppConfig.fontes["normal"]
       )
     label.pack(side=LEFT)
