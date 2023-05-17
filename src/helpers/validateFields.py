@@ -36,16 +36,16 @@ def validateFields(userConfig):
   failed = []
   for key, value in userConfig["valores_sigepe"].items():
     for field in required:
-      if (field == key and value == ""): failed.append([field, "o campo deve ser preenchido"])
+      if (field == key and value == ""): failed.append(field)
     for field in conditionallyRequired:
       if (field[0] == key and value == ""):
-        if (userConfig["valores_sigepe"][field[1]] == field[2]): failed.append([field[0], field[3]])
+        if (userConfig["valores_sigepe"][field[1]] == field[2]): failed.append(field[0])
   
   if (len(failed) > 0):
-    msg = "Os seguintes campos precisam de ajustes:\n"
+    msg = "Os seguintes campos devem ser preenchidos:\n"
     for field in failed:
-      msg += f"\n- {labels[field[0]]}: {field[1]}"
-    messagebox.showerror("Falha ao validar campos", msg)
+      msg += f"\n- {labels[field]}"
+    messagebox.showerror("Campos obrigatórios não preenchidos", msg)
     return False
   return True
 
