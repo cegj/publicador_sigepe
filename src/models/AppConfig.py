@@ -36,7 +36,7 @@ class AppConfig:
       json_file.close()
 
   nome = "Publicador Sigepe"
-  versao = "v1.1.0"
+  versao = "v1.1.1"
   fontes = {
     "titulo": ("Segoe UI", "13", "bold"),
     "normal": ("Segoe UI", "12"), "botao": ("Segoe UI", "10"),
