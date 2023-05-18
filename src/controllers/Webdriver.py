@@ -10,7 +10,7 @@ from subprocess import CREATE_NO_WINDOW # This flag will only be available in wi
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 # from datetime import datetime
 
 class Webdriver:

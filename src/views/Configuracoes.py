@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from views import Interfaces as i
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 from views.configuracoes import Delimitadores as d
 from views.configuracoes import Pospublicacao as pp
 from views.configuracoes import RemoverTermosConteudo as rtc

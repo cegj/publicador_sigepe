@@ -1,5 +1,5 @@
 from tkinter import *
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 from views import Interfaces as i
 from controllers import Variaveis as v
 

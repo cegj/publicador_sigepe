@@ -3,7 +3,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from views import Interfaces as i
 from copy import copy
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 import os
 
 class CriarCorrelacao:

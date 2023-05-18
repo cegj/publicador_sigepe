@@ -1,6 +1,6 @@
 from tkinter import *
 from controllers import ObterDoSigepe as ods
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 from views import Habilitacao as h
 
 class Habilitacao:

@@ -1,5 +1,5 @@
 from tkinter import *
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 
 class DataPublicacao:
   def __init__(self, sessao, container):

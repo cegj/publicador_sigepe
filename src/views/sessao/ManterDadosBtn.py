@@ -1,6 +1,6 @@
 from tkinter import *
-from controllers import AppConfig as ac
-from controllers import UserConfig as uc
+from models import AppConfig as ac
+from models import UserConfig as uc
 
 class ManterDadosBtn:
   def __init__(self, sessao, container):

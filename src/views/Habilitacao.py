@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from controllers import Webdriver as wd
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 from selenium.webdriver.common.by import By
 import time
 from views import Interfaces as i

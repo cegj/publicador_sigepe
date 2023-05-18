@@ -2,8 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from controllers import Webdriver as wd
 import time
-from controllers import UserConfig as uc
-from controllers import AppConfig as ac
+from models import UserConfig as uc
+from models import AppConfig as ac
 from controllers import Variaveis as v
 import datetime
 

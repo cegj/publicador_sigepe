@@ -5,8 +5,8 @@ from controllers import Webdriver as wd
 from views import Sessao as s
 from views import Login as l
 from views import Habilitacao as h
-from controllers import AppConfig as ac
-from controllers import UserConfig as uc
+from models import AppConfig as ac
+from models import UserConfig as uc
 import time
 from selenium.webdriver.support import expected_conditions as EC
 

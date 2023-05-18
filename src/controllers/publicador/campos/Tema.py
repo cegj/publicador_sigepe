@@ -1,10 +1,10 @@
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 from controllers import Webdriver as wd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.webdriver.common.keys import Keys
-from controllers import UserConfig as uc
+from models import UserConfig as uc
 from controllers import Variaveis as v
 
 class Tema:

@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 from views import Interfaces as i
-from controllers import UserConfig as uc
-from controllers import AppConfig as ac
+from models import UserConfig as uc
+from models import AppConfig as ac
 from copy import copy
 
 class RemoverTermosConteudo:

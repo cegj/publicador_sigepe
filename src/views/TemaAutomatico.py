@@ -1,5 +1,5 @@
-from controllers import AppConfig as ac
-from controllers import UserConfig as uc
+from models import AppConfig as ac
+from models import UserConfig as uc
 from views import Interfaces as i
 from tkinter import *
 from tkinter import ttk

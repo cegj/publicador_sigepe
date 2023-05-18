@@ -20,8 +20,8 @@ from views.sessao import ManterDadosBtn as s_mdb
 from views.sessao import ConfiguracoesBtn as s_cb
 from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
-from controllers import UserConfig as uc
-from controllers import AppConfig as ac
+from models import UserConfig as uc
+from models import AppConfig as ac
 
 class Sessao(i.Interfaces):
   def __init__(self):

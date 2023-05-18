@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 from views import Publicacao as p
 from views import CriarCorrelacao as cc
 import os

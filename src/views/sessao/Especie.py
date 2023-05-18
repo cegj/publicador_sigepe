@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 
 class Especie:
   def __init__(self, sessao, container):

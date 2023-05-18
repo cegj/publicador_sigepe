@@ -1,5 +1,5 @@
 from controllers import Webdriver as wd
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys

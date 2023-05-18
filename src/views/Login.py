@@ -4,7 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
-from controllers import AppConfig as ac
+from models import AppConfig as ac
 from controllers import Webdriver as wd
 
 class Login(i.Interfaces):

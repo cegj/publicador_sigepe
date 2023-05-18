@@ -1,7 +1,7 @@
 from tkinter import *
 from controllers import Variaveis as v
-from controllers import UserConfig as uc
-from controllers import AppConfig as ac
+from models import UserConfig as uc
+from models import AppConfig as ac
 from striprtf.striprtf import rtf_to_text
 from tkinter import messagebox
 import os
