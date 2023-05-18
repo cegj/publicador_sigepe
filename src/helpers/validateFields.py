@@ -48,7 +48,7 @@ def validateFields(userConfig):
           if (userConfig[keys[0]] == field[2]): failed.append(field[0])        
 
   if (len(failed) > 0):
-    msg = "Os seguintes campos devem ser preenchidos:\n"
+    msg = "Os seguintes dados de publicação devem ser preenchidos:\n"
     for field in failed:
       msg += f"\n- {labels[field]}"
     messagebox.showerror("Campos obrigatórios não preenchidos", msg)
