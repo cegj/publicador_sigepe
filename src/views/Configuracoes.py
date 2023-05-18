@@ -7,6 +7,7 @@ from views.configuracoes import Pospublicacao as pp
 from views.configuracoes import RemoverTermosConteudo as rtc
 from views.configuracoes import VerVariaveis as vv
 import webbrowser
+from threading import Thread
 
 class Configuracoes:
   def __init__(self):
@@ -71,11 +72,14 @@ class Configuracoes:
     btn.pack(padx=10, pady=7)
 
   def ajuda(self):
+    def abrirAjuda():
+      webbrowser.open_new_tab("https://cegj.notion.site/Publicador-Sigepe-v1-1-1-Documenta-o-b43e1fcd6f9f46dbb7c14924d62a1c69")
+
     btn = Button(
       self.container,
       text="Ajuda",
       font=ac.AppConfig.fontes["botao"],
       width=20,
-      command=lambda: webbrowser.open_new_tab("https://cegj.notion.site/Publicador-Sigepe-v1-1-0-Documenta-o-e9f3ed820e9748f1ab1e399b6d4d8134")
+      command=lambda: Thread(target=abrirAjuda).start()
       )
     btn.pack(padx=10, pady=7)
