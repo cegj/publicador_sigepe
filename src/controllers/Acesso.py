@@ -9,6 +9,8 @@ from models import AppConfig as ac
 from models import UserConfig as uc
 import time
 from selenium.webdriver.support import expected_conditions as EC
+from helpers import ThreadWithReturn as thread
+from views import SigepeTrabalhando as st
 
 class Acesso:
     def __init__(self):
@@ -16,6 +18,32 @@ class Acesso:
 
     @staticmethod
     def fazerLogin(cpfInput, senhaInput, captchaInput, loginContainer):
+        t = thread.ThreadWithReturn(target=Acesso.loginNoSigepe, args=(cpfInput, senhaInput, captchaInput, loginContainer))
+        t.start()
+        working = st.SigepeTrabalhando(t, "Inserindo dados de entrada no Sigepe...")
+        loginResult = t.join()
+        if (loginResult[0]):
+            loginContainer.destroy()
+            t = thread.ThreadWithReturn(target=Acesso.definirHabilitacaoInicial)
+            t.start()
+            working = st.SigepeTrabalhando(t, "Configurando habilitação inicial...", True)
+            t.join()
+            t = thread.ThreadWithReturn(target=Acesso.definirHabilitacaoInicial)
+            t.start()
+            working = st.SigepeTrabalhando(t, "Verificando se habilitação tem acesso ao módulo de Publicação...", True)
+            habilitacaoValida = t.join()
+            if (habilitacaoValida):
+                sessao = s.Sessao()
+                sessao.sessao()
+            else:
+                seletorHabilitacao = h.Habilitacao();
+        if (not loginResult[0]):
+            messagebox.showerror("Erro ao realizar acesso", loginResult[1])
+            loginContainer.destroy()
+            l.Login()
+
+    @staticmethod
+    def loginNoSigepe(cpfInput, senhaInput, captchaInput, loginContainer):
         try:
             cpf = cpfInput.get()
             senha = senhaInput.get()
@@ -45,22 +73,10 @@ class Acesso:
                     raise Exception("Usuário foi identificado como de primeiro acesso. Verifique se o CPF foi preenchido corretamente ou faça o seu cadastro no Sigepe.")
                 else:
                     raise Exception(erroLogin.text)
-                return False
-
-            loginContainer.destroy()
-            Acesso.definirHabilitacaoInicial()
-            if (h.Habilitacao.checarAcessoHabilitacao()):
-                sessao = s.Sessao()
-                sessao.sessao()
-            else:
-                seletorHabilitacao = h.Habilitacao();
-
-            return True
-
+                return [False]
+            return [True]
         except Exception as e:
-            messagebox.showerror("Erro ao realizar acesso", e)
-            loginContainer.destroy()
-            l.Login()
+            return [False, e]
     
     @staticmethod
     def definirHabilitacaoInicial():
