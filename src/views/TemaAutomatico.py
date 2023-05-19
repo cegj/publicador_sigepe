@@ -7,16 +7,21 @@ from tkinter import messagebox
 from copy import copy
 from controllers import ObterDoSigepe as ods
 from helpers import ThreadWithReturn as thread
+from views import SigepeTrabalhando as st
 
 class TemaAutomatico:
-  def __init__(self):
+  def __init__(self, sessao):
+      self.sessao = sessao
       self.autoThemes = copy(uc.UserConfig.obterAutoTemasAssuntos())
       self.master = i.Interfaces.novaJanela()
       self.temaAutomaticoContainer = Frame(self.master)
       self.temaAutomaticoContainer.pack()
+      if (not self.sessao.sigepe_temas):
+        t = thread.ThreadWithReturn(target=ods.ObterDoSigepe.temas)
+        t.start()
+        working = st.SigepeTrabalhando(t, "Buscando lista de temas no Sigepe...")
+        self.sessao.sigepe_temas = t.join()
       self.janelaTemaAutomatico()
-      self.temaThread = thread.ThreadWithReturn(target=ods.ObterDoSigepe.temas)
-      self.temaThread.start()
 
   def janelaTemaAutomatico(self):
     self.listaTemasCadastrados()
@@ -54,16 +59,8 @@ class TemaAutomatico:
         self.updateThemesList()
 
     def assunto():
-      assuntoThread = thread.ThreadWithReturn(target=ods.ObterDoSigepe.assuntos, args=(self.temaSelected.get(),))
-      assuntoThread.start()
-      # self.sigepe_assuntos = ods.ObterDoSigepe.assuntos(self.temaSelected.get())
-
       self.assuntoContainer = Frame(self.editWindow)
       self.assuntoContainer.grid(row=3, column=1)
-
-      assuntoThread.waitForEnd(self.assuntoContainer)
-      # self.sigepe_assuntos = assuntoThread.join()
-
       assuntoLabel = Label(
         self.assuntoContainer,
         text="Assunto correspondente",
@@ -86,12 +83,13 @@ class TemaAutomatico:
 
     def buildAssunto(Event = None):
       if (hasattr(self, 'assuntoContainer')): self.assuntoContainer.destroy()
+      t = thread.ThreadWithReturn(target=ods.ObterDoSigepe.assuntos, args=(self.temaSelected.get(),))
+      t.start()
+      working = st.SigepeTrabalhando(t, "Buscando assuntos relacionados ao tema no Sigepe...")
+      self.sigepe_assuntos = t.join()
       assunto()
 
     self.editWindow = i.Interfaces.novaJanela()
-    self.temaThread.waitForEnd(self.editWindow)
-    self.sigepe_temas = self.temaThread.join()
-
     if (editItemKey): self.editItem = self.autoThemes[editItemKey]
   
     self.termoContainer = Frame(self.editWindow)
@@ -125,7 +123,7 @@ class TemaAutomatico:
     seletorTema = ttk.Combobox(
       self.temaContainer,
       textvariable=self.temaSelected,
-      values=self.sigepe_temas,
+      values=self.sessao.sigepe_temas,
       state="readonly",
       width=40,
       font=ac.AppConfig.fontes["normal"]

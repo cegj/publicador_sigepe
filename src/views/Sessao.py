@@ -22,12 +22,24 @@ from views.sessao import ArquivosPublicar as s_ap
 from copy import copy
 from models import UserConfig as uc
 from models import AppConfig as ac
+from helpers import ThreadWithReturn as thread
+from views import SigepeTrabalhando as st
+from controllers import ObterDoSigepe as ods
 
 class Sessao(i.Interfaces):
   def __init__(self):
     super().__init__()
     self.userConfig = copy(uc.UserConfig.obterConfiguracoesSalvas())
     self.files = []
+    self.sessaoContainer = Frame(self.root)
+    self.sessaoContainer.grid()
+    self.sigepe_temas = None
+    if (self.userConfig["tipo_tema_assunto"] == "Selecionar manualmente"):
+      t = thread.ThreadWithReturn(target=ods.ObterDoSigepe.temas)
+      t.start()
+      working = st.SigepeTrabalhando(t, "Buscando lista de temas no Sigepe...")
+      self.sigepe_temas = t.join()
+    self.sessao()
 
   def handleFecharJanela(self):
     confirmarFechar = messagebox.askquestion("Confirmar saída", "Tem certeza de que deseja fechar?\n\nCaso confirme, a aplicação será encerrada.")
@@ -36,10 +48,6 @@ class Sessao(i.Interfaces):
       self.root.destroy()
 
   def sessao(self):
-    wd.Webdriver.go(ac.AppConfig.urls["cadastrarAtoPublicacao"])
-    self.sessaoContainer = Frame(self.root)
-    self.sessaoContainer.grid()
-
     self.coluna1 = Frame(self.sessaoContainer)
     self.coluna1.grid(row=1, column=1, sticky="w")
     self.coluna2 = Frame(self.sessaoContainer)

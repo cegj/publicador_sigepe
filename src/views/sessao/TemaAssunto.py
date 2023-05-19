@@ -1,8 +1,11 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from controllers import ObterDoSigepe as ods
 from models import AppConfig as ac
 from views import TemaAutomatico as ta
+from helpers import ThreadWithReturn as thread
+from views import SigepeTrabalhando as st
 
 class TemaAssunto:
   def __init__(self, sessao, container):
@@ -44,6 +47,11 @@ class TemaAssunto:
       if (hasattr(self, 'temaManualContainer')): self.temaManualContainer.destroy()
       if (hasattr(self, 'assuntoManualContainer')): self.assuntoManualContainer.destroy()
       if (hasattr(self, 'temaAutomaticoContainer')): self.temaAutomaticoContainer.destroy()
+      if (not self.sessao.sigepe_temas):
+        t = thread.ThreadWithReturn(target=ods.ObterDoSigepe.temas)
+        t.start()
+        working = st.SigepeTrabalhando(t, "Buscando lista de temas no Sigepe...")
+        self.sessao.sigepe_temas = t.join()
       self.tipoManual()
     elif (self.tipoSelecionado.get() == "Buscar no conteúdo do documento"):
       if (hasattr(self, 'temaAutomaticoContainer')): self.temaAutomaticoContainer.destroy()
@@ -53,7 +61,7 @@ class TemaAssunto:
 
   def tipoAutomatico(self):
     def abrirJanela():
-      janela = ta.TemaAutomatico()
+      janela = ta.TemaAutomatico(self.sessao)
     self.temaAutomaticoContainer = Frame(self.subcontainer)
     self.temaAutomaticoContainer.pack(side=LEFT, padx=5)
     self.botaoConfigTemaAutomatico = Button(
@@ -66,26 +74,34 @@ class TemaAssunto:
     self.botaoConfigTemaAutomatico.pack(side=LEFT)
 
   def tipoManual(self):
-    self.temaManualContainer = Frame(self.subcontainer)
-    self.temaManualContainer.pack(side=LEFT, padx=5)
-    self.temaSelected = StringVar()
-    self.temaSelected.set(self.sessao.userConfig["valores_sigepe"]["tema"])    
-    listaTemas = ods.ObterDoSigepe.temas()
-    seletorTema = ttk.Combobox(
-      self.temaManualContainer,
-      textvariable=self.temaSelected,
-      values=listaTemas,
-      state="readonly",
-      width=40,
-      font=ac.AppConfig.fontes["normal"]
-      )
-    seletorTema.pack(side=LEFT)
-    self.setTemaManual()
-    seletorTema.bind("<<ComboboxSelected>>", self.setTemaManual)
+    try:
+      self.temaManualContainer = Frame(self.subcontainer)
+      self.temaManualContainer.pack(side=LEFT, padx=5)
+      self.temaSelected = StringVar()
+      self.temaSelected.set(self.sessao.userConfig["valores_sigepe"]["tema"])
+      seletorTema = ttk.Combobox(
+        self.temaManualContainer,
+        textvariable=self.temaSelected,
+        values=self.sessao.sigepe_temas,
+        state="readonly",
+        width=40,
+        font=ac.AppConfig.fontes["normal"]
+        )
+      seletorTema.pack(side=LEFT)
+      self.setTemaManual()
+      seletorTema.bind("<<ComboboxSelected>>", self.setTemaManual)
+    except Exception as e:
+      print(e)
 
   def setTemaManual(self, event = None):
     self.sessao.userConfig["valores_sigepe"]["tema"] = self.temaSelected.get()
     if (hasattr(self, 'assuntoManualContainer')): self.assuntoManualContainer.destroy()
+    if (self.sessao.userConfig["valores_sigepe"]["tema"]):
+      t = thread.ThreadWithReturn(target=ods.ObterDoSigepe.assuntos, args=(self.temaSelected.get(),))
+      t.start()
+      working = st.SigepeTrabalhando(t, "Buscando assuntos relacionados ao tema no Sigepe...")
+      self.sigepe_assuntos = t.join()
+    else: self.sigepe_assuntos = []
     self.assuntoManual()
 
   def assuntoManual(self):
@@ -98,7 +114,7 @@ class TemaAssunto:
       )
     assuntoLabel.pack(side=LEFT)
     self.assuntoSelected = StringVar()
-    if (self.sessao.userConfig["valores_sigepe"]["tema"]): listaAssuntos = ods.ObterDoSigepe.assuntos(self.sessao.userConfig["valores_sigepe"]["tema"])
+    if (self.sessao.userConfig["valores_sigepe"]["tema"]): listaAssuntos = self.sigepe_assuntos
     else: listaAssuntos = []
     if (not self.sessao.userConfig["valores_sigepe"]["assunto"] in listaAssuntos):
       self.sessao.userConfig["valores_sigepe"]["assunto"] = ""

@@ -1,4 +1,4 @@
 {
-  "options": ["ignore-certificate-errors", "start-maximized"],
+  "options": ["ignore-certificate-errors", "start-maximized", "--headless"],
   "minimizeOnStart": "false"
 }

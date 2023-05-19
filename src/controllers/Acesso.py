@@ -30,7 +30,7 @@ class Acesso:
             habilitacaoInicialResult = t.join()
             t = thread.ThreadWithReturn(target=h.Habilitacao.checarAcessoHabilitacao)
             t.start()
-            working = st.SigepeTrabalhando(t, "Verificando se habilitação tem acesso ao módulo de Publicação...", True)
+            working = st.SigepeTrabalhando(t, "Verificando se habilitação inicial tem acesso ao módulo de Publicação...", True)
             habilitacaoValida = t.join()
             if (habilitacaoValida):
                 sessao = s.Sessao()

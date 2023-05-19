@@ -62,7 +62,6 @@ class Habilitacao(i.Interfaces):
     if (novaHabilitacaoResult[0]):
       self.root.destroy()
       sessao = s.Sessao()
-      sessao.sessao()
     else:
       messagebox.showerror("Falha ao definir habilitação", novaHabilitacaoResult[1])
 

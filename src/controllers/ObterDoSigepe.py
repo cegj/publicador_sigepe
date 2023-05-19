@@ -9,16 +9,19 @@ from tkinter import messagebox
 class ObterDoSigepe():
   @staticmethod
   def temas():
-    sigepe_temas = wd.Webdriver.nav.find_elements(By.XPATH, ac.AppConfig.xpaths['publicacao']['temas'])
-    listaTemas = []
-    for tema in sigepe_temas:
-      tema = tema.get_attribute('innerText')
-      count = listaTemas.count(tema)
-      if (count > 0):
-        listaTemas.append(tema + f' //{count + 1}')
-      else:
-        listaTemas.append(tema)
-    return listaTemas
+    try:
+      sigepe_temas = wd.Webdriver.nav.find_elements(By.XPATH, ac.AppConfig.xpaths['publicacao']['temas'])
+      listaTemas = []
+      for tema in sigepe_temas:
+        tema = tema.get_attribute('innerText')
+        count = listaTemas.count(tema)
+        if (count > 0):
+          listaTemas.append(tema + f' //{count + 1}')
+        else:
+          listaTemas.append(tema)
+      return listaTemas
+    except Exception as e:
+      print(e)
 
   @staticmethod
   def assuntos(tema):
