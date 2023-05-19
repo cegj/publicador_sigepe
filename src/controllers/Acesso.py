@@ -27,8 +27,8 @@ class Acesso:
             t = thread.ThreadWithReturn(target=Acesso.definirHabilitacaoInicial)
             t.start()
             working = st.SigepeTrabalhando(t, "Configurando habilitação inicial...", True)
-            t.join()
-            t = thread.ThreadWithReturn(target=Acesso.definirHabilitacaoInicial)
+            habilitacaoInicialResult = t.join()
+            t = thread.ThreadWithReturn(target=h.Habilitacao.checarAcessoHabilitacao)
             t.start()
             working = st.SigepeTrabalhando(t, "Verificando se habilitação tem acesso ao módulo de Publicação...", True)
             habilitacaoValida = t.join()
@@ -82,16 +82,20 @@ class Acesso:
     def definirHabilitacaoInicial():
         try:
             userConfig = uc.UserConfig.obterConfiguracoesSalvas()
-            sigepe_habilitacaoBotao = wd.Webdriver.nav.find_element(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacaoBotao'])
-            sigepe_habilitacaoBotao.click()
-            xPathHabInicial = f"//*[contains(text(), '{userConfig['habilitacao']['inicial']}')]"
-            if (wd.Webdriver.checkExistsByXpath(xPathHabInicial)):
-                sigepe_novaHabilitacaoBotao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
-                (By.XPATH, xPathHabInicial)))
-                sigepe_novaHabilitacaoBotao.click()
-                wd.Webdriver.waitLoadingModal()
-                time.sleep(2)
+            if (userConfig['habilitacao']['inicial'] != ""):
+                sigepe_habilitacaoBotao = wd.Webdriver.nav.find_element(By.XPATH, ac.AppConfig.xpaths['habilitacao']['habilitacaoBotao'])
+                sigepe_habilitacaoBotao.click()
+                xPathHabInicial = f"//*[contains(text(), '{userConfig['habilitacao']['inicial']}')]"
+                if (wd.Webdriver.checkExistsByXpath(xPathHabInicial)):
+                    sigepe_novaHabilitacaoBotao = wd.Webdriver.wait["regular"].until(EC.element_to_be_clickable(
+                    (By.XPATH, xPathHabInicial)))
+                    sigepe_novaHabilitacaoBotao.click()
+                    wd.Webdriver.waitLoadingModal()
+                    time.sleep(2)
+                    return [True]
+                else:
+                    raise Exception(f"A habilitação salva nas suas configurações ({userConfig['habilitacao']['inicial']}) está indisponível ou não existe. O Publicador será iniciado com a habilitação definida pelo Sigepe.")
             else:
-                messagebox.showinfo("Não foi possível definir habilitação inicial", f"A habilitação salva nas suas configurações ({userConfig['habilitacao']['inicial']}) está indisponível ou não existe. O Publicador será iniciado com a habilitação definida pelo Sigepe.")
+                raise Exception("Não há uma habilitação salva nas suas configurações do Publicador.")
         except Exception as e:
-            messagebox.showerror("Erro ao definir habilitação inicial", e)
+                return [False, e]
