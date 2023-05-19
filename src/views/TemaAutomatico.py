@@ -6,6 +6,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from copy import copy
 from controllers import ObterDoSigepe as ods
+from helpers import ThreadWithReturn as thread
 
 class TemaAutomatico:
   def __init__(self):
@@ -14,7 +15,8 @@ class TemaAutomatico:
       self.temaAutomaticoContainer = Frame(self.master)
       self.temaAutomaticoContainer.pack()
       self.janelaTemaAutomatico()
-      self.sigepe_temas = ods.ObterDoSigepe.temas()
+      self.temaThread = thread.ThreadWithReturn(target=ods.ObterDoSigepe.temas)
+      self.temaThread.start()
 
   def janelaTemaAutomatico(self):
     self.listaTemasCadastrados()
@@ -52,9 +54,16 @@ class TemaAutomatico:
         self.updateThemesList()
 
     def assunto():
-      self.sigepe_assuntos = ods.ObterDoSigepe.assuntos(self.temaSelected.get())
+      assuntoThread = thread.ThreadWithReturn(target=ods.ObterDoSigepe.assuntos, args=(self.temaSelected.get(),))
+      assuntoThread.start()
+      # self.sigepe_assuntos = ods.ObterDoSigepe.assuntos(self.temaSelected.get())
+
       self.assuntoContainer = Frame(self.editWindow)
       self.assuntoContainer.grid(row=3, column=1)
+
+      assuntoThread.waitForEnd(self.assuntoContainer)
+      # self.sigepe_assuntos = assuntoThread.join()
+
       assuntoLabel = Label(
         self.assuntoContainer,
         text="Assunto correspondente",
@@ -80,6 +89,8 @@ class TemaAutomatico:
       assunto()
 
     self.editWindow = i.Interfaces.novaJanela()
+    self.temaThread.waitForEnd(self.editWindow)
+    self.sigepe_temas = self.temaThread.join()
 
     if (editItemKey): self.editItem = self.autoThemes[editItemKey]
   

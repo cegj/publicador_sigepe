@@ -6,5 +6,5 @@ PyInstaller.__main__.run([
     '--noconsole',
     '--clean',
     '--icon=../static/ico.ico',
-    '--name=Publicador Sigepe',
+    '--name=publicador_sigepe',
 ])

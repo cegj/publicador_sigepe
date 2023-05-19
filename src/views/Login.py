@@ -6,6 +6,8 @@ from PIL import ImageTk, Image
 import os
 from models import AppConfig as ac
 from controllers import Webdriver as wd
+from helpers import ThreadWithReturn as thread
+from views import SigepeTrabalhando as st
 
 class Login(i.Interfaces):
   def __init__(self):
@@ -16,6 +18,11 @@ class Login(i.Interfaces):
     def handleEntrar():
       a.Acesso.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
 
+    t = thread.ThreadWithReturn(target=wd.Webdriver.go, args=(ac.AppConfig.urls["areaDeTrabalho"],))
+    t.start()
+    working = st.SigepeTrabalhando(t, "Abrindo página de acesso ao Sigepe...")
+    t.join()
+
     loginContainer = Frame(self.root)
     loginContainer.pack()
     loginContainerTitulo = Label(
@@ -23,8 +30,6 @@ class Login(i.Interfaces):
       font=ac.AppConfig.fontes["titulo"])
     loginContainerTitulo.pack()
 
-    wd.Webdriver.go(ac.AppConfig.urls["areaDeTrabalho"])
-    
     cpfContainer = Frame(
       loginContainer,
       pady=5)
