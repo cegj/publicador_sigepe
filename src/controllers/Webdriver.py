@@ -11,7 +11,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from models import AppConfig as ac
-# from datetime import datetime
 
 class Webdriver:
   @staticmethod
@@ -96,7 +95,6 @@ class Webdriver:
 
       template = "".join([initialTxt, ": {0} {1}"])
 
-      # msg = f"Falha ao selecionar {fieldname}: ";
       exType = type(ex).__name__
       exMessage = ""
       match exType:
@@ -150,12 +148,6 @@ class Webdriver:
           pass
 
       especificMessage = ex.args[0]
-
-      # screenshotTitle = f"error_screenshot - {fieldname} - {datetime.now()}"
-      # screenshotTitle = screenshotTitle.split('.')[0].replace(':', '-')
-      # capture = Webdriver.getFullScreenshot(screenshotTitle)
-      # if (capture[0] == True): screenshotResult = f"Uma captura da tela foi salva com o nome '{capture[1]}.png'"
-      # else: screenshotResult = f"Não foi possível salvar captura de tela do erro: ${capture[1]}."
 
       msg = template.format(exMessage, especificMessage)
 
