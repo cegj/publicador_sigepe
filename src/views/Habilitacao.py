@@ -47,6 +47,11 @@ class Habilitacao(i.Interfaces):
         sigepe_novaHabilitacaoBotao = wd.Webdriver.nav.find_element(By.XPATH, f"//*[contains(text(), '{self.seletorHabilitacoes.get()}')]")
         sigepe_novaHabilitacaoBotao.click()
         time.sleep(2)
+  
+      checkLoadErrors = wd.Webdriver.checkErrorsLoadedPage() 
+      if(not checkLoadErrors[0]):
+        raise Exception(checkLoadErrors[1])
+
       if (Habilitacao.checarAcessoHabilitacao()):
         return [True]
       else:

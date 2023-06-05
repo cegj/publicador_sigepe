@@ -20,7 +20,7 @@ class Acesso:
     def fazerLogin(cpfInput, senhaInput, captchaInput, loginContainer):
         t = thread.ThreadWithReturn(target=Acesso.loginNoSigepe, args=(cpfInput, senhaInput, captchaInput, loginContainer))
         t.start()
-        working = st.SigepeTrabalhando(t, "Inserindo dados de entrada no Sigepe...")
+        working = st.SigepeTrabalhando(t, "Entrando no Sigepe...")
         loginResult = t.join()
         if (loginResult[0]):
             loginContainer.destroy()
@@ -62,6 +62,10 @@ class Acesso:
 
             botaoAcessar = wd.Webdriver.nav.find_element(By.XPATH, ac.AppConfig.xpaths['login']['acessarBnt'])
             botaoAcessar.click()
+
+            checkLoadErrors = wd.Webdriver.checkErrorsLoadedPage() 
+            if(not checkLoadErrors[0]):
+                raise Exception(checkLoadErrors[1])
 
             if (wd.Webdriver.checkExistsByXpath('//*[@id="msg_alerta"]')):
                 erroLogin = wd.Webdriver.nav.find_element(By.XPATH, ac.AppConfig.xpaths['login']['loginError'])

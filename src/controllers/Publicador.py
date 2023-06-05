@@ -269,6 +269,10 @@ class Publicador:
       sigepe_botaoAcao.click()
       wd.Webdriver.waitLoadingModal()
 
+      checkLoadErrors = wd.Webdriver.checkErrorsLoadedPage() 
+      if(not checkLoadErrors[0]):
+        raise Exception(f"Erro no Sigepe: {checkLoadErrors[1]}")
+
       if (wd.Webdriver.checkExistsByXpath(ac.AppConfig.xpaths["publicacao"]["mensagemErroPublicacao"])):
         self.resultados["erro"].append(filename)
         mensagemErro = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(

@@ -11,6 +11,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from models import AppConfig as ac
+import re    
 
 class Webdriver:
   @staticmethod
@@ -40,10 +41,23 @@ class Webdriver:
       except:
         pass
 
+
+  @staticmethod
+  def checkErrorsLoadedPage():
+    errors = ac.AppConfig.errors
+    src = Webdriver.nav.page_source
+    for error in errors:
+      if re.search(error[0], src, re.IGNORECASE):
+        return [False, error[1]]
+    return [True]
+
   @staticmethod
   def go(url):
     try:
       Webdriver.nav.get(url)
+      errorCheck = Webdriver.checkErrorsLoadedPage()
+      if (not errorCheck[0]):
+        raise Exception(errorCheck[1])
     except Exception as e:
       messagebox.showerror("Erro ao acessar página", e)
 

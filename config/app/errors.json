@@ -1,0 +1,5 @@
+[
+  ["Sistema temporariamente indisponível", "Sistema temporariamente indisponível. Tente novamente mais tarde."],
+  ["Gateway Time-out", "O Sigepe não está respondendo (504). Este é um erro temporário, tente novamente mais tarde."],
+  ["Erro interno", "O Sigepe retornou erro interno. Tente novamente."]
+]

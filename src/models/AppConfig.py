@@ -35,8 +35,20 @@ class AppConfig:
     finally:
       json_file.close()
 
+  @staticmethod
+  def obterErros():
+    try:
+      json_file = open('config/app/errors.json', 'r', encoding="utf-8")
+      content = json.load(json_file)
+      return content
+    except Exception as e:
+        messagebox.showerror("Erro ao carregar relação de erros do Sigepe", e)
+    finally:
+      json_file.close()
+
+
   nome = "Publicador Sigepe"
-  versao = "v1.1.2"
+  versao = "v1.1.3"
   fontes = {
     "titulo": ("Segoe UI", "13", "bold"),
     "normal": ("Segoe UI", "12"), "botao": ("Segoe UI", "10"),
@@ -47,4 +59,5 @@ class AppConfig:
   xpaths = obterXpaths.__func__()
   urls = obterUrls.__func__()
   webdriverSettings = obterWebdriverSettings.__func__()
+  errors = obterErros.__func__()
   

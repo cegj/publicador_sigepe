@@ -16,9 +16,9 @@
     "novoUsuarioPageTitle": "//*[@id='content-title']/span"
   },
   "habilitacao": {
-    "habilitacaoBotao": "//*[@id='j_idt62:habDisponiveisLabel' or @id='j_idt64:habDisponiveisLabel']",
+    "habilitacaoBotao": "/html/body/div[2]/div[2]/div[1]/div[1]/form/a",
     "habilitacoesLinks": "//a[contains(@class, 'link-habilitacao') and contains(@class, 'acao-local')]",
-    "fecharHabilitacaoBotao": "//*[@id='j_idt62:habDisponiveisModal' or @id='j_idt64:habDisponiveisModal']/div/div[3]/a",
+    "fecharHabilitacaoBotao": "/html/body/div[2]/div[2]/div[1]/div[1]/form/div/div/div[3]/a",
     "acessoNegadoHeader": "//header[normalize-space()='ACESSO NEGADO']"
   },
   "publicacao": {
