@@ -23,10 +23,9 @@ Publicador Sigepe é um software para publicação *em lote* de documentos (port
 
 ### Limitações
 
-1. Somente são publicados arquivos no formato **RTF (Rich Text Format)** — outros formatos, como .docx, .odt ou .txt não são suportados;
+1. Somente são publicados arquivos no formato **RTF (Rich Text Format)**;
 2. O conteúdo é publicado sem formatação (ou seja, negritos, itálicos e demais formatações são ignorados);
-3. Atualmente disponível somente para 🪟 Windows;
-4. Necessita que o Google Chrome esteja instalado e atualizado.
+3. Atualmente disponível somente para 🪟 Windows.
 
 ## Imagens
 
