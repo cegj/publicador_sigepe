@@ -3,11 +3,12 @@ from tkinter import messagebox
 from tkinter import filedialog
 import os
 import shutil
+import urllib.request, json 
 
 class Fixer:
   def __init__(self):
     self.root = Tk()
-    self.root.title("Publicador Sigepe - Correção")
+    self.root.title("Corrigir Publicador Sigepe")
     self.root.iconbitmap("static/ico.ico")
     self.root["padx"] = 20
     self.root["pady"] = 20
@@ -18,16 +19,35 @@ class Fixer:
   def janelaFixer(self):
     titulo = Label(
       self.root,
-      text="Corrigir Publicador Sigepe",
+      text="Publicador Sigepe",
       font=("Segoe UI", "13", "bold"),
       anchor=CENTER
     )
     titulo.pack(padx=5, pady=5)
+
     btn = Button(
       self.root,
-      text="Selecionar arquivo",
+      text="Corrigir pela web",
       font=("Segoe UI", "10"),
-      width=20,
+      width=25,
+      command=self.fixFromWeb
+      )
+    btn.pack(padx=5, pady=5)
+   
+    ou = Label(
+      self.root,
+      text="ou",
+      font=("Segoe UI", "12"),
+      anchor=CENTER
+    )
+    ou.pack(padx=5, pady=5)
+
+    titulo.pack(padx=5, pady=5)
+    btn = Button(
+      self.root,
+      text="Selecionar arquivos",
+      font=("Segoe UI", "10"),
+      width=25,
       command=self.getFiles
       )
     btn.pack(padx=5, pady=5)
@@ -45,7 +65,7 @@ class Fixer:
 
     btn = Button(
       self.root,
-      text="Corrigir!",
+      text="Atualizar arquivos",
       font=("Segoe UI", "10"),
       width=20,
       command=self.moveFiles
@@ -67,7 +87,7 @@ class Fixer:
       "userconfig.json"
     ]
 
-    selectedFiles = filedialog.askopenfiles(mode='r', title="Selecionar arquivos de correção", filetypes=[("Arquivo JSON", ".json")])
+    selectedFiles = filedialog.askopenfiles(mode='r', title="Selecionar arquivos corrigidos", filetypes=[("Arquivo JSON", ".json")])
     fails = []
     for file in selectedFiles:
       filename = os.path.basename(file.name)
@@ -133,4 +153,23 @@ class Fixer:
         for file in fails:
           message += f"\n{file[0]}: {file[1]}"
     messagebox.showinfo("Concluído", message)
+    if (len(fails) == 0):
+      self.root.destroy()
+
+  def fixFromWeb(self):
+    try:
+      filenames = ["errors.json", "urls.json", "webdriversettings.json", "xpaths.json"]
+      for filename in filenames:
+        with urllib.request.urlopen(f"https://github.cegj.dev/publicador_sigepe_jsons/config/app/{filename}") as url:
+          content = json.load(url)
+          dest = os.path.normpath(os.path.join(os.path.expanduser('~'), f"AppData/Local/Programs/Publicador Sigepe/config/app/{filename}"))
+          string = json.dumps(content, ensure_ascii=False, indent=4, separators=(',',':'))
+          jsonFile = open(dest, "w", encoding="utf-8")
+          jsonFile.write(string)
+          jsonFile.close()
+      messagebox.showinfo("Concluído", "Arquivos atualizados com sucesso")
+      self.root.destroy()
+    except Exception as e:
+      messagebox.showinfo("Ocorreu um erro", e)
+
 start = Fixer()

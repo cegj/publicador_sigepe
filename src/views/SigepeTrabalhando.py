@@ -1,11 +1,7 @@
 from models import AppConfig as ac
-from models import UserConfig as uc
 from views import Interfaces as i
 from tkinter import *
 from tkinter import ttk
-from tkinter import messagebox
-from copy import copy
-from controllers import ObterDoSigepe as ods
 
 class SigepeTrabalhando:
   def __init__(self, thread, msg = "Aguardando resposta do Sigepe...", asRoot = False):
