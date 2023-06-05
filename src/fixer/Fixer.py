@@ -158,9 +158,12 @@ class Fixer:
 
   def fixFromWeb(self):
     try:
+      json_file = open('config/app/urls.json', 'r', encoding="utf-8")
+      urls = json.load(json_file)
+      json_file.close()
       filenames = ["errors.json", "urls.json", "webdriversettings.json", "xpaths.json"]
       for filename in filenames:
-        with urllib.request.urlopen(f"https://github.cegj.dev/publicador_sigepe_jsons/config/app/{filename}") as url:
+        with urllib.request.urlopen(f"{urls['fixer']}/{filename}") as url:
           content = json.load(url)
           dest = os.path.normpath(os.path.join(os.path.expanduser('~'), f"AppData/Local/Programs/Publicador Sigepe/config/app/{filename}"))
           string = json.dumps(content, ensure_ascii=False, indent=4, separators=(',',':'))
@@ -170,6 +173,6 @@ class Fixer:
       messagebox.showinfo("Concluído", "Arquivos atualizados com sucesso")
       self.root.destroy()
     except Exception as e:
-      messagebox.showinfo("Ocorreu um erro", e)
+      messagebox.showinfo("Ocorreu um erro ao atualizar pela web", e)
 
 start = Fixer()
