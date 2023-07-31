@@ -153,8 +153,6 @@ class Fixer:
         for file in fails:
           message += f"\n{file[0]}: {file[1]}"
     messagebox.showinfo("Concluído", message)
-    if (len(fails) == 0):
-      self.root.destroy()
 
   def fixFromWeb(self):
     try:
@@ -171,7 +169,6 @@ class Fixer:
           jsonFile.write(string)
           jsonFile.close()
       messagebox.showinfo("Concluído", "Arquivos atualizados com sucesso")
-      self.root.destroy()
     except Exception as e:
       messagebox.showinfo("Ocorreu um erro ao atualizar pela web", e)
 
