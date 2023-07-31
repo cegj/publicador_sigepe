@@ -25,7 +25,7 @@ class TipoAssinatura:
       textvariable=self.selected,
       values=options,
       state="readonly",
-      width=17,
+      width=10,
       font=ac.AppConfig.fontes["normal"]
       )
     seletor.pack(side=LEFT)

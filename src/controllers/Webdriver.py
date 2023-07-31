@@ -1,15 +1,14 @@
-from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
+from subprocess import CREATE_NO_WINDOW # This flag will only be available in windows
+from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
 import selenium.common.exceptions as selenium_exceptions
-from selenium import webdriver
-from tkinter import *
-from tkinter import messagebox
-from subprocess import CREATE_NO_WINDOW # This flag will only be available in windows
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from tkinter import *
+from tkinter import messagebox
 from models import AppConfig as ac
 import re    
 
@@ -17,12 +16,12 @@ class Webdriver:
   @staticmethod
   def start():
     try:
-      chrome_service = Service(ChromeDriverManager().install())
-      chrome_service.creationflags = CREATE_NO_WINDOW
-      opcoes = Options()
+      chrome_service = Service()
+      chrome_service.creation_flags = CREATE_NO_WINDOW
+      options = Options()
       for option in ac.AppConfig.webdriverSettings["options"]:
-        opcoes.add_argument(option)
-      driver = webdriver.Chrome(ChromeDriverManager().install(), service = chrome_service, options=opcoes)
+        options.add_argument(option)
+      driver = webdriver.Chrome(service = chrome_service, options=options)
       if (ac.AppConfig.webdriverSettings["minimizeOnStart"] == "true"): driver.minimize_window()
       return driver
     except Exception as e:

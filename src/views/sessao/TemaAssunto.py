@@ -84,7 +84,7 @@ class TemaAssunto:
         textvariable=self.temaSelected,
         values=self.sessao.sigepe_temas,
         state="readonly",
-        width=40,
+        width=27,
         font=ac.AppConfig.fontes["normal"]
         )
       seletorTema.pack(side=LEFT)
@@ -124,7 +124,7 @@ class TemaAssunto:
       textvariable=self.assuntoSelected,
       values=listaAssuntos,
       state="readonly",
-      width=30,
+      width=20,
       font=ac.AppConfig.fontes["normal"]
       )
     seletorAssunto.pack(side=LEFT)

@@ -20,7 +20,7 @@ class ResponsavelAssinatura:
     self.value.trace_add("write", self.setValue)
     entry = Entry(
       self.subcontainer,
-      width=32,
+      width=20,
       textvariable=self.value,
       font=ac.AppConfig.fontes["normal"]
       )

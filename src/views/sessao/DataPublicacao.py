@@ -20,7 +20,7 @@ class DataPublicacao:
     self.value.trace_add("write", self.setValue)
     self.sessao.dataPublicacaoInput = Entry(
       self.subcontainer,
-      width=20,
+      width=13,
       textvariable=self.value,
       font=ac.AppConfig.fontes["normal"]
       )

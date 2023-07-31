@@ -25,7 +25,7 @@ class Especie:
       textvariable=self.selected,
       values=options,
       state="readonly",
-      width=20,
+      width=13,
       font=ac.AppConfig.fontes["normal"]
       )
     seletor.pack(side=LEFT)

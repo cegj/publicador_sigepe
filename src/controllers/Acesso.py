@@ -36,6 +36,7 @@ class Acesso:
                 sessao = s.Sessao()
                 sessao.sessao()
             else:
+                messagebox.showinfo("Habilitação sem acesso", "Habilitação inicial não tem acesso ao módulo de Publicação.")
                 seletorHabilitacao = h.Habilitacao();
         if (not loginResult[0]):
             messagebox.showerror("Erro ao realizar acesso", loginResult[1])
