@@ -89,7 +89,7 @@ class Configuracoes:
 
   def ajuda(self):
     def abrirAjuda():
-      webbrowser.open_new_tab("https://cegj.notion.site/Publicador-Sigepe-v1-1-1-Documenta-o-b43e1fcd6f9f46dbb7c14924d62a1c69")
+      webbrowser.open_new_tab("https://cegj.notion.site/Publicador-Sigepe-v1-2-Documenta-o-39605c4558e64b95af306dc82b83a9c9")
 
     btn = Button(
       self.container,
