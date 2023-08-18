@@ -1,4 +1,5 @@
 {
-  "options": ["ignore-certificate-errors", "start-maximized", "--window-size=1920,1080", "--headless"],
+  "chromiumOptions": ["start-maximized", "--window-size=1920,1080"],
+  "firefoxOptions": ["--start-maximized", "--width=1920", "--height=1080"],
   "minimizeOnStart": "false"
 }

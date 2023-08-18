@@ -1,45 +1,46 @@
-from subprocess import CREATE_NO_WINDOW # This flag will only be available in windows
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 import selenium.common.exceptions as selenium_exceptions
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from tkinter import *
 from tkinter import messagebox
 from models import AppConfig as ac
+from models import UserConfig as uc
 import re    
+from controllers.webdriver.Chrome import Chrome
+from controllers.webdriver.Edge import Edge
+from controllers.webdriver.Firefox import Firefox
+from views.configuracoes import Navegador as n
 
 class Webdriver:
   @staticmethod
   def start():
-    try:
-      chrome_service = Service()
-      chrome_service.creation_flags = CREATE_NO_WINDOW
-      options = Options()
-      for option in ac.AppConfig.webdriverSettings["options"]:
-        options.add_argument(option)
-      driver = webdriver.Chrome(service = chrome_service, options=options)
-      if (ac.AppConfig.webdriverSettings["minimizeOnStart"] == "true"): driver.minimize_window()
-      return driver
-    except Exception as e:
-      error = str(e)
-      errors = {
-        "chromeNotFound": "cannot find chrome binary",
-        "outdatedChrome": "this version of chromedriver only supports Chrome version"
-      }
-      if errors["chromeNotFound"] in str(e).lower():
-        error = "O Google Chrome não está instalado em seu computador. Instale este navegador para executar o Publicador Sigepe."
-      if errors["outdatedChrome"] in str(e).lower():
-        error = "Seu navegador está desatualizado. Atualize o Google Chrome para executar o Publicador Sigepe."
-      messagebox.showerror("Erro ao abrir navegador", error)
+    def getBrowser(browserName):
+      if (browserName == "chrome"):
+        return Chrome.setup()
+      elif (browserName == "edge"):
+        return Edge.setup()
+      elif (browserName == "firefox"):
+        return Firefox.setup()
+    success = False
+    while success == False:
       try:
-        nav.quit()
-      except:
-        pass
-
+        browserName = uc.UserConfig.obterNavegador()
+        if (browserName == "chrome" or browserName == "edge" or browserName == "firefox"):
+          setup = getBrowser(browserName)
+          if setup[0]:
+            success = True
+            return setup[1]
+          else: raise Exception(setup[1])
+        else:
+          raise Exception("Não existe um navegador definido para executar o Publicador Sigepe. Defina um navegador.")
+      except Exception as e:
+        messagebox.showerror("Erro ao abrir navegador", e)
+        n.Navegador()
+        quit()
 
   @staticmethod
   def checkErrorsLoadedPage():

@@ -110,3 +110,24 @@ class UserConfig:
         messagebox.showerror("Erro ao salvar termos para remoção do conteúdo", e)
     finally:
       json_file.close()
+
+  @staticmethod
+  def obterNavegador():
+    try:
+      json_file = open('config/user/browser.json', 'r', encoding="utf-8")
+      browser = json.load(json_file)
+      return browser["browser"]
+    except Exception as e:
+        messagebox.showerror("Erro ao identificar navegador escolhido pelo usuário", e)
+    finally:
+      json_file.close()
+  
+  @staticmethod
+  def salvarNavegador(newConfig):
+    try:
+      json_file = open('config/user/browser.json', 'w', encoding="utf-8")
+      json.dump(newConfig, json_file, ensure_ascii=False, indent=4, separators=(',',':'))
+    except Exception as e:
+        messagebox.showerror("Erro ao salvar navegador escolhido pelo usuário", e)
+    finally:
+      json_file.close()

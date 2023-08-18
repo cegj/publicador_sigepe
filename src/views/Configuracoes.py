@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 from views import Interfaces as i
 from models import AppConfig as ac
@@ -6,6 +7,7 @@ from views.configuracoes import Delimitadores as d
 from views.configuracoes import Pospublicacao as pp
 from views.configuracoes import RemoverTermosConteudo as rtc
 from views.configuracoes import VerVariaveis as vv
+from views.configuracoes import Navegador as n
 import webbrowser
 from threading import Thread
 
@@ -29,6 +31,9 @@ class Configuracoes:
     self.pos_publicacao()
     self.remocao_termos()
     self.variaveis()
+    separator = ttk.Separator(self.container,orient='horizontal')
+    separator.pack(fill='x', pady=5)
+    self.navegador()
     self.ajuda()
 
   def delimitadores(self):
@@ -70,6 +75,17 @@ class Configuracoes:
       command=vv.VerVariaveis
       )
     btn.pack(padx=10, pady=7)
+
+  def navegador(self):
+    btn = Button(
+      self.container,
+      text="Navegador",
+      font=ac.AppConfig.fontes["botao"],
+      width=20,
+      command=n.Navegador
+      )
+    btn.pack(padx=10, pady=7)
+
 
   def ajuda(self):
     def abrirAjuda():

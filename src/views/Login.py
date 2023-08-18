@@ -15,9 +15,9 @@ class Login(i.Interfaces):
     self.login()
 
   def login(self):
+
     def handleEntrar():
       a.Acesso.fazerLogin(cpfInput, senhaInput, captchaInput, self.root)
-
     t = thread.ThreadWithReturn(target=wd.Webdriver.go, args=(ac.AppConfig.urls["areaDeTrabalho"],))
     t.start()
     working = st.SigepeTrabalhando(t, "Abrindo página de acesso ao Sigepe...")
