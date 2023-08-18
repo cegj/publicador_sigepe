@@ -108,7 +108,8 @@ class Fixer:
       "autotheme.json",
       "delimiters.json",
       "removefromcontent.json",
-      "userconfig.json"
+      "userconfig.json",
+      "browser.json"
     ]
 
     selectedFiles = filedialog.askopenfiles(mode='r', title="Selecionar arquivos corrigidos", filetypes=[("Arquivo JSON", ".json")])
@@ -203,7 +204,7 @@ class Fixer:
         json_file = open('config/app/urls.json', 'r', encoding="utf-8")
         urls = json.load(json_file)
         json_file.close()
-        filenames = ["afterpublishingconfig.json", "autotheme.json", "browser.json", "delimiters.json", "removefromcontent.json", "userconfig.json"]
+        filenames = ["afterpublishingconfig.json", "autotheme.json", "browser.json", "delimiters.json", "removefromcontent.json", "userconfig.json", "browser.json"]
         for filename in filenames:
           with urllib.request.urlopen(f"{urls['configRepo']}/user/{filename}") as url:
             content = json.load(url)
