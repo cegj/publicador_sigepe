@@ -36,7 +36,7 @@ class Webdriver:
             return setup[1]
           else: raise Exception(setup[1])
         else:
-          raise Exception("Não existe um navegador definido para executar o Publicador Sigepe. Defina um navegador.")
+          raise Exception("Não existe um navegador selecionado para executar o Publicador Sigepe. Defina um navegador.")
       except Exception as e:
         messagebox.showerror("Erro ao abrir navegador", e)
         n.Navegador()

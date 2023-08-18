@@ -65,11 +65,6 @@ class Navegador(i.Interfaces):
         width=50)
       self.seletorNavegadores.pack(fill=X, expand=YES, pady="5")
 
-      def get_values(event = None):
-        print(self.seletorNavegadores.get())
-
-      self.seletorNavegadores.bind("<<ComboboxSelected>>", get_values)
-
       botaoSelecionarNavegador = Button(
         self.navegadorContainer,
         text="Definir navegador",
