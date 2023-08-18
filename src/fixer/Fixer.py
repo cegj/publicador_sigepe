@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 import os
@@ -25,22 +26,45 @@ class Fixer:
     )
     titulo.pack(padx=5, pady=5)
 
-    btn = Button(
+    separator = ttk.Separator(self.root,orient='horizontal')
+    separator.pack(fill='x', pady=5)
+
+    correcaoWebLabel = Label(
       self.root,
-      text="Corrigir pela web",
-      font=("Segoe UI", "10"),
-      width=25,
-      command=self.fixFromWeb
-      )
-    btn.pack(padx=5, pady=5)
-   
-    ou = Label(
-      self.root,
-      text="ou",
+      text="CORRIGIR ONLINE",
       font=("Segoe UI", "12"),
       anchor=CENTER
     )
-    ou.pack(padx=5, pady=5)
+    correcaoWebLabel.pack(padx=5, pady=5)
+
+    btn = Button(
+      self.root,
+      text="Redefinir configurações da aplicação",
+      font=("Segoe UI", "10"),
+      width=40,
+      command=self.resetAppConfigOnline
+      )
+    btn.pack(padx=5, pady=5)
+   
+    btn = Button(
+      self.root,
+      text="Redefinir configurações do usuário",
+      font=("Segoe UI", "10"),
+      width=40,
+      command=self.resetUserConfigOnline
+      )
+    btn.pack(padx=5, pady=15)
+
+    separator = ttk.Separator(self.root,orient='horizontal')
+    separator.pack(fill='x', pady=5)
+
+    correcaoArquivosLabel = Label(
+      self.root,
+      text="CORRIGIR VIA ARQUIVOS",
+      font=("Segoe UI", "12"),
+      anchor=CENTER
+    )
+    correcaoArquivosLabel.pack(padx=5, pady=5)
 
     titulo.pack(padx=5, pady=5)
     btn = Button(
@@ -154,22 +178,42 @@ class Fixer:
           message += f"\n{file[0]}: {file[1]}"
     messagebox.showinfo("Concluído", message)
 
-  def fixFromWeb(self):
+  def resetAppConfigOnline(self):
     try:
       json_file = open('config/app/urls.json', 'r', encoding="utf-8")
       urls = json.load(json_file)
       json_file.close()
       filenames = ["errors.json", "urls.json", "webdriversettings.json", "xpaths.json"]
       for filename in filenames:
-        with urllib.request.urlopen(f"{urls['fixer']}/{filename}") as url:
+        with urllib.request.urlopen(f"{urls['configRepo']}/app/{filename}") as url:
           content = json.load(url)
           dest = os.path.normpath(os.path.join(os.path.expanduser('~'), f"AppData/Local/Programs/Publicador Sigepe/config/app/{filename}"))
           string = json.dumps(content, ensure_ascii=False, indent=4, separators=(',',':'))
           jsonFile = open(dest, "w", encoding="utf-8")
           jsonFile.write(string)
           jsonFile.close()
-      messagebox.showinfo("Concluído", "Arquivos atualizados com sucesso")
+      messagebox.showinfo("Concluído", "Configurações da aplicação atualizadas com sucesso")
     except Exception as e:
       messagebox.showinfo("Ocorreu um erro ao atualizar pela web", e)
+
+  def resetUserConfigOnline(self):
+    confirm = messagebox.askyesno("Atenção", "Essa operação limpará todas as configurações do usuário. Deseja continuar?")
+    if confirm:
+      try:
+        json_file = open('config/app/urls.json', 'r', encoding="utf-8")
+        urls = json.load(json_file)
+        json_file.close()
+        filenames = ["afterpublishingconfig.json", "autotheme.json", "browser.json", "delimiters.json", "removefromcontent.json", "userconfig.json"]
+        for filename in filenames:
+          with urllib.request.urlopen(f"{urls['configRepo']}/user/{filename}") as url:
+            content = json.load(url)
+            dest = os.path.normpath(os.path.join(os.path.expanduser('~'), f"AppData/Local/Programs/Publicador Sigepe/config/user/{filename}"))
+            string = json.dumps(content, ensure_ascii=False, indent=4, separators=(',',':'))
+            jsonFile = open(dest, "w", encoding="utf-8")
+            jsonFile.write(string)
+            jsonFile.close()
+        messagebox.showinfo("Concluído", "Configurações do usuário atualizados com sucesso")
+      except Exception as e:
+        messagebox.showinfo("Ocorreu um erro ao atualizar pela web", e)
 
 start = Fixer()
