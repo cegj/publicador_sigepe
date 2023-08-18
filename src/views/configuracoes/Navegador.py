@@ -1,14 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-from controllers import Webdriver as wd
 from models import AppConfig as ac
-from selenium.webdriver.common.by import By
-import time
 from views import Interfaces as i
-from views import Sessao as s
-from helpers import ThreadWithReturn as thread
-from views import SigepeTrabalhando as st
 from models import UserConfig as uc
 
 class Navegador(i.Interfaces):

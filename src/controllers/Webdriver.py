@@ -1,8 +1,6 @@
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 import selenium.common.exceptions as selenium_exceptions
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from tkinter import *
@@ -14,6 +12,7 @@ from controllers.webdriver.Chrome import Chrome
 from controllers.webdriver.Edge import Edge
 from controllers.webdriver.Firefox import Firefox
 from views.configuracoes import Navegador as n
+import sys 
 
 class Webdriver:
   @staticmethod
@@ -40,7 +39,7 @@ class Webdriver:
       except Exception as e:
         messagebox.showerror("Erro ao abrir navegador", e)
         n.Navegador()
-        quit()
+        sys.exit()
 
   @staticmethod
   def checkErrorsLoadedPage():
