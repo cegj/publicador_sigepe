@@ -146,7 +146,7 @@ class Fixer:
     success = []
     fails = []
     appFiles = ["errors.json", "urls.json", "webdriversettings.json", "xpaths.json"]
-    userFiles = ["afterpublishingconfig.json", "autotheme.json", "delimiters.json", "removefromcontent.json", "userconfig.json"]
+    userFiles = ["afterpublishingconfig.json", "autotheme.json", "delimiters.json", "removefromcontent.json", "userconfig.json", "browser.json"]
     for file in self.files:
       filename = os.path.basename(file.name)
       if (filename in appFiles):
