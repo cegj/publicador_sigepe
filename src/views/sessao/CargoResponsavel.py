@@ -18,14 +18,14 @@ class CargoResponsavel:
     label.pack(side=LEFT)
     self.value = StringVar()
     self.value.trace_add("write", self.setValue)
-    entry = Entry(
+    self.sessao.cargoResponsavelInput = Entry(
       self.subcontainer,
       width=20,
       textvariable=self.value,
       font=ac.AppConfig.fontes["normal"]
       )
     self.value.set(self.sessao.userConfig["valores_sigepe"]["cargo_responsavel"])
-    entry.pack(side=LEFT, expand=True)
+    self.sessao.cargoResponsavelInput.pack(side=LEFT, expand=True)
 
   def setValue(self, a=None, b=None, c=None):
     self.sessao.userConfig["valores_sigepe"]["cargo_responsavel"] = self.value.get()
