@@ -12,7 +12,7 @@ class Navegador(i.Interfaces):
     self.master.pack()
     self.navegadorContainer = Frame(self.master)
     self.navegadorContainer.pack()
-    self.listaNavegadores = ["Google Chrome (recomendado)", "Microsoft Edge", "Mozilla Firefox"]
+    self.listaNavegadores = ["Google Chrome (recomendado)", "Microsoft Edge"]
     self.janelaNavegador()
 
   def handleSalvarNavegador(self):
@@ -23,8 +23,6 @@ class Navegador(i.Interfaces):
           valueToStore = "chrome"
         case "Microsoft Edge":
           valueToStore = "edge"
-        case "Mozilla Firefox":
-          valueToStore = "firefox"
         case _:
           valueToStore = "chrome"
       uc.UserConfig.salvarNavegador({"browser": valueToStore})
@@ -41,8 +39,6 @@ class Navegador(i.Interfaces):
         return "Google Chrome"
       case "edge":
         return "Microsoft Edge"
-      case "firefox":
-        return "Mozilla Firefox"
       case _:
         return False
 

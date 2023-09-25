@@ -42,7 +42,7 @@ Tela de publicação em execução (exemplo)<br>
 ## Requisitos prévios
 
 Para utilizar o Publicador Sigepe, é necessário:
--  Ter um dos seguintes navegadores instalados e atualizados no computador: Google Chrome (recomendado), Microsoft Edge ou Mozilla Firefox.
+-  Ter um dos seguintes navegadores instalados e atualizados no computador: Google Chrome (recomendado) ou Microsoft Edge.
 -  Ter uma conta no Sigepe com uma habilitação que tenha acesso ao Módulo Publicação.
 
 ## Instalação

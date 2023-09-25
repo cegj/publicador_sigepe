@@ -10,7 +10,6 @@ from models import UserConfig as uc
 import re    
 from controllers.webdriver.Chrome import Chrome
 from controllers.webdriver.Edge import Edge
-from controllers.webdriver.Firefox import Firefox
 from views.configuracoes import Navegador as n
 import sys 
 
@@ -22,13 +21,11 @@ class Webdriver:
         return Chrome.setup()
       elif (browserName == "edge"):
         return Edge.setup()
-      elif (browserName == "firefox"):
-        return Firefox.setup()
     success = False
     while success == False:
       try:
         browserName = uc.UserConfig.obterNavegador()
-        if (browserName == "chrome" or browserName == "edge" or browserName == "firefox"):
+        if (browserName == "chrome" or browserName == "edge"):
           setup = getBrowser(browserName)
           if setup[0]:
             success = True
