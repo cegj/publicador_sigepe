@@ -12,15 +12,21 @@ from controllers.webdriver.Chrome import Chrome
 from controllers.webdriver.Edge import Edge
 from views.configuracoes import Navegador as n
 import sys 
+from helpers import ThreadWithReturn as thread
+from views import SigepeTrabalhando as st
 
 class Webdriver:
   @staticmethod
   def start():
     def getBrowser(browserName):
       if (browserName == "chrome"):
-        return Chrome.setup()
+        t = thread.ThreadWithReturn(target=Chrome.setup)
       elif (browserName == "edge"):
-        return Edge.setup()
+        t = thread.ThreadWithReturn(target=Edge.setup)
+      t.start()
+      working = st.SigepeTrabalhando(t, "Iniciando...", True)
+      browser = t.join()
+      return browser
     success = False
     while success == False:
       try:
