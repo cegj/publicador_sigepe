@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 from views import Interfaces as i
@@ -16,8 +17,21 @@ class Pospublicacao:
 
   def janelaPospublicacao(self):
     self.copiar_mover()
+    separator = ttk.Separator(self.posPublicacaoContainer,orient='horizontal')
+    separator.pack(fill='x', pady=10)
     self.adicionar_ao_nome_arquivo()
+    separator = ttk.Separator(self.posPublicacaoContainer,orient='horizontal')
+    separator.pack(fill='x', pady=10)
     self.salvar_configuracoes()
+
+    infoLabel = ttk.Label(
+      self.posPublicacaoContainer,
+      text="As ações pós-publicação serão executadas sempre que um\narquivo for publicado com sucesso. Elas permitem copiar ou\nmover o arquivo para uma nova pasta, e adicionar um termo\nao nome do arquivo após a publicação. Caso haja falha na\npublicação do arquivo, as ações não são realizadas.",
+      background="#fff9d9",
+      foreground="#85701d",
+      padding=4,
+      justify=CENTER)
+    infoLabel.pack(pady="5")
 
   def copiar_mover(self):
     def setCopyMoveOption(event = None):
@@ -34,12 +48,15 @@ class Pospublicacao:
     def setPathOnChange(a=None, b=None, c=None):
       self.afterpublishingconfig["destino"] = targetPath.get()
 
+    copyMoveContainer = Frame(self.posPublicacaoContainer)
+    copyMoveContainer.pack()
+
     copyMoveLabel = Label(
-      self.posPublicacaoContainer,
-      text="Após publicar",
+      copyMoveContainer,
+      text="Copiar ou mover para outra pasta:",
       font=ac.AppConfig.fontes["normal"]
       )
-    copyMoveLabel.grid(column=1, row=1, padx=10, pady=5, sticky='w')
+    copyMoveLabel.pack(pady="2")
     copyMoveOptionsList = ["Copiar para...", "Mover para...", "Não copiar nem mover"]
     if self.afterpublishingconfig["copiar_ou_mover"] not in copyMoveOptionsList:
           self.afterpublishingconfig["copiar_ou_mover"] = "Não copiar nem mover"
@@ -47,51 +64,55 @@ class Pospublicacao:
     copyMoveSelected = StringVar()
     copyMoveSelected.set(self.afterpublishingconfig["copiar_ou_mover"])
     copyMoveOptions = OptionMenu(
-      self.posPublicacaoContainer,
+      copyMoveContainer,
       copyMoveSelected,
       copyMoveSelected.get(),
       *copyMoveOptionsList,
       command=setCopyMoveOption
     )
-    copyMoveOptions.grid(column=2, row=1, padx=10, pady=5, sticky='w')
+    copyMoveOptions.pack(pady="2")
     targetPath = StringVar()
     targetPath.trace_add("write", setPathOnChange)
     targetPath.set(self.afterpublishingconfig["destino"])
-    destinoInput = Entry(
-      self.posPublicacaoContainer,
-      textvariable=targetPath,
-      width=50,
-      font=ac.AppConfig.fontes["normal"],
-      )
-    destinoInput.grid(column=3, row=1)
     botaoDiretorioDestino = Button(
-      self.posPublicacaoContainer,
-      text="Alterar destino",
+      copyMoveContainer,
+      text="Selecionar destino",
       font=ac.AppConfig.fontes["botao"],
       width=20,
       command=getTargetPath
       )
-    botaoDiretorioDestino.grid(column=4, row=1, padx=10, pady=5, sticky='w')
+    botaoDiretorioDestino.pack(pady="2")
+    destinoInput = Entry(
+      copyMoveContainer,
+      textvariable=targetPath,
+      width=40,
+      font=ac.AppConfig.fontes["normal"],
+      )
+    destinoInput.pack(pady="2")
 
   def adicionar_ao_nome_arquivo(self):
     def setValue(a=None, b=None, c=None):
       self.afterpublishingconfig["adicionar_ao_nome_arquivo"] = value.get()
+
+    addToFilenameContainer = Frame(self.posPublicacaoContainer)
+    addToFilenameContainer.pack()
+
     addToFilenameLabel = Label(
-      self.posPublicacaoContainer,
-      text="Adicionar ao nome do arquivo:",
+      addToFilenameContainer,
+      text="Adicionar termo ao nome do arquivo:",
       font=ac.AppConfig.fontes["normal"]
-      )
-    addToFilenameLabel.grid(column=1, columnspan=2, row=2, padx=10, pady=5, sticky='w')
+      ) 
+    addToFilenameLabel.pack(pady="2")
     value = StringVar()
     value.trace_add("write", setValue)
     addToFilenameInput = Entry(
-      self.posPublicacaoContainer,
+      addToFilenameContainer,
       width=40,
       textvariable=value,
       font=ac.AppConfig.fontes["normal"]
       )
     value.set(self.afterpublishingconfig["adicionar_ao_nome_arquivo"])
-    addToFilenameInput.grid(column=3, row=2, columnspan=2, sticky="w")
+    addToFilenameInput.pack(pady="2")
 
   def salvar_configuracoes(self):
     def salvar():
@@ -102,7 +123,7 @@ class Pospublicacao:
         messagebox.showerror("Erro ao gravar configurações de pós-publicação", e)
 
     container = Frame(self.posPublicacaoContainer)
-    container.grid(row=4, column=1, columnspan=3)
+    container.pack()
     self.salvarConfigBtn = Button(
       container,
       text="Salvar",
@@ -110,4 +131,4 @@ class Pospublicacao:
       width=20,
       command=salvar
     )
-    self.salvarConfigBtn.grid(column=1, row=0, padx=10, pady=5)
+    self.salvarConfigBtn.pack(pady="10")
