@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from models import AppConfig as ac
 from views import Interfaces as i
 from controllers import Variaveis as v
@@ -23,10 +24,19 @@ class VerVariaveis:
     label.pack()
     self.textbox = Text(
       self.container,
-      width=30,
+      width=32,
       height=13,
       font=ac.AppConfig.fontes["normal"]
       )
     for key, value in self.variaveis.items():
       self.textbox.insert(END, f"[{key}]: {value}\n")
     self.textbox.pack()
+
+    infoLabel = ttk.Label(
+      self.container,
+      text="As variáveis podem ser utilizadas para preencher as\nconfigurações do Publicador Sigepe com valores dinâmicos,\nque serão atualizados para o valor correspondente\nsempre que o Publicador Sigepe for executado.",
+      background="#fff9d9",
+      foreground="#85701d",
+      padding=4,
+      justify=CENTER)
+    infoLabel.pack(pady="5")
