@@ -7,6 +7,10 @@ class Application:
 
     def executar(self):
       c.CheckUpdates.checkRelease()
+      c.CheckUpdates.checkXpaths()
+      c.CheckUpdates.checkUrls()
+      c.CheckUpdates.checkErrors()
+      c.CheckUpdates.checkWebdriverSettings()
       start = l.Login()
 
 app = Application()

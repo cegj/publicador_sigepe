@@ -48,7 +48,7 @@ class Webdriver:
   def checkErrorsLoadedPage():
     errors = ac.AppConfig.errors
     src = Webdriver.nav.page_source
-    for error in errors:
+    for error in errors["cases"]:
       if re.search(error[0], src, re.IGNORECASE):
         return [False, error[1]]
     return [True]

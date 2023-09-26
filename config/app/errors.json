@@ -1,6 +1,9 @@
-[
-  ["Sistema temporariamente indisponível", "Sistema temporariamente indisponível. Tente novamente mais tarde."],
-  ["Gateway Time-out", "O Sigepe não está respondendo (504). Este é um erro temporário, tente novamente mais tarde."],
-  ["Erro interno", "O Sigepe retornou erro interno. Tente novamente."],
-  ["Mensagem de Leitura Obrigatória", "Existe uma mensagem de leitura obrigatória no Sigepe, por este motivo, não é possível continuar. Acesse o Sigepe manualmente pelo seu navegador e confirme a leitura da mensagem antes de executar o Publicador Sigepe novamente."]
-]
+{
+  "version": "1",
+  "cases": [
+    ["Sistema temporariamente indisponível", "Sistema temporariamente indisponível. Tente novamente mais tarde."],
+    ["Gateway Time-out", "O Sigepe não está respondendo (504). Este é um erro temporário, tente novamente mais tarde."],
+    ["Erro interno", "O Sigepe retornou erro interno. Tente novamente."],
+    ["Mensagem de Leitura Obrigatória", "Existe uma mensagem de leitura obrigatória no Sigepe, por este motivo, não é possível continuar. Acesse o Sigepe manualmente pelo seu navegador e confirme a leitura da mensagem antes de executar o Publicador Sigepe novamente."]
+  ]
+}
