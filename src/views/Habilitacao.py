@@ -112,6 +112,16 @@ class Habilitacao(i.Interfaces):
         command=self.handleMudarHabilitacao
       )
       botaoSelecionarHabilitacao.pack(pady="5")
+
+      infoLabel = ttk.Label(
+        self.habilitacaoContainer,
+        text="A habilitação selecionada será utilizada\npara realizar o cadastro dos documentos.\nSelecione uma habilitação que tenha acesso\nao módulo de Publicação do Sigepe.",
+        background="#fff9d9",
+        foreground="#85701d",
+        padding=4,
+        justify=CENTER)
+      infoLabel.pack(pady="5")
+
       self.root.bind('<Return>', self.handleMudarHabilitacao)
       self.root.protocol("WM_DELETE_WINDOW", self.handleFecharJanela)
       self.root.mainloop()
