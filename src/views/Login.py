@@ -1,6 +1,7 @@
 from views import Interfaces as i
 from controllers import Acesso as a
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
@@ -98,6 +99,15 @@ class Login(i.Interfaces):
       width=12,
       command=handleEntrar)
     botaoEntrar.pack()
+
+    infoLabel = ttk.Label(
+      loginContainer,
+      text="Para iniciar o Publicador, entre com o seu\nusuário e senha do Sigepe/Sigac.",
+      background="#fff9d9",
+      foreground="#85701d",
+      padding=4,
+      justify=CENTER)
+    infoLabel.pack(pady="8")
 
     def handleEnter(event = None):
       handleEntrar()

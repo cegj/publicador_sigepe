@@ -27,6 +27,16 @@ class TemaAutomatico:
     self.listaTemasCadastrados()
     self.btns()
 
+    infoLabel = ttk.Label(
+      self.temaAutomaticoContainer,
+      text="O Publicador Sigepe buscará os termos cadastrados\nno conteúdo de cada arquivo selecionado para\npublicação e selecionará o tema/assunto correspondente.",
+      background="#fff9d9",
+      foreground="#85701d",
+      padding=4,
+      justify=CENTER)
+    infoLabel.pack(pady="8")
+
+
   def updateThemesList(self):
     self.themesList.delete(0, END)
     for theme in self.autoThemes.keys():
