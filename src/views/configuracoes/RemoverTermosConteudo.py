@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 from views import Interfaces as i
 from models import UserConfig as uc
@@ -22,7 +23,7 @@ class RemoverTermosConteudo:
       self.config["termos"] = self.termosInput.get("1.0", END)
     termosLabel = Label(
       self.termosContainer,
-      text="Termos para remover do conteúdo:",
+      text="Termos para remover do conteúdo",
       font=ac.AppConfig.fontes["normal"]
       )
     termosLabel.pack()
@@ -34,13 +35,6 @@ class RemoverTermosConteudo:
       )
     self.termosInput.insert(END, self.config["termos"])
     self.termosInput.pack()
-    infoLabel = Label(
-      self.termosContainer,
-      text="Para informar diferentes termos, separe-os com ponto-e-vírgula",
-      font=ac.AppConfig.fontes["normal"]
-      )
-    infoLabel.pack()
-
 
   def salvar_configuracoes(self):
     def salvar():
@@ -61,4 +55,13 @@ class RemoverTermosConteudo:
       width=20,
       command=salvar
     )
-    self.salvarConfigBtn.pack()
+    self.salvarConfigBtn.pack(pady="5")
+
+    infoLabel = ttk.Label(
+      container,
+      text="Todos os termos informados acima encontrados no conteúdo\ndos documentos serão removidos ao realizar a publicação.\nPara informar diferentes termos, separe-os com ponto-e-vírgula.\nEste recurso não afeta o conteúdo dos arquivos.",
+      background="#fff9d9",
+      foreground="#85701d",
+      padding=4,
+      justify=CENTER)
+    infoLabel.pack(pady="5")

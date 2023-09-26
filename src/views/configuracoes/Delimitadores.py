@@ -114,7 +114,7 @@ class Delimitadores:
       beforeValue.trace_add("write", setBeforeValue)
       beforeInput = Entry(
         fieldsContainer,
-        width=20,
+        width=22,
         textvariable=beforeValue,
         font=ac.AppConfig.fontes["normal"]
         )
@@ -132,7 +132,7 @@ class Delimitadores:
       afterValue.trace_add("write", setAfterValue)
       afterInput = Entry(
         fieldsContainer,
-        width=20,
+        width=22,
         textvariable=afterValue,
         font=ac.AppConfig.fontes["normal"]
         )
