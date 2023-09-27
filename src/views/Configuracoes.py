@@ -8,6 +8,7 @@ from views.configuracoes import Pospublicacao as pp
 from views.configuracoes import RemoverTermosConteudo as rtc
 from views.configuracoes import VerVariaveis as vv
 from views.configuracoes import Navegador as n
+from views.configuracoes import ImportarExportarConfig as iec
 import webbrowser
 from threading import Thread
 
@@ -34,6 +35,7 @@ class Configuracoes:
     separator = ttk.Separator(self.container,orient='horizontal')
     separator.pack(fill='x', pady=5)
     self.navegador()
+    self.importarExportar()
     self.ajuda()
 
   def delimitadores(self):
@@ -41,7 +43,7 @@ class Configuracoes:
       self.container,
       text="Delimitadores",
       font=ac.AppConfig.fontes["botao"],
-      width=20,
+      width=25,
       command=d.Delimitadores
       )
     btn.pack(padx=10, pady=7)
@@ -51,7 +53,7 @@ class Configuracoes:
       self.container,
       text="Pós-publicação",
       font=ac.AppConfig.fontes["botao"],
-      width=20,
+      width=25,
       command=pp.Pospublicacao
       )
     btn.pack(padx=10, pady=7)
@@ -61,7 +63,7 @@ class Configuracoes:
       self.container,
       text="Remoção de termos",
       font=ac.AppConfig.fontes["botao"],
-      width=20,
+      width=25,
       command=rtc.RemoverTermosConteudo
       )
     btn.pack(padx=10, pady=7)
@@ -71,7 +73,7 @@ class Configuracoes:
       self.container,
       text="Lista de variáveis",
       font=ac.AppConfig.fontes["botao"],
-      width=20,
+      width=25,
       command=vv.VerVariaveis
       )
     btn.pack(padx=10, pady=7)
@@ -81,8 +83,18 @@ class Configuracoes:
       self.container,
       text="Navegador",
       font=ac.AppConfig.fontes["botao"],
-      width=20,
+      width=25,
       command=n.Navegador
+      )
+    btn.pack(padx=10, pady=7)
+
+  def importarExportar(self):
+    btn = Button(
+      self.container,
+      text="Importar/Exportar config.",
+      font=ac.AppConfig.fontes["botao"],
+      width=25,
+      command=iec.ImportarExportarConfig
       )
     btn.pack(padx=10, pady=7)
 
@@ -95,7 +107,7 @@ class Configuracoes:
       self.container,
       text="Ajuda",
       font=ac.AppConfig.fontes["botao"],
-      width=20,
+      width=25,
       command=lambda: Thread(target=abrirAjuda).start()
       )
     btn.pack(padx=10, pady=7)
