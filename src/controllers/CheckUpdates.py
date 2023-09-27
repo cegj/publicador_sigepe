@@ -13,10 +13,14 @@ class CheckUpdates():
       with urllib.request.urlopen(urls['lastRelease']) as url:
         lastRelease = json.load(url)
         if (currentVersion != lastRelease["version"]):
-          answer = messagebox.askyesno("Nova versão disponível", f"Existe uma nova versão do Publicador Sigepe disponível ({lastRelease['version']}). Deseja baixar o instalador desta nova versão?")
+          message = f"Existe uma nova versão do Publicador Sigepe disponível ({lastRelease['version']}). Deseja baixar o instalador desta nova versão?"
+          if (lastRelease["notes"]):
+            message += "\n\nNOTAS DA VERSÃO:\n"
+            message+= lastRelease["notes"]
+          answer = messagebox.askyesno("Nova versão disponível", message)
           if (answer == True):
             webbrowser.open_new_tab(lastRelease["url"])
-            messagebox.showinfo("Sucesso", "O instalador da nova versão do Publicador Sigepe está sendo baixado pelo seu navegador. Após a conclusão, execute o instalador para substituir a versão atual pela nova.\n\nAo instalar uma nova versão, suas configurações de usuário serão perdidas. Para mais informações sobre como fazer uma cópia das suas configurações na versão atual e importar na nova versão, consulte a Ajuda (em Configurações).")
+            messagebox.showinfo("Sucesso", 'O instalador da nova versão do Publicador Sigepe está sendo baixado pelo seu navegador. Após a conclusão, execute o arquivo baixado para substituir a versão atual pela nova.\n\nAo instalar uma nova versão, suas configurações de usuário serão perdidas. Utilize a opção "Importar/Exportar config.", em "Configurações", para fazer uma cópia das suas configurações e importá-las na nova versão.\n\nEm caso de dúvidas, consulte a Ajuda.')
     except Exception as e:
       messagebox.showerror("Ocorreu um erro ao verificar se há novas versões", e)      
 
@@ -32,7 +36,6 @@ class CheckUpdates():
           jsonFile = open(dest, "w", encoding="utf-8")
           jsonFile.write(string)
           jsonFile.close()
-          answer = messagebox.showinfo("Atualização realizada", f"Uma atualização dos identificadores de elementos do Sigepe foi realizada automaticamente.")
     except Exception as e:
       messagebox.showerror("Erro em atualização de identificadores do Sigepe", e)      
 
@@ -48,7 +51,6 @@ class CheckUpdates():
           jsonFile = open(dest, "w", encoding="utf-8")
           jsonFile.write(string)
           jsonFile.close()
-          answer = messagebox.showinfo("Atualização realizada", f"Uma atualização de URLs foi realizada automaticamente.")
     except Exception as e:
       messagebox.showerror("Erro em atualização de URLs", e)     
 
@@ -64,7 +66,6 @@ class CheckUpdates():
           jsonFile = open(dest, "w", encoding="utf-8")
           jsonFile.write(string)
           jsonFile.close()
-          answer = messagebox.showinfo("Atualização realizada", f"Uma atualização de lista de erros foi realizada automaticamente.")
     except Exception as e:
       messagebox.showerror("Erro em atualização de lista de erros", e)
 
@@ -80,6 +81,5 @@ class CheckUpdates():
           jsonFile = open(dest, "w", encoding="utf-8")
           jsonFile.write(string)
           jsonFile.close()
-          answer = messagebox.showinfo("Atualização realizada", f"Uma atualização de configurações do navegador foi realizada automaticamente.")
     except Exception as e:
       messagebox.showerror("Erro em atualização de configurações do navegador", e)          
