@@ -19,10 +19,10 @@ class ImportarExportarConfig:
       self.janelaImportarExportar()
 
   def janelaImportarExportar(self):
-    self.exportar()
+    self.importar()
     separator = ttk.Separator(self.container,orient='horizontal')
     separator.pack(fill='x', pady=10)
-    self.importar()
+    self.exportar()
     infoLabel = ttk.Label(
       self.container,
       text="É possível exportar as suas configurações do usuário\npara importá-las em outras instalações do Publicador\nou para manter uma cópia de segurança.\nOs arquivos exportados também podem ser\nimportados por meio desta função.",
