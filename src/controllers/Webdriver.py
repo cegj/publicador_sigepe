@@ -163,9 +163,9 @@ class Webdriver:
         case _:
           pass
 
-      especificMessage = ex.args[0]
+      customMessage = ex.msg if ex.msg else str("")
 
-      msg = template.format(exMessage, especificMessage)
+      msg = template.format(exMessage, customMessage)
 
       return {"log": msg, "type": "e", "e": ex}
     except Exception as e:

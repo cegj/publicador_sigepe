@@ -185,7 +185,7 @@ class Publicador:
     
     self.currentFile = None
     self.publicacao.insertFileText("")
-    log = {"log": f"Publicação concluída!", "type": "em"}
+    log = {"log": f"Fila de arquivos concluída!", "type": "em"}
     self.handleResult(log)
     self.publicacao.showBtns()
     self.publicacao.showConcludeMessage()
@@ -311,7 +311,7 @@ class Publicador:
       if (result["type"] == 'e'):
         log = "A publicação do arquivo foi interrompida devido ao erro acima"
         self.publicacao.insertLog(log, result["type"], docnumber)
-        self.publicacao.insertResult(currentFileName, log, 'a', docnumber)
+        self.publicacao.insertResult(currentFileName, log, 'e', docnumber)
 
       if (result["type"] == 's'):
         newFilename = None
