@@ -25,13 +25,17 @@ labels = {
   "cargo_responsavel":"Cargo do responsável"
 }
 
-required = ["edicao_bgp", "tipo_assinatura", "especie", "tipo_preenchimento", "orgao", "upag", "uorg", "responsavel_assinatura", "cargo_responsavel"]
+required = ["edicao_bgp", "tipo_assinatura", "especie", "tipo_preenchimento", "responsavel_assinatura"]
 
 conditionallyRequired = [
   ["data_publicacao", "valores_sigepe//edicao_bgp", "Normal"],
   ["data_assinatura", "valores_sigepe//tipo_assinatura", "Manual"],
   ["tema", "tipo_tema_assunto", "Selecionar manualmente"],
-  ["assunto", "tipo_tema_assunto", "Selecionar manualmente"]
+  ["assunto", "tipo_tema_assunto", "Selecionar manualmente"],
+  ["orgao", "valores_sigepe//tipo_assinatura", "Manual"],
+  ["upag", "valores_sigepe//tipo_assinatura", "Manual"],
+  ["uorg", "valores_sigepe//tipo_assinatura", "Manual"],
+  ["cargo_responsavel", "valores_sigepe//tipo_assinatura", "Manual"]
 ]
 
 def validateFields(userConfig):

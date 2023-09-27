@@ -113,6 +113,8 @@ class ArquivosPublicar:
       text="Selecionar arquivos",
       font=ac.AppConfig.fontes["botao"],
       width=20,
+      bg="#196DAB",
+      fg="white",
       command=self.getFiles
       )
     btn.pack(side=LEFT, padx=10)
