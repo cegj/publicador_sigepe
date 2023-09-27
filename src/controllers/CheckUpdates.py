@@ -15,7 +15,7 @@ class CheckUpdates():
         if (currentVersion != lastRelease["version"]):
           message = f"Existe uma nova versão do Publicador Sigepe disponível ({lastRelease['version']}). Deseja baixar o instalador desta nova versão?"
           if (lastRelease["notes"]):
-            message += "\n\nNOTAS DA VERSÃO:\n"
+            message += "\n\n"
             message+= lastRelease["notes"]
           answer = messagebox.askyesno("Nova versão disponível", message)
           if (answer == True):

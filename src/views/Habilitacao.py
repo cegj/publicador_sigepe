@@ -115,7 +115,7 @@ class Habilitacao(i.Interfaces):
 
       infoLabel = ttk.Label(
         self.habilitacaoContainer,
-        text="A habilitação selecionada será utilizada\npara realizar o cadastro dos documentos.\nSelecione uma habilitação que tenha acesso\nao módulo de Publicação do Sigepe.",
+        text="A habilitação selecionada será utilizada para realizar\no cadastro dos documentos. Selecione uma habilitação\nque tenha acesso ao módulo de Publicação do Sigepe.",
         background="#fff9d9",
         foreground="#85701d",
         padding=4,
