@@ -1,7 +1,7 @@
 {
   "version": "1",
-  "lastRelease": "https://github.cegj.dev/publicador_sigepe_web_jsons/lastRelease.json",
-  "configRepo": "https://github.cegj.dev/publicador_sigepe_web_jsons/config",
+  "lastRelease": "https://cegj.dev/publicador_sigepe_web_jsons/lastRelease.json",
+  "configRepo": "https://cegj.dev/publicador_sigepe_web_jsons/config",
   "areaDeTrabalho": "https://admsistema.sigepe.gov.br/sigepe-as-web/private/areaTrabalho/index.jsf",
   "cadastrarAtoPublicacao": "https://bgp.sigepe.gov.br/sigepe-bgp-web-intranet/pages/publicacao/cadastrar.jsf"
 }

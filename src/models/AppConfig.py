@@ -48,7 +48,7 @@ class AppConfig:
 
 
   nome = "Publicador Sigepe"
-  versao = "v1.2.1"
+  versao = "v1.3"
   fontes = {
     "titulo": ("Segoe UI", "13", "bold"),
     "normal": ("Segoe UI", "12"), "botao": ("Segoe UI", "10"),
