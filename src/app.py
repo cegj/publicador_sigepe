@@ -23,7 +23,7 @@ class Application:
         response = requests.get(ac.AppConfig.urls["areaDeTrabalho"], timeout=5)
         return True
       except requests.ConnectionError:
-        messagebox.showerror(f"{ac.AppConfig.nome} {ac.AppConfig.versao}", "Não foi possível estabelecer uma conexão com o Sigepe. Verifique a sua conexão com a internet e tente novamente.")
+        messagebox.showerror(f"{ac.AppConfig.nome} {ac.AppConfig.versao}", "Não foi possível estabelecer uma conexão com o Sigepe. Isso pode ocorrer por falha da sua conexão com a internet ou por indisponibilidade do Sigepe.")
         sys.exit() 
 
 app = Application()

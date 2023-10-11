@@ -5,6 +5,7 @@ from models import AppConfig as ac
 from striprtf.striprtf import rtf_to_text
 from tkinter import messagebox
 import os
+from urllib.parse import urlparse, parse_qs
 from threading import Thread
 from controllers.publicador.campos import EdicaoBoletim as eb
 from controllers.publicador.campos import TipoAssinatura as ta
@@ -24,6 +25,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from controllers import Webdriver as wd
 import re
+from helpers import checkDateIsHoliday as cdih
+from helpers import getNextWorkDay as gnwd
 
 class Publicador:
   def __init__(self, publicacao):
@@ -39,156 +42,174 @@ class Publicador:
     t.start()
 
   def publicar(self):
+    try:
+      for file in self.files:
+        self.publicacao.insertOnPendingFiles(os.path.basename(file.name))
+
+      tipoNumero = self.config["valores_sigepe"]["tipo_preenchimento"]
+      if (tipoNumero.lower() == "sem número"):
+        answer = messagebox.askyesno("Aviso", "Você selecionou o Tipo de Número como 'Sem número'. Neste caso, todos os documentos da lista serão publicados sem um número do ato. Deseja continuar?")
+        if (answer == False): self.publicacao.handleFecharJanela()
+
+      if (tipoNumero.lower() == "automático"):
+        answer = messagebox.askyesno("Aviso", "Você selecionou o Tipo de Número como 'Automático'. Neste caso, a numeração dos documentos será definida automaticamente pelo Sigepe ao publicar. Deseja continuar?")
+        if (answer == False): self.publicacao.handleFecharJanela()
+
+      holiday = cdih.checkDateIsHoliday(self.config["valores_sigepe"]["data_publicacao"])
+
+      if (holiday):
+        nextWorkDay = gnwd.getNextWorkDay(self.config["valores_sigepe"]["data_publicacao"], "/")
+        answer = messagebox.askyesno("Aviso", f"A data de publicação escolhida ({self.config['valores_sigepe']['data_publicacao']}) é feriado nacional de {holiday}. Deseja alterar para o próximo dia útil ({nextWorkDay})?")
+        if (answer == True):
+          self.config["valores_sigepe"]["data_publicacao"] = nextWorkDay
+    except Exception as e:
+      messagebox.showerror("Erro ao iniciar publicação", {e})
+
     for file in self.files:
-      self.publicacao.insertOnPendingFiles(os.path.basename(file.name))
+      try:
+        self.currentFile = file
+        wd.Webdriver.go(ac.AppConfig.urls["cadastrarAtoPublicacao"])
 
+        if (file.closed): file = open(file.name)
+        filename = os.path.basename(file.name)
+        completeFiletext = self.obterTextoDocumento(file)
+        textBeforeRemoveTerms = self.removerPrimeiraLinha(completeFiletext)
+        filetext = self.removerTermosConteudo(textBeforeRemoveTerms)
+        filetext = Publicador.stripText(filetext)
+        self.publicacao.insertFileText(filetext)
+        correlacao = self.verificarCorrelacao(file)   
+        file.close()
 
-    tipoNumero = self.config["valores_sigepe"]["tipo_preenchimento"]
-    if (tipoNumero.lower() == "sem número"):
-      answer = messagebox.askyesno("Aviso", "Você selecionou o Tipo de Número como 'Sem número'. Neste caso, todos os documentos da lista serão publicados sem um número do ato. Deseja continuar?")
-      if (answer == False): self.publicacao.handleFecharJanela()
+        log = {"log": f"Iniciando publicação do documento {filename}", "type": "em"}
+        self.handleResult(log)
 
-    if (tipoNumero.lower() == "automático"):
-      answer = messagebox.askyesno("Aviso", "Você selecionou o Tipo de Número como 'Automático'. Neste caso, a numeração dos documentos será definida automaticamente pelo Sigepe ao publicar. Deseja continuar?")
-      if (answer == False): self.publicacao.handleFecharJanela()
+        if (tipoNumero.lower() == "manual"):
+          numeroDocumentoResult = self.obterDoTexto("numero_documento", "Número do documento", completeFiletext)
+          numeroDocumento = numeroDocumentoResult["result"]
+          self.handleResult(numeroDocumentoResult, numeroDocumento)
+        else:
+          numeroDocumento = ""
 
-    for file in self.files:
-      self.currentFile = file
-      wd.Webdriver.go(ac.AppConfig.urls["cadastrarAtoPublicacao"])
+        matriculaSiapeResult = self.obterDoTexto("matricula_siape", "Matrícula SIAPE", completeFiletext)
+        matriculaSiape = matriculaSiapeResult["result"]
+        self.handleResult(matriculaSiapeResult, numeroDocumento)
 
-      if (file.closed): file = open(file.name)
-      filename = os.path.basename(file.name)
-      completeFiletext = self.obterTextoDocumento(file)
-      textBeforeRemoveTerms = self.removerPrimeiraLinha(completeFiletext)
-      filetext = self.removerTermosConteudo(textBeforeRemoveTerms)
-      filetext = Publicador.stripText(filetext)
-      self.publicacao.insertFileText(filetext)
-      correlacao = self.verificarCorrelacao(file)   
-      file.close()
+        if(self.config["tipo_tema_assunto"] == "Buscar no conteúdo do documento"):
+          autoTemaResult = t.Tema.buscar(filetext)
+          self.handleResult(autoTemaResult, numeroDocumento)
+          if not self.checkResult(autoTemaResult): continue
+          self.config["valores_sigepe"]["tema"] = autoTemaResult["return"]
+          autoAssuntoResult = a.Assunto.buscar(filetext)
+          self.handleResult(autoAssuntoResult, numeroDocumento)
+          if not self.checkResult(autoAssuntoResult): continue
+          self.config["valores_sigepe"]["assunto"] = autoAssuntoResult["return"]
 
-      log = {"log": f"Iniciando publicação do documento {filename}", "type": "em"}
-      self.handleResult(log)
+        if (correlacao[0]):
+          log = {"log": f"Foram localizados dados de correlação para o documento ({correlacao[1]['acao']} documento {correlacao[1]['numero']} publicado em {correlacao[1]['ano']})", "type": "em"}
+          self.handleResult(log, numeroDocumento)
 
-      if (tipoNumero.lower() == "manual"):
-        numeroDocumentoResult = self.obterDoTexto("numero_documento", "Número do documento", completeFiletext)
-        numeroDocumento = numeroDocumentoResult["result"]
-        self.handleResult(numeroDocumentoResult, numeroDocumento)
-      else:
-        numeroDocumento = ""
+        edicaoBoletimResult = eb.EdicaoBoletim.preencher(self.config["valores_sigepe"]["edicao_bgp"])
+        self.handleResult(edicaoBoletimResult, numeroDocumento)
+        if not self.checkResult(edicaoBoletimResult): continue
 
-      matriculaSiapeResult = self.obterDoTexto("matricula_siape", "Matrícula SIAPE", completeFiletext)
-      matriculaSiape = matriculaSiapeResult["result"]
-      self.handleResult(matriculaSiapeResult, numeroDocumento)
+        tipoAssinaturaResult = ta.TipoAssinatura.preencher(self.config["valores_sigepe"]["tipo_assinatura"])
+        self.handleResult(tipoAssinaturaResult, numeroDocumento)
+        if not self.checkResult(tipoAssinaturaResult): continue
 
-      if(self.config["tipo_tema_assunto"] == "Buscar no conteúdo do documento"):
-        autoTemaResult = t.Tema.buscar(filetext)
-        self.handleResult(autoTemaResult, numeroDocumento)
-        if not self.checkResult(autoTemaResult): continue
-        self.config["valores_sigepe"]["tema"] = autoTemaResult["return"]
-        autoAssuntoResult = a.Assunto.buscar(filetext)
-        self.handleResult(autoAssuntoResult, numeroDocumento)
-        if not self.checkResult(autoAssuntoResult): continue
-        self.config["valores_sigepe"]["assunto"] = autoAssuntoResult["return"]
+        tipoNumeroResult = tn.TipoNumero.preencher(self.config["valores_sigepe"]["tipo_preenchimento"])
+        self.handleResult(tipoNumeroResult, numeroDocumento)
+        if not self.checkResult(tipoNumeroResult): continue
 
-      if (correlacao[0]):
-        log = {"log": f"Foram localizados dados de correlação para o documento ({correlacao[1]['acao']} documento {correlacao[1]['numero']} publicado em {correlacao[1]['ano']})", "type": "em"}
+        temaResult = t.Tema.preencher(self.config["valores_sigepe"]["tema"])
+        self.handleResult(temaResult, numeroDocumento)
+        if not self.checkResult(temaResult): continue
+
+        assuntoResult = a.Assunto.preencher(self.config["valores_sigepe"]["assunto"])
+        self.handleResult(assuntoResult, numeroDocumento)
+        if not self.checkResult(assuntoResult): continue
+
+        if (self.config["valores_sigepe"]["tipo_preenchimento"].lower() == "manual"):
+          numeroResult = n.Numero.preencher(numeroDocumento)
+          self.handleResult(numeroResult, numeroDocumento)
+          if not self.checkResult(numeroResult): continue
+        else:
+          log = {"log": f"Número do ato não preenchido: o tipo de número é '{self.config['valores_sigepe']['tipo_preenchimento'].lower()}'", "type": "n"}
+          self.handleResult(log, numeroDocumento)
+
+        if (self.config["valores_sigepe"]["tipo_assinatura"].lower() == "manual"):
+          dataAssinaturaResult = da.DataAssinatura.preencher(self.config["valores_sigepe"]["data_assinatura"])
+          self.handleResult(dataAssinaturaResult, numeroDocumento)
+          if not self.checkResult(dataAssinaturaResult): continue
+        else:
+          log = {"log": f"Data de assinatura não preenchida: o tipo de assinatura é '{self.config['valores_sigepe']['tipo_assinatura'].lower()}'", "type": "n"}
+          self.handleResult(log, numeroDocumento)
+
+        if (self.config["valores_sigepe"]["edicao_bgp"].lower() == "normal"):
+          dataPublicacaoResult = dp.DataPublicacao.preencher(self.config["valores_sigepe"]["data_publicacao"])
+          self.handleResult(dataPublicacaoResult, numeroDocumento)
+          if not self.checkResult(dataPublicacaoResult): continue
+        else:
+          log = {"log": f"Data de publicação preenchido automaticamente: a edição do boletim selecionada é '{self.config['valores_sigepe']['edicao_bgp'].lower()}'", "type": "n"}
+          self.handleResult(log, numeroDocumento)
+
+        especieResult = e.Especie.preencher(self.config["valores_sigepe"]["especie"])
+        self.handleResult(especieResult, numeroDocumento)
+        if not self.checkResult(especieResult): continue
+
+        textoDocumentoResult = cd.ConteudoDocumento.preencher(filetext)
+        self.handleResult(textoDocumentoResult, numeroDocumento)
+        if not self.checkResult(textoDocumentoResult): continue
+
+        log = {"log": f"Selecionando órgão elaborador...", "type": "n"}
         self.handleResult(log, numeroDocumento)
+        orgaoElaboradorResult = oe.OrgaoElaborador.preencher(
+          self.config["valores_sigepe"]["orgao"],
+          self.config["valores_sigepe"]["upag"],
+          self.config["valores_sigepe"]["uorg"],
+          self.config["valores_sigepe"]["responsavel_assinatura"],
+          self.config["valores_sigepe"]["cargo_responsavel"]
+        )
+        self.handleResult(orgaoElaboradorResult, numeroDocumento)
+        if not self.checkResult(orgaoElaboradorResult): continue
 
-      edicaoBoletimResult = eb.EdicaoBoletim.preencher(self.config["valores_sigepe"]["edicao_bgp"])
-      self.handleResult(edicaoBoletimResult, numeroDocumento)
-      if not self.checkResult(edicaoBoletimResult): continue
+        if (correlacao[0]):
+          log = {"log": f"Selecionando ato correlacionado...", "type": "n"}
+          self.handleResult(log, numeroDocumento)
+          correlacaoResult = c.Correlacao.preencher(correlacao[1])
+          self.handleResult(correlacaoResult, numeroDocumento)
+          c.Correlacao.apagarArquivo(file)
+          if not self.checkResult(correlacaoResult): continue
 
-      tipoAssinaturaResult = ta.TipoAssinatura.preencher(self.config["valores_sigepe"]["tipo_assinatura"])
-      self.handleResult(tipoAssinaturaResult, numeroDocumento)
-      if not self.checkResult(tipoAssinaturaResult): continue
-
-      tipoNumeroResult = tn.TipoNumero.preencher(self.config["valores_sigepe"]["tipo_preenchimento"])
-      self.handleResult(tipoNumeroResult, numeroDocumento)
-      if not self.checkResult(tipoNumeroResult): continue
-
-      temaResult = t.Tema.preencher(self.config["valores_sigepe"]["tema"])
-      self.handleResult(temaResult, numeroDocumento)
-      if not self.checkResult(temaResult): continue
-
-      assuntoResult = a.Assunto.preencher(self.config["valores_sigepe"]["assunto"])
-      self.handleResult(assuntoResult, numeroDocumento)
-      if not self.checkResult(assuntoResult): continue
-
-      if (self.config["valores_sigepe"]["tipo_preenchimento"].lower() == "manual"):
-        numeroResult = n.Numero.preencher(numeroDocumento)
-        self.handleResult(numeroResult, numeroDocumento)
-        if not self.checkResult(numeroResult): continue
-      else:
-        log = {"log": f"Número do ato não preenchido: o tipo de número é '{self.config['valores_sigepe']['tipo_preenchimento'].lower()}'", "type": "n"}
-        self.handleResult(log, numeroDocumento)
-
-      if (self.config["valores_sigepe"]["tipo_assinatura"].lower() == "manual"):
-        dataAssinaturaResult = da.DataAssinatura.preencher(self.config["valores_sigepe"]["data_assinatura"])
-        self.handleResult(dataAssinaturaResult, numeroDocumento)
-        if not self.checkResult(dataAssinaturaResult): continue
-      else:
-        log = {"log": f"Data de assinatura não preenchida: o tipo de assinatura é '{self.config['valores_sigepe']['tipo_assinatura'].lower()}'", "type": "n"}
-        self.handleResult(log, numeroDocumento)
-
-      if (self.config["valores_sigepe"]["edicao_bgp"].lower() == "normal"):
-        dataPublicacaoResult = dp.DataPublicacao.preencher(self.config["valores_sigepe"]["data_publicacao"])
-        self.handleResult(dataPublicacaoResult, numeroDocumento)
-        if not self.checkResult(dataPublicacaoResult): continue
-      else:
-        log = {"log": f"Data de publicação preenchido automaticamente: a edição do boletim selecionada é '{self.config['valores_sigepe']['edicao_bgp'].lower()}'", "type": "n"}
-        self.handleResult(log, numeroDocumento)
-
-      especieResult = e.Especie.preencher(self.config["valores_sigepe"]["especie"])
-      self.handleResult(especieResult, numeroDocumento)
-      if not self.checkResult(especieResult): continue
-
-      textoDocumentoResult = cd.ConteudoDocumento.preencher(filetext)
-      self.handleResult(textoDocumentoResult, numeroDocumento)
-      if not self.checkResult(textoDocumentoResult): continue
-
-      log = {"log": f"Selecionando órgão elaborador...", "type": "n"}
-      self.handleResult(log, numeroDocumento)
-      orgaoElaboradorResult = oe.OrgaoElaborador.preencher(
-        self.config["valores_sigepe"]["orgao"],
-        self.config["valores_sigepe"]["upag"],
-        self.config["valores_sigepe"]["uorg"],
-        self.config["valores_sigepe"]["responsavel_assinatura"],
-        self.config["valores_sigepe"]["cargo_responsavel"]
-      )
-      self.handleResult(orgaoElaboradorResult, numeroDocumento)
-      if not self.checkResult(orgaoElaboradorResult): continue
-
-      if (correlacao[0]):
-        log = {"log": f"Selecionando ato correlacionado...", "type": "n"}
-        self.handleResult(log, numeroDocumento)
-        correlacaoResult = c.Correlacao.preencher(correlacao[1])
-        self.handleResult(correlacaoResult, numeroDocumento)
-        c.Correlacao.apagarArquivo(file)
-        if not self.checkResult(correlacaoResult): continue
-
-      if (matriculaSiape != ""):
-        log = {"log": f"Selecionando interessado...", "type": "n"}
-        self.handleResult(log, numeroDocumento)
-        interessadoResult = i.Interessado.preencher(matriculaSiape)
-        self.handleResult(interessadoResult, numeroDocumento)
-        if not self.checkResult(interessadoResult): continue
-      else:
-        log = {"log": f"Não foi selecionado um interessado, uma vez que não foi localizada a matrícula SIAPE no conteúdo do documento", "type": "a"}
-        self.handleResult(log, numeroDocumento)
-
-      publicacaoResult = self.enviarParaPublicacao(numeroDocumento, filename)
-      self.handleResult(publicacaoResult, numeroDocumento)
-      if not self.checkResult(publicacaoResult): continue
-
+        if (matriculaSiape != ""):
+          log = {"log": f"Selecionando interessado...", "type": "n"}
+          self.handleResult(log, numeroDocumento)
+          interessadoResult = i.Interessado.preencher(matriculaSiape)
+          self.handleResult(interessadoResult, numeroDocumento)
+          if not self.checkResult(interessadoResult): continue
+        else:
+          log = {"log": f"Não foi selecionado um interessado, uma vez que não foi localizada a matrícula SIAPE no conteúdo do documento", "type": "a"}
+          self.handleResult(log, numeroDocumento)
+        publicacaoResult = self.enviarParaPublicacao(numeroDocumento, filename)
+        self.handleResult(publicacaoResult, numeroDocumento)
+        if not self.checkResult(publicacaoResult): continue
+        self.currentFile = None
+        self.publicacao.insertFileText("")
+      except Exception as e:
+        log = {"log": f"ERRO: {e}", "type": "e"}
+        self.handleResult(log)
+        if not self.checkResult(log): continue
+    
+    try:
       self.currentFile = None
       self.publicacao.insertFileText("")
-    
-    self.currentFile = None
-    self.publicacao.insertFileText("")
-    log = {"log": f"Fila de arquivos concluída!", "type": "em"}
-    self.handleResult(log)
-    self.publicacao.showBtns()
-    self.publicacao.showConcludeMessage()
+      log = {"log": f"Fila de arquivos concluída!", "type": "em"}
+      self.handleResult(log)
+      self.publicacao.showBtns()
+      self.publicacao.showConcludeMessage()
+    except Exception as e:
+      log = {"log": f"ERRO: {e}", "type": "e"}
+      self.handleResult(log)
+      messagebox.showerror("Erro ao encerrar fila", {e})
 
   def obterTextoDocumento(self, file):
     try:
@@ -255,7 +276,6 @@ class Publicador:
 
   def enviarParaPublicacao(self, numeroDocumento, filename):
     try:
-
       if (self.config["acao"].lower() == "enviar para assinatura / publicação"):
         if(self.config["valores_sigepe"]["tipo_assinatura"].lower() == "digital"): xpath = ac.AppConfig.xpaths["publicacao"]["enviarParaAssinaturaBotao"]
         elif(self.config["valores_sigepe"]["tipo_assinatura"].lower() == "manual"): xpath = ac.AppConfig.xpaths["publicacao"]["enviarParaPublicacaoBotao"]
@@ -284,6 +304,13 @@ class Publicador:
         mensagemSucesso = wd.Webdriver.wait["regular"].until(EC.presence_of_element_located(
           (By.XPATH, ac.AppConfig.xpaths["publicacao"]["mensagemSucessoPublicacao"])))
         return {"log": f"Sucesso: {mensagemSucesso.text}", "type": "s", "isFinalResult": True}
+      else:
+        try:
+          urlParams = parse_qs(urlparse(wd.Webdriver.nav.current_url).query)
+          mensagemSucesso = urlParams["mensagem"][0]
+          return {"log": f"Sucesso: {mensagemSucesso}", "type": "s", "isFinalResult": True}
+        except Exception as e:
+          raise Exception(f"Falha ao identificar resultado: {e}. VERIFIQUE SE O CADASTRO DO DOCUMENTO FOI REALIZADO NO SIGEPE.")
 
     except Exception as e:
       return {"log": f"Falha: {e}", "type": "e", "e": e, "isFinalResult": True}

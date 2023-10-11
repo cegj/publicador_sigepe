@@ -57,7 +57,7 @@ class Publicacao:
     successFilesContainer.grid(row=1, column=2, pady=10, padx=10)
     successFilesLabel = Label(
       successFilesContainer,
-      text="Arquivos publicados",
+      text="Arquivos cadastrados",
       font=ac.AppConfig.fontes["normal"]
     )
     successFilesLabel.pack()
@@ -77,7 +77,7 @@ class Publicacao:
     failFilesContainer.grid(row=1, column=3, pady=10, padx=10)
     failFilesLabel = Label(
       failFilesContainer,
-      text="Arquivos não publicados",
+      text="Arquivos não cadastrados",
       font=ac.AppConfig.fontes["normal"]
     )
     failFilesLabel.pack()
