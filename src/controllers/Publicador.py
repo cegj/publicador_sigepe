@@ -15,7 +15,7 @@ from controllers.publicador.campos import Assunto as a
 from controllers.publicador.campos import Numero as n
 from controllers.publicador.campos import DataAssinatura as da
 from controllers.publicador.campos import DataPublicacao as dp
-from controllers.publicador.campos import Especie as e
+from controllers.publicador.campos import Especie as es
 from controllers.publicador.campos import ConteudoDocumento as cd
 from controllers.publicador.campos import OrgaoElaborador as oe
 from controllers.publicador.campos import Correlacao as c
@@ -152,7 +152,7 @@ class Publicador:
           log = {"log": f"Data de publicação preenchido automaticamente: a edição do boletim selecionada é '{self.config['valores_sigepe']['edicao_bgp'].lower()}'", "type": "n"}
           self.handleResult(log, numeroDocumento)
 
-        especieResult = e.Especie.preencher(self.config["valores_sigepe"]["especie"])
+        especieResult = es.Especie.preencher(self.config["valores_sigepe"]["especie"])
         self.handleResult(especieResult, numeroDocumento)
         if not self.checkResult(especieResult): continue
 

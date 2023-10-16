@@ -1,7 +1,8 @@
 from datetime import date, datetime, timedelta
 import holidays
+from holidays import countries
 
-br_holidays = holidays.country_holidays('BR')
+br_holidays = holidays.BR()
 iso_date = datetime.strptime("25/12/2023", "%d/%m/%Y")
 isWorkDay = False
 

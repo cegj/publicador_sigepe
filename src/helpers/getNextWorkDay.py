@@ -1,9 +1,10 @@
 from datetime import date, datetime, timedelta
 import holidays
+from holidays import countries
 from helpers import dateToBrFormat as dtbf
 
 def getNextWorkDay(date, separator):
-    br_holidays = holidays.country_holidays('BR')
+    br_holidays = holidays.BR()
     iso_date = datetime.strptime(date, "%d/%m/%Y")
     isWorkDay = False
 
