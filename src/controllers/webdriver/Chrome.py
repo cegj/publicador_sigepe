@@ -12,6 +12,8 @@ class Chrome:
       service.creation_flags = CREATE_NO_WINDOW
       options = webdriver.ChromeOptions()
       options.add_argument("ignore-certificate-errors")
+      options.add_argument("--ignore-ssl-errors=yes")
+      options.add_argument("--allow-running-insecure-content")
       for option in ac.AppConfig.webdriverSettings["chromiumOptions"]:
         options.add_argument(option)
       driver = webdriver.Chrome(service=service, options=options)
